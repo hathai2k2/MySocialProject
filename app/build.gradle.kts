@@ -56,6 +56,10 @@ kapt {
 }
 dependencies {
     implementation("androidx.activity:activity:1.9.0")
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.firestore)
     val nav_version = "2.7.7"
 
     implementation("androidx.core:core-ktx:1.13.1")
@@ -100,17 +104,15 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.firebase:firebase-analytics")
-    implementation ("com.google.firebase:firebase-config")
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-crashlytics")
+//    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+//    implementation("com.google.firebase:firebase-messaging")
+//    implementation("com.google.firebase:firebase-analytics")
+//    implementation ("com.google.firebase:firebase-config")
+//    implementation("com.google.firebase:firebase-auth")
+//    implementation("com.google.firebase:firebase-crashlytics")
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
-    implementation ("com.github.skydoves:expandablelayout:1.0.7")
-    implementation ("com.github.highcharts:highcharts-android:11.4.6")
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
 
     //kotlin serialization

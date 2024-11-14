@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#4EADFE</color>
+    <color name="color_bg_button">@color/blue</color>
 </resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AppEditText">
+        <attr name="edtDrawableRight" format="reference"/>
+        <attr name="edtLabel" format="string"/>
+        <attr name="edtLabelTextSize" format="dimension"/>
+        <attr name="edtLabelTextColor" format="color"/>
+        <attr name="edtTextSize" format="dimension"/>
+        <attr name="edtText" format="string"/>
+        <attr name="edtTextColor" format="color"/>
+        <attr name="edtHint" format="string"/>
+        <attr name="edtError" format="string"/>
+        <attr name="edtErrorSize" format="dimension"/>
+        <attr name="edtErrorColor" format="integer"/>
+        <attr name="android:inputType" format="integer"/>
+        <attr name="android:gravity" format="integer"/>
+        <attr name="android:enabled" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="AppButton">
+        <attr name="btnText" format="string"/>
+        <attr name="btnEnable" format="boolean"/>
+        <attr name="btnBackground" format="reference"/>
+        <attr name="btnTextColor" format="color"/>
+        <attr name="btnPaddingVertical" format="dimension"/>
+        <attr name="btnPaddingHorizontal" format="dimension"/>
+        <attr name="btnTextSize" format="dimension"/>
+        <attr name="btnFontFamily" format="reference"/>
+    </declare-styleable>
+</resources>
