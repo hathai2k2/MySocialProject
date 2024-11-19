@@ -5,4 +5,6 @@
     <color name="blue">#4EADFE</color>
     <color name="color_bg_button">@color/blue</color>
     <color name="gray_light">#BDD1C5</color>
+    <color name="color_gray">#D9D9D9</color>
+    <color name="bg_image_view">#F5F5F8</color>
 </resources>
