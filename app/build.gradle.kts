@@ -53,6 +53,7 @@ android {
 }
 kapt {
     correctErrorTypes = true
+    generateStubs = true
 }
 dependencies {
     implementation("androidx.activity:activity:1.9.0")
@@ -89,10 +90,10 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
-//    val room_version = "2.6.1"
-//    implementation ("androidx.room:room-ktx:$room_version")
-//    kapt("androidx.room:room-compiler:$room_version")
-//    annotationProcessor ("androidx.room:room-compiler:$room_version")
+    val room_version = "2.6.1"
+    implementation ("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    annotationProcessor ("androidx.room:room-compiler:$room_version")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 

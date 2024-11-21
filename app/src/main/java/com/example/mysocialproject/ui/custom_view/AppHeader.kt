@@ -53,4 +53,7 @@ class AppHeader @JvmOverloads constructor(
             o.recycle()
         }
     }
+    fun onClickRightIcon(onClick:()->Unit){
+        mViewBinding.ivRight.setOnClickListener { onClick() }
+    }
 }

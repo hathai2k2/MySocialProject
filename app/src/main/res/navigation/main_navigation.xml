@@ -31,6 +31,9 @@
             app:exitAnim="@anim/scale_up"
             app:popEnterAnim="@anim/slide_down"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signInFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -57,4 +60,9 @@
         app:exitAnim="@anim/scale_down"
         app:popEnterAnim="@anim/scale_up"
         app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.example.mysocialproject.ui.feature.chat.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" /><action android:id="@+id/action_global_messageFragment" app:destination="@id/messageFragment"/>
 </navigation>

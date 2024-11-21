@@ -197,6 +197,7 @@ class AppEditText @JvmOverloads constructor(
 
 
     fun getText() = mViewBinding.editText.text.toString()
+    fun clearText() = mViewBinding.editText.text.clear()
 
 
     fun addChangeTextListener(onTextChange: (s: String) -> Unit) {

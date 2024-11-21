@@ -17,7 +17,6 @@ abstract class BaseViewModel<N> constructor(
     private var _error = MutableLiveData<Throwable>()
     var error: LiveData<Throwable> = _error
 
-    protected var isRefreshToken = false
 
     fun getNavigator() = mNavigator?.get()
 
