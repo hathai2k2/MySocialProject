@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
@@ -34,7 +35,9 @@ class MessageFragment : BaseFragmentWithViewModel<FragmentMessageBinding,Message
             adapter = MessageAdapter(emptyList(), currentUserId)
             adapter = adapter
         }
-
+        mViewBinding.appHeader2.onClickLeftIcon {
+            findNavController().popBackStack()
+        }
 
         // Load messages from ViewModel
         val receiverId = "user_1" // ID của người nhận
@@ -54,6 +57,15 @@ class MessageFragment : BaseFragmentWithViewModel<FragmentMessageBinding,Message
                 mViewModel.sendMessage(currentUserId, receiverId, messageContent)
                 mViewBinding.appEditText.clearText()
             }
+            hideKeyboard()
+        }
+        mViewBinding.appEditText1.setRightDrawableClick  {
+            val messageContent = mViewBinding.appEditText1.getText()
+            if (messageContent.isNotEmpty()) {
+                mViewModel.sendMessage(receiverId, currentUserId, messageContent)
+                mViewBinding.appEditText1.clearText()
+            }
+            hideKeyboard()
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.example.mysocialproject.extension.hideKeyboard
 
 abstract class BaseFragment<V:ViewDataBinding>:Fragment() {
     protected var mActivity:BaseActivity<*>?=null
@@ -23,10 +24,6 @@ abstract class BaseFragment<V:ViewDataBinding>:Fragment() {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,9 +35,12 @@ abstract class BaseFragment<V:ViewDataBinding>:Fragment() {
         return mViewBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    fun hideKeyboard() {
+        val focusView = mViewBinding.root.findFocus()
+        if (focusView != null) {
+            mViewBinding.root.clearFocus()
+            requireContext().hideKeyboard(focusView)
+        }
     }
-
 
 }

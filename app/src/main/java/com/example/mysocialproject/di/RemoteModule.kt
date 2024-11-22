@@ -2,8 +2,10 @@ package com.example.mysocialproject.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.mysocialproject.extension.Constant
 import com.example.mysocialproject.networking.room.AppDatabase
 import com.example.mysocialproject.networking.room.MessageDao
+import com.example.mysocialproject.networking.room.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,12 +23,20 @@ object RemoteModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "app_database"
-        ).build()
+             Constant.TABLE_NAME
+        )
+            .addMigrations(Constant.MIGRATION_2_3)
+            .allowMainThreadQueries()
+            .build()
     }
 
     @Provides
     fun provideMessageDao(database: AppDatabase): MessageDao {
         return database.messageDao()
+    }
+
+    @Provides
+    fun provideUserDao(database: AppDatabase):UserDao{
+        return database.userDao()
     }
 }

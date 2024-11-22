@@ -82,7 +82,7 @@ class AppButton @JvmOverloads constructor(
 
     private fun setBtnFontFamily(btnFontFamilyId: Int) {
         if (btnFontFamilyId == 0) return
-        mViewBinding.tv.setTypeface(ResourcesCompat.getFont(context,btnFontFamilyId))
+        mViewBinding.tv.typeface = ResourcesCompat.getFont(context,btnFontFamilyId)
 
     }
 

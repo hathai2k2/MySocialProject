@@ -48,7 +48,7 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
     }
 
     fun handlerBackPress() {
-        if (BuildCompat.isAtLeastT()) {
+        if (Build.VERSION.SDK_INT >= 33) {
             if (Build.VERSION.SDK_INT >= 33) {
                 onBackInvokedDispatcher.registerOnBackInvokedCallback(
                     OnBackInvokedDispatcher.PRIORITY_DEFAULT

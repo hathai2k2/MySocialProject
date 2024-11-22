@@ -20,7 +20,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewBinding.header.onClickRightIcon {
-            val action = HomeFragmentDirections.actionGlobalMessageFragment()
+            val action = HomeFragmentDirections.actionGlobalChatFragment()
             findNavController().navigate(action)
         }
     }

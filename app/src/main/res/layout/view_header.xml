@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="@dimen/padding_10dp"
     tools:context=".ui.custom_view.AppHeader">
 
     <ImageView
         android:id="@+id/iv_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintDimensionRatio="1:1"
         android:src="@drawable/ic_account_circle"
+        android:padding="@dimen/padding_10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ct_friend"
         app:layout_constraintHorizontal_bias="0.5"
@@ -68,9 +69,11 @@
 
     <ImageView
         android:id="@+id/iv_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintDimensionRatio="1:1"
         android:src="@drawable/ic_chat"
+        android:padding="@dimen/padding_10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

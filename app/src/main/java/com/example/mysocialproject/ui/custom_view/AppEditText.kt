@@ -226,7 +226,7 @@ class AppEditText @JvmOverloads constructor(
 }
 
 
-public interface DrawableClickListener {
+interface DrawableClickListener {
     enum class DrawablePosition {
         TOP, BOTTOM, LEFT, RIGHT
     }

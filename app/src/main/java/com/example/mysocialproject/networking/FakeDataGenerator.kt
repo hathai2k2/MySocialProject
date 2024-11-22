@@ -1,6 +1,7 @@
 package com.example.mysocialproject.networking
 
 import com.example.mysocialproject.model.room.MessageEntity
+import com.example.mysocialproject.model.room.UserEntity
 import java.util.UUID
 
 object FakeDataGenerator {
@@ -22,5 +23,18 @@ object FakeDataGenerator {
             )
         }
         return messages
+    }
+
+    fun generateFakeUser(count: Int):List<UserEntity>{
+        val user = mutableListOf<UserEntity>()
+        for(i in 1..count){
+            user.add(
+                UserEntity(
+                    userId = UUID.randomUUID().toString(),
+                    username = "user $i"
+                )
+            )
+        }
+        return user
     }
 }
