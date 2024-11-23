@@ -7,12 +7,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_linear">
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_linear"
+            android:background="@color/white"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/txt_login"
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
+                android:fontFamily="@font/mplusrounded1c_bold"
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:edtLabel="Password"
+                app:edtDrawableRight="@drawable/ic_edit"
                 app:edtLabelTextColor="@color/white"
                 app:edtLabelTextSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/txt_forgot_password"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/edtPassword"
                 app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
@@ -85,7 +87,7 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/txt_nav_sign_up"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/btn_sign_in"
                 app:layout_constraintStart_toStartOf="@+id/btn_sign_in"
