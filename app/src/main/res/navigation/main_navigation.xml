@@ -57,4 +57,14 @@
         app:exitAnim="@anim/scale_down"
         app:popEnterAnim="@anim/scale_up"
         app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.example.mysocialproject.ui.feature.chat.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" /><action android:id="@+id/action_global_messageFragment" app:destination="@id/messageFragment"/>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.mysocialproject.ui.feature.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" /><action android:id="@+id/action_global_chatFragment" app:destination="@id/chatFragment"/>
 </navigation>

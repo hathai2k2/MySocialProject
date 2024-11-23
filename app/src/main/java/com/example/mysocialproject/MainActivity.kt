@@ -20,8 +20,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val navHost by lazy { (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment) }
     val navController by lazy { navHost.navController }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
 }

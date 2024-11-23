@@ -7,9 +7,7 @@ import java.lang.ref.WeakReference
 
 private const val TAG = "BaseViewModel"
 
-abstract class BaseViewModel<N> constructor(
-
-) : ViewModel() {
+abstract class BaseViewModel<N> : ViewModel() {
 
     protected var mNavigator: WeakReference<N>? = null
     var mViewLoading = MutableLiveData<Boolean>()
@@ -17,7 +15,6 @@ abstract class BaseViewModel<N> constructor(
     private var _error = MutableLiveData<Throwable>()
     var error: LiveData<Throwable> = _error
 
-    protected var isRefreshToken = false
 
     fun getNavigator() = mNavigator?.get()
 

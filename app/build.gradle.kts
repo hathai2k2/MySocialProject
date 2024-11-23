@@ -20,7 +20,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -56,10 +56,10 @@ kapt {
 }
 dependencies {
     implementation("androidx.activity:activity:1.9.0")
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.storage)
-    implementation(libs.firebase.firestore)
+//    implementation(libs.firebase.database)
+//    implementation(libs.firebase.auth)
+//    implementation(libs.firebase.storage)
+//    implementation(libs.firebase.firestore)
     val nav_version = "2.7.7"
 
     implementation("androidx.core:core-ktx:1.13.1")
@@ -89,10 +89,10 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
-//    val room_version = "2.6.1"
-//    implementation ("androidx.room:room-ktx:$room_version")
-//    kapt("androidx.room:room-compiler:$room_version")
-//    annotationProcessor ("androidx.room:room-compiler:$room_version")
+    val room_version = "2.6.1"
+    implementation ("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    annotationProcessor ("androidx.room:room-compiler:$room_version")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
@@ -104,12 +104,13 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     //firebase
-//    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
 //    implementation("com.google.firebase:firebase-messaging")
 //    implementation("com.google.firebase:firebase-analytics")
 //    implementation ("com.google.firebase:firebase-config")
-//    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-auth")
 //    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-firestore")
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
@@ -120,4 +121,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+
+    val multidex_version = "2.0.1"
+    implementation("androidx.multidex:multidex:$multidex_version")
 }

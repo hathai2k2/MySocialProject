@@ -30,7 +30,7 @@ class AppHeader @JvmOverloads constructor(
 
             if (headerTitle ==null){
                 mViewBinding.ctFriend.visibility = View.VISIBLE
-                mViewBinding.tvTitle.visibility = View.GONE
+                mViewBinding.tvTitle.visibility = View.INVISIBLE
             }else{
                 mViewBinding.ctFriend.visibility = View.INVISIBLE
                 mViewBinding.tvTitle.visibility = View.VISIBLE
@@ -41,16 +41,22 @@ class AppHeader @JvmOverloads constructor(
             if (ivLeft !=null){
                 mViewBinding.ivLeft.setImageDrawable(ivLeft)
             }else{
-                mViewBinding.ivLeft.visibility = View.GONE
+                mViewBinding.ivLeft.visibility = View.INVISIBLE
             }
 
             if (ivRight !=null){
                 mViewBinding.ivRight.setImageDrawable(ivRight)
             }else{
-                mViewBinding.ivRight.visibility = View.GONE
+                mViewBinding.ivRight.visibility = View.INVISIBLE
             }
         }finally {
             o.recycle()
         }
+    }
+    fun onClickRightIcon(onClick:()->Unit){
+        mViewBinding.ivRight.setOnClickListener { onClick() }
+    }
+    fun onClickLeftIcon(onClick: () -> Unit){
+        mViewBinding.ivLeft.setOnClickListener { onClick() }
     }
 }

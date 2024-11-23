@@ -27,10 +27,6 @@ abstract class BaseWithStateFragment<V : ViewDataBinding> : Fragment() {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,10 +36,6 @@ abstract class BaseWithStateFragment<V : ViewDataBinding> : Fragment() {
             mViewBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         }
         return mViewBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     fun showLoading() {

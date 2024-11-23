@@ -197,6 +197,7 @@ class AppEditText @JvmOverloads constructor(
 
 
     fun getText() = mViewBinding.editText.text.toString()
+    fun clearText() = mViewBinding.editText.text.clear()
 
 
     fun addChangeTextListener(onTextChange: (s: String) -> Unit) {
@@ -225,7 +226,7 @@ class AppEditText @JvmOverloads constructor(
 }
 
 
-public interface DrawableClickListener {
+interface DrawableClickListener {
     enum class DrawablePosition {
         TOP, BOTTOM, LEFT, RIGHT
     }
