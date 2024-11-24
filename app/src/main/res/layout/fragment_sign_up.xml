@@ -7,12 +7,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_linear">
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_linear"
+            android:background="@color/white"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,8 +25,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/txt_sign_up"
-                android:textColor="@color/white"
-                android:textSize="40sp"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/txt_40sp"
+                android:fontFamily="@font/mplusrounded1c_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:edtLabel="Email"
-                app:edtLabelTextColor="@color/white"
+                app:edtLabelTextColor="@color/blue"
                 app:edtLabelTextSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:edtLabel="Password"
-                app:edtLabelTextColor="@color/white"
+                app:edtLabelTextColor="@color/blue"
                 app:edtLabelTextSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +75,8 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/txt_nav_login"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
+                android:fontFamily="@font/mplusrounded1c_bold"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/btn_sign_in"
                 app:layout_constraintStart_toStartOf="@+id/btn_sign_in"

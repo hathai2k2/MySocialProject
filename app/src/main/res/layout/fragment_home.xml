@@ -15,11 +15,35 @@
             app:headerIvLeft="@drawable/ic_account_circle"
             app:headerIvRight="@drawable/ic_chat"
             app:headerTitle="@null"
+            app:layout_constraintBottom_toTopOf="@+id/viewPager2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/size_10dp"
+            android:layout_marginVertical="@dimen/size_12dp"
+            app:layout_constraintBottom_toTopOf="@+id/appBottomNavBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header" />
 
-
+        <com.example.mysocialproject.ui.custom_view.AppBottomNavBar
+            android:id="@+id/appBottomNavBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_10dp"
+            app:BottomNavBarIvLeft="@drawable/ic_user"
+            app:BottomNavBarIvRight="@drawable/ic_camera"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

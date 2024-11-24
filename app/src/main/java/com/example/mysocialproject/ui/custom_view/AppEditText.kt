@@ -137,43 +137,55 @@ class AppEditText @JvmOverloads constructor(
     }
 
     fun setRightDrawableClick(onClick: (DrawableClickListener.DrawablePosition) -> Unit) {
+        val padding = 20 // Khoảng padding 20 pixels
         mViewBinding.editText.setOnTouchListener { v, event ->
-            if (event.action === MotionEvent.ACTION_UP) {
+            if (event.action == MotionEvent.ACTION_UP) {
                 val actionX = event.x.toInt()
                 val actionY = event.y.toInt()
                 val drawableLeft = mViewBinding.editText.compoundDrawables[0]
                 val drawableTop = mViewBinding.editText.compoundDrawables[1]
                 val drawableRight = mViewBinding.editText.compoundDrawables[2]
                 val drawableBottom = mViewBinding.editText.compoundDrawables[3]
+
+                // Kiểm tra click vào drawable bên trái
                 if (drawableLeft?.bounds?.contains(actionX, actionY) == true) {
                     onClick(DrawableClickListener.DrawablePosition.LEFT)
-                    true
+                    return@setOnTouchListener true
                 }
 
+                // Kiểm tra click vào drawable phía trên
                 if (drawableTop?.bounds?.contains(actionX, actionY) == true) {
                     onClick(DrawableClickListener.DrawablePosition.TOP)
-                    true
+                    return@setOnTouchListener true
                 }
 
+                // Kiểm tra click vào drawable bên phải
                 if (drawableRight != null) {
-                    val bounds = Rect(width - drawableRight.intrinsicWidth, 0, width, height)
+                    val width = mViewBinding.editText.width
+                    val height = mViewBinding.editText.height
+                    val bounds = Rect(
+                        width - drawableRight.intrinsicWidth - padding,
+                        0 - padding,
+                        width + padding,
+                        height + padding
+                    )
 
                     if (bounds.contains(actionX, actionY)) {
                         onClick(DrawableClickListener.DrawablePosition.RIGHT)
-                        true
+                        return@setOnTouchListener true
                     }
-
                 }
 
+                // Kiểm tra click vào drawable phía dưới
                 if (drawableBottom?.bounds?.contains(actionX, actionY) == true) {
-                    onClick(DrawableClickListener.DrawablePosition.RIGHT)
-                    true
+                    onClick(DrawableClickListener.DrawablePosition.BOTTOM)
+                    return@setOnTouchListener true
                 }
             }
             false
         }
-
     }
+
 
     fun setTransformationMethod(transaction: TransformationMethod?) {
         mViewBinding.editText.transformationMethod = transaction

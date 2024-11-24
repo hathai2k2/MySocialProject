@@ -33,4 +33,9 @@
         <attr name="headerIvLeft" format="reference"/>
         <attr name="headerIvRight" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="AppBottomNavBar">
+        <attr name="BottomNavBarTitle" format="string"/>
+        <attr name="BottomNavBarIvLeft" format="reference"/>
+        <attr name="BottomNavBarIvRight" format="reference"/>
+    </declare-styleable>
 </resources>

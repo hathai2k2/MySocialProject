@@ -35,16 +35,7 @@
             android:id="@+id/appEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_10dp"
-            app:edtDrawableRight="@drawable/ic_send"
-            app:layout_constraintBottom_toTopOf="@+id/appEditText1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-        <com.example.mysocialproject.ui.custom_view.AppEditText
-            android:id="@+id/appEditText1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_10dp"
+            android:layout_margin="@dimen/size_10dp"
             app:edtDrawableRight="@drawable/ic_send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
