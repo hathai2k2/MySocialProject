@@ -38,8 +38,6 @@
             android:id="@+id/rcv_message"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:background="@null"
             app:layout_constraintBottom_toTopOf="@+id/appEditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -63,10 +61,11 @@
             app:layout_constraintWidth_percent="0.1"
             android:src="@drawable/ic_group"
             android:layout_marginEnd="@dimen/padding_10dp"
+            android:layout_margin="@dimen/size_10dp"
+            app:edtDrawableRight="@drawable/ic_send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/appEditText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

@@ -76,7 +76,7 @@
             android:id="@+id/rcv_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_10dp"
+            android:layout_marginTop="@dimen/size_10dp"
             tools:itemCount="5"
             tools:listitem="@layout/item_chat"
             app:layout_constraintTop_toBottomOf="@+id/ct_bot" />

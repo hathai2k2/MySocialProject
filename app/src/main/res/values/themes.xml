@@ -2,22 +2,23 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MySocialProject" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:textColorPrimary">@color/black</item>
-    <!-- Primary brand color. -->
-    <item name="colorPrimary">@color/blue</item>
-    <item name="colorPrimaryVariant">@color/blue</item>
-    <item name="colorOnPrimary">@color/blue</item>
-    <!-- Secondary brand color. -->
-    <item name="colorOnSecondary">@color/blue</item>
-    <!-- Status bar color. -->
-    <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-    <item name="android:windowLightStatusBar">true</item>
-    <!-- Customize your theme here. -->
-    <item name="android:windowDisablePreview">true</item>
-    <item name="android:windowIsTranslucent">true</item>
-<!--    <item name="android:textSize">@dimen/txt_size_normal</item>-->
-<!--    <item name="android:fontFamily">@font/noto_sans_jp_regular</item>-->
-    <item name="android:windowTranslucentStatus">true</item>
-    <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorOnPrimary">@color/blue</item>
+        <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/blue</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:textSize">@dimen/txt_size_16sp</item>
+        <item name="android:fontFamily">@font/mplusrounded1c_medium</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="Theme.MySocialProject" parent="Base.Theme.MySocialProject" />

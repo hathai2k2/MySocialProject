@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:padding="@dimen/size_10dp"
-    tools:context=".ui.custom_view.AppHeader">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.custom_view.AppBottomNavBar">
 
     <ImageView
         android:id="@+id/iv_left"
@@ -23,54 +21,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ct_friend"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/ivCenter"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bg_rounded_input_field"
-        android:elevation="1dp"
+        android:src="@drawable/ic_camera"
+        app:tint="@color/blue"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.15"
         android:padding="@dimen/size_10dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_right"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/iv_left"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/iv_friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_4dp"
-            android:src="@drawable/ic_group"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_group_friend"
-            android:textSize="@dimen/txt_size_16sp"
-            android:layout_marginStart="@dimen/size_10dp"
-            android:layout_marginEnd="@dimen/size_10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_friend"
-            app:layout_constraintStart_toEndOf="@+id/iv_friend"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_friend" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/txt_size_24sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_left"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_left"
-        tools:text="Header" />
-
+         />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/txt_size_24sp"
+        android:padding="@dimen/size_10dp"
+        android:visibility="invisible"
+        android:background="@drawable/bg_rounded_input_field"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_left"
+        tools:text="Home" />
     <ImageView
         android:id="@+id/iv_right"
         android:layout_width="0dp"
@@ -84,6 +64,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ct_friend"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

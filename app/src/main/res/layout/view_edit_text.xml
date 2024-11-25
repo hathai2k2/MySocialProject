@@ -13,6 +13,9 @@
             android:layout_height="match_parent"
             android:textAlignment="textStart"
             tools:text="label"
+            android:fontFamily="@font/mplusrounded1c_bold"
+            android:textSize="@dimen/txt_size_16sp"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
