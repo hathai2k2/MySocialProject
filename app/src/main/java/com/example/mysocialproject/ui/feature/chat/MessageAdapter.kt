@@ -1,18 +1,16 @@
 package com.example.mysocialproject.ui.feature.chat
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ItemMessageReceivedBinding
 import com.example.mysocialproject.databinding.ItemMessageSentBinding
 import com.example.mysocialproject.model.room.MessageEntity
 
 class MessageAdapter(
     private val messages: List<MessageEntity>,
-    private val currentUserId: String
+    private val currentUserId: String,
+    private val typeWallPagerChat: WallPagerChat
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -42,22 +40,23 @@ class MessageAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = messages[position]
         if (holder is SentMessageViewHolder) {
-            holder.bind(message)
+            holder.bind(message,typeWallPagerChat)
         } else if (holder is ReceivedMessageViewHolder) {
-            holder.bind(message)
+            holder.bind(message,typeWallPagerChat)
         }
     }
 
     override fun getItemCount(): Int = messages.size
 
     inner class SentMessageViewHolder(private val itemBinding: ItemMessageSentBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(message: MessageEntity) {
+        fun bind(message: MessageEntity, typeWallPagerChat: WallPagerChat) {
             itemBinding.tvMessageContent.text = message.content
+
         }
     }
 
     inner class ReceivedMessageViewHolder(private val itemBinding: ItemMessageReceivedBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(message: MessageEntity) {
+        fun bind(message: MessageEntity, typeWallPagerChat: WallPagerChat) {
             itemBinding.tvMessageContent.text = message.content
         }
     }

@@ -11,3 +11,4 @@ data class MessageEntity(
     val content: String,
     val timestamp: Long
 )
+ 
