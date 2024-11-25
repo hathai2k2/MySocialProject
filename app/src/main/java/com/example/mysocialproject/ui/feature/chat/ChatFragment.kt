@@ -44,7 +44,7 @@ class ChatFragment : BaseFragmentWithViewModel<FragmentChatBinding, ChatViewMode
 
         mViewModel.listUser.observe(viewLifecycleOwner){user->
             chatAdapter = ChatAdapter(user, onCLick = {
-                val directions = ChatFragmentDirections.actionGlobalMessageFragment(WallPagerChat.EK)
+                val directions = ChatFragmentDirections.actionGlobalMessageFragment(WallPagerChat.NOTHING)
                 findNavController().navigate(directions)
             })
             mViewBinding.rcvUser.adapter = chatAdapter

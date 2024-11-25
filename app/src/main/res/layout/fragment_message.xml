@@ -19,7 +19,7 @@
             android:alpha="0.8"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@color/green_fire"
+            android:src="@color/gray_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             app:headerIvLeft="@drawable/ic_arrow_left"
             app:headerTitle="Chat"
+            app:headerIvRight="@drawable/ic_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,10 +60,9 @@
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintWidth_percent="0.1"
-            android:src="@drawable/ic_group"
+            android:src="@drawable/ic_heart"
             android:layout_marginEnd="@dimen/size_10dp"
             android:layout_margin="@dimen/size_10dp"
-            app:edtDrawableRight="@drawable/ic_send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/appEditText" />

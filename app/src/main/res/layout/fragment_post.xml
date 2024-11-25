@@ -18,12 +18,23 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            tools:itemCount="1"
-            tools:listitem="@layout/item_post_adapter"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/appBottomNavBar2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appHeader3" />
+            app:layout_constraintTop_toBottomOf="@+id/appHeader3"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_post" />
+
+        <com.example.mysocialproject.ui.custom_view.AppBottomNavBar
+            android:id="@+id/appBottomNavBar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:BottomNavBarIvLeft="@drawable/ic_camera"
+            app:BottomNavBarIvRight="@drawable/ic_notification"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

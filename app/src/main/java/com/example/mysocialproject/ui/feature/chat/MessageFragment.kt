@@ -67,10 +67,11 @@ class MessageFragment : BaseFragmentWithViewModel<FragmentMessageBinding,Message
     private fun onChangeWallPager(typeWallPager: WallPagerChat) {
         // Lấy ảnh gốc
         var idImage =  when(typeWallPager){
-            WallPagerChat.NOTHING -> R.color.white
+            WallPagerChat.NOTHING -> R.drawable.viktor_mobie
             WallPagerChat.PW ->R.drawable.power
             WallPagerChat.EK -> R.drawable.ekko_wallpager
             WallPagerChat.EKPW -> R.drawable.ekko_power
+            WallPagerChat.VK -> R.drawable.viktor
         }
         if (typeWallPager != WallPagerChat.NOTHING){
             val originalBitmap = BitmapFactory.decodeResource(resources,idImage )
@@ -103,5 +104,6 @@ enum class WallPagerChat(index:Int){
     NOTHING(0),
     PW(1),
     EK(2),
-    EKPW(3)
+    EKPW(3),
+    VK(4)
 }

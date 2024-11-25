@@ -1,5 +1,6 @@
 package com.example.mysocialproject.ui.custom_view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -136,6 +137,7 @@ class AppEditText @JvmOverloads constructor(
         mViewBinding.editText.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     fun setRightDrawableClick(onClick: (DrawableClickListener.DrawablePosition) -> Unit) {
         val padding = 20 // Khoảng padding 20 pixels
         mViewBinding.editText.setOnTouchListener { v, event ->

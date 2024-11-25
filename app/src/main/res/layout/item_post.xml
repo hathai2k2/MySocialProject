@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="@dimen/padding_4dp"
-    android:padding="@dimen/padding_10dp"
+    android:elevation="@dimen/size_4dp"
+    android:padding="@dimen/size_10dp"
     tools:context=".ui.feature.post.PostAdapter">
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/eath"
+        android:src="@drawable/ekko_power"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,10 +51,10 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_10dp"
+        android:layout_margin="@dimen/size_10dp"
         android:background="@drawable/bg_post"
         android:maxLength="36"
-        android:padding="@dimen/padding_10dp"
+        android:padding="@dimen/size_10dp"
         android:text="A have good day"
         android:textAlignment="center"
         android:textColor="#99F5F5F5"

@@ -15,6 +15,6 @@ class PostAdapter : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.item_post_adapter, container, false)
+        return inflater.inflate(R.layout.item_post, container, false)
     }
 }
