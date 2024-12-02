@@ -18,7 +18,7 @@
         <item name="android:fontFamily">@font/mplusrounded1c_medium</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+<!--        <item name="android:forceblackAllowed" tools:targetApi="q">false</item>-->
     </style>
 
     <style name="Theme.MySocialProject" parent="Base.Theme.MySocialProject" />

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.feature.home.CameraFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_group_layout"
+            app:layout_constraintDimensionRatio="H,1:1.2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_camera">
+
+                <!-- Camera Grid Layout -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/grid_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="@id/viewFinder"
+                    app:layout_constraintEnd_toEndOf="@id/viewFinder"
+                    app:layout_constraintStart_toStartOf="@id/viewFinder"
+                    app:layout_constraintTop_toTopOf="@id/viewFinder">
+
+                    <!-- Guidelines for 3x3 grid -->
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_vertical_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="144dp" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_vertical_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.667" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_horizontal_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.333" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_horizontal_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.667" />
+
+                    <!-- Grid cells -->
+                    <View
+                        android:id="@+id/cell_1_1"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="1dp"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/guideline_vertical_1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/cell_1_2"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="1dp"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/guideline_vertical_2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/cell_2_1"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_1" />
+
+                    <View
+                        android:id="@+id/cell_2_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Camera preview and focus circle -->
+                <androidx.camera.view.PreviewView
+                    android:id="@+id/viewFinder"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/focusCircle"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/bg_circle_white"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/viewFinder"
+                    app:layout_constraintEnd_toEndOf="@id/viewFinder"
+                    app:layout_constraintStart_toStartOf="@id/viewFinder"
+                    app:layout_constraintTop_toTopOf="@id/viewFinder" />
+
+                <!-- Bottom Controls -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fnc_lauout"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/bg_top_radius_10"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@id/viewFinder"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/buttonFlash"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Flash"
+                        android:src="@drawable/ic_flashoff"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/buttonSwitchCamera"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/buttonSwitchCamera"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Chuyển cam"
+                        android:src="@drawable/ic_flipcam"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/Btnnratio1x"
+                        app:layout_constraintStart_toEndOf="@id/buttonFlash"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/Btnnratio1x"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="#00FFFFFF"
+                        android:contentDescription="Zoom 2x"
+                        android:src="@drawable/ic_zoom"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/btn_exposure"
+                        app:layout_constraintStart_toEndOf="@id/buttonSwitchCamera"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/btn_exposure"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_exposure"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/Btnnratio1x"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <!-- SeekBar for Brightness -->
+                <SeekBar
+                    android:id="@+id/brightnessSb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="5"
+                    android:min="-5"
+                    android:progressTint="#C1C1C0"
+                    android:thumbTint="@color/blue"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewFinder" />
+
+                <!-- Captured Image and EditText -->
+                <ImageView
+                    android:id="@+id/imageViewCaptured"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toTopOf="@+id/edt1"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edt1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@null"
+                    android:fontFamily="@font/mplusrounded1c_bold"
+                    android:gravity="start"
+                    android:hint="Nhập gì đó..."
+                    android:imeOptions="actionDone"
+                    android:maxLength="300"
+                    android:padding="2dp"
+                    android:singleLine="true"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewCaptured" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Button Group Layout -->
+       <include
+           android:id="@+id/btn_group_layout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           layout="@layout/view_btn_group"
+           app:iconResId="@{@drawable/ic_upload}"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/card"/>
+
+        <!-- Centerline Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_centerline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

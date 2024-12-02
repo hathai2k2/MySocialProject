@@ -6,35 +6,208 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.example.mysocialproject.ui.custom_view.AppHeader
-            android:id="@+id/appHeader3"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/emptyListPost"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="EMPTY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/postsContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/appBottomNavBar2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appHeader3"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_post" />
+            android:layout_height="match_parent">
 
-        <com.example.mysocialproject.ui.custom_view.AppBottomNavBar
-            android:id="@+id/appBottomNavBar2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:BottomNavBarIvLeft="@drawable/ic_camera"
-            app:BottomNavBarIvRight="@drawable/ic_notification"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/scrollview_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appHeader3"
+                app:shimmer_duration="600"
+                app:shimmer_repeat_mode="restart">
 
+                <include layout="@layout/item_post_record_shimmer" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <com.example.mysocialproject.ui.custom_view.AppHeader
+                android:id="@+id/appHeader3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/scrollview_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appHeader3">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/scrollview_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/appHeader3"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_post_record" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/scrollview_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toTopOf="@+id/appBottomNavBar2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/btn_group_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/fakeedittext"
+                        android:layout_width="260dp"
+                        android:layout_height="46dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_rounded_input_field"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:text="Gửi câu trả lời..."
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/gray_light" />
+
+
+                    <ImageButton
+                        android:id="@+id/btn_heart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
+                        android:elevation="10dp"
+                        android:padding="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_heart" />
+
+                    <ImageButton
+                        android:id="@+id/btn_haha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
+                        android:elevation="10dp"
+                        android:padding="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_haha" />
+
+                    <ImageButton
+                        android:id="@+id/btn_sad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
+                        android:elevation="10dp"
+                        android:padding="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_sad" />
+
+                    <ImageButton
+                        android:id="@+id/btn_angry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:elevation="10dp"
+                        android:padding="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_angry" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <com.example.mysocialproject.ui.custom_view.AppBottomNavBar
+                android:id="@+id/appBottomNavBar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:BottomNavBarIvLeft="@drawable/ic_export"
+                app:BottomNavBarIvRight="@drawable/ic_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/realedittextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#70000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.example.mysocialproject.ui.custom_view.AppEditText
+                    android:id="@+id/edt_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/size_10dp"
+                    app:edtHint="Nhập câu trả lời...."
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_send"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_send"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_10dp"
+                    android:background="@drawable/bg_shape"
+                    android:backgroundTint="@color/blue"
+                    android:padding="@dimen/size_10dp"
+                    android:text="Gửi"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/edt_comment"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintTop_toTopOf="@+id/edt_comment" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>

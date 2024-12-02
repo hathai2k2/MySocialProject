@@ -30,8 +30,8 @@
             android:textSize="16sp"
             android:padding="16dp"
             android:background="@drawable/bg_rounded_input_field"
-
             android:textColor="@color/black"
+            android:fontFamily="@font/mplusrounded1c_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_label"

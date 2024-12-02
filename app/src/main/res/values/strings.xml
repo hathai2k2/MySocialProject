@@ -13,4 +13,15 @@
     <string name="txt_nav_login">Bạn đã có tài khoản rồi? Đăng nhập</string>
     <string name="txt_splash">SNAP MOMENT</string>
     <string name="txt_group_friend">tất cả bạn bè</string>
+    <string name="txt_record">Ghi âm</string>
+    <string name="txt_request_record">Yêu cầu cấp quyền thu âm, vào cài đặt ứng dụng để cấp quyền!</string>
+    <string name="title_friend">Bạn bè của bạn</string>
+    <string name="title_find_friend">Tìm kiếm bạn bè từ ứng dụng khác</string>
+    <string name="title_add_friend">Lời mời kết bạn</string>
+    <string name="title_number_friend">Bạn bè</string>
+    <string name="header_title_signup_profile">Nhập thông tin</string>
+    <string name="title_select_image">Chọn ảnh đại diện</string>
+    <string name="label_input_name">Nhập tên của bạn:</string>
+    <string name="label_continues">Tiếp tục</string>
+    <string name="label_input_email">Nhập địa chỉ email:</string>
 </resources>

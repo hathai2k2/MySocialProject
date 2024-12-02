@@ -8,6 +8,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.example.mysocialproject.R
 
 
 fun View.onSingleClick(onSingleClickListener: View.OnClickListener) {
@@ -38,18 +40,25 @@ fun Resources.dpToPx(dip: Float): Float {
         this.displayMetrics
     )
 }
-//
-//fun transformationMethodPassword(ivEye: ImageView, edtPass: EditText) {
-//    ivEye.setOnClickListener {
-//        val currentTrans = edtPass.transformationMethod
-//        if (currentTrans is PasswordTransformationMethod) {
-//            ivEye.setImageResource(R.drawable.ic_eye)
-//            edtPass.transformationMethod = null
-//            edtPass.setSelection(edtPass.length())
-//        } else {
-//            ivEye.setImageResource(R.drawable.ic_eye_close)
-//            edtPass.transformationMethod = PasswordTransformationMethod()
-//            edtPass.setSelection(edtPass.length())
-//        }
-//    }
-//}
+
+fun transformationMethodPassword(ivEye: ImageView, edtPass: EditText) {
+    ivEye.setOnClickListener {
+        val currentTrans = edtPass.transformationMethod
+        if (currentTrans is PasswordTransformationMethod) {
+            ivEye.setImageResource(R.drawable.ic_eye)
+            edtPass.transformationMethod = null
+            edtPass.setSelection(edtPass.length())
+        } else {
+            ivEye.setImageResource(R.drawable.ic_eye_close)
+            edtPass.transformationMethod = PasswordTransformationMethod()
+            edtPass.setSelection(edtPass.length())
+        }
+    }
+}
+fun ImageView.loadImage(url: String?, placeholder: Int = R.drawable.ic_user, error: Int = R.drawable.ic_user) {
+    Glide.with(this)
+        .load(url)
+        .placeholder(placeholder) // Ảnh hiển thị trong khi tải
+        .error(error) // Ảnh hiển thị khi tải thất bại
+        .into(this)
+}

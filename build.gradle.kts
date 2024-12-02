@@ -14,7 +14,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
     dependencies {
         val nav_version = "2.7.7"
@@ -23,4 +22,5 @@ buildscript {
         //classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.4'
 
     }
+
 }

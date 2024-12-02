@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentChatBinding
+import com.example.mysocialproject.extension.onSingleClick
 import com.example.mysocialproject.ui.base.BaseFragment
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,10 +45,15 @@ class ChatFragment : BaseFragmentWithViewModel<FragmentChatBinding, ChatViewMode
 
         mViewModel.listUser.observe(viewLifecycleOwner){user->
             chatAdapter = ChatAdapter(user, onCLick = {
-                val directions = ChatFragmentDirections.actionGlobalMessageFragment(WallPagerChat.NOTHING)
+                val directions = ChatFragmentDirections.actionGlobalMessageFragment(WallPagerChat.EK)
                 findNavController().navigate(directions)
             })
             mViewBinding.rcvUser.adapter = chatAdapter
+        }
+        mViewBinding.ctBot.onSingleClick{
+            val directions = ChatFragmentDirections.actionGlobalMessageFragment(WallPagerChat.NOTHING)
+            findNavController().navigate(directions)
+
         }
     }
 

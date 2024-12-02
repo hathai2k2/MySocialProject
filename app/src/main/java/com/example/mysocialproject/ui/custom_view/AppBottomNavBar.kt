@@ -59,4 +59,9 @@ class AppBottomNavBar @JvmOverloads constructor(
     fun onClickLeftIcon(onClick: () -> Unit){
         mViewBinding.ivLeft.setOnClickListener { onClick() }
     }
+
+    fun onClickCenterIcon(onClick: () -> Unit){
+        mViewBinding.ivCenter.setOnClickListener { onClick() }
+
+    }
 }

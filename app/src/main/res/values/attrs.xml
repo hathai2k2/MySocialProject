@@ -26,6 +26,8 @@
         <attr name="btnPaddingHorizontal" format="dimension"/>
         <attr name="btnTextSize" format="dimension"/>
         <attr name="btnFontFamily" format="reference"/>
+        <attr name="btnIconLeft" format="reference"/>
+        <attr name="btnIconRight" format="reference"/>
     </declare-styleable>
     
     <declare-styleable name="AppHeader">

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentSignInBinding
 import com.example.mysocialproject.ui.base.BaseFragment
+import com.example.mysocialproject.ui.custom_view.DrawableClickListener
 
 
 class SignInFragment : BaseFragment<FragmentSignInBinding>() {
@@ -25,6 +26,11 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>() {
         mViewBinding.tvSignUp.setOnClickListener {
             var action = SignInFragmentDirections.actionSignInFragmentToSignUpFragment2()
             findNavController().navigate(action)
+        }
+        mViewBinding.edtPassword.setRightDrawableClick { position ->
+            if (position == DrawableClickListener.DrawablePosition.RIGHT) {
+                mViewBinding.edtPassword.togglePasswordVisibility()
+            }
         }
 
     }

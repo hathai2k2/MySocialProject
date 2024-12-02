@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.text.method.TransformationMethod
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -15,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ViewEditTextBinding
@@ -29,7 +32,8 @@ class AppEditText @JvmOverloads constructor(
     private val layoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val mViewBinding = ViewEditTextBinding.inflate(layoutInflater, this, true)
-
+    // Biến cờ để theo dõi trạng thái mật khẩu (ẩn hay hiện)
+    private var isPasswordVisible = false
     init {
         val o = context.obtainStyledAttributes(attrs, R.styleable.AppEditText, 0, 0)
         try {
@@ -93,6 +97,20 @@ class AppEditText @JvmOverloads constructor(
 
     }
 
+    // Hàm để chuyển đổi giữa mật khẩu ẩn và hiện
+    fun togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            // Ẩn mật khẩu
+            setTransformationMethod(PasswordTransformationMethod.getInstance())
+            setRightDrawable(ContextCompat.getDrawable(context, R.drawable.ic_eye_close)!!)
+            isPasswordVisible = false
+        } else {
+            // Hiện mật khẩu
+            setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+            setRightDrawable(ContextCompat.getDrawable(context, R.drawable.ic_eye)!!)
+            isPasswordVisible = true
+        }
+    }
 
     fun setLabel(label: String) {
         mViewBinding.tvLabel.text = label
@@ -171,7 +189,6 @@ class AppEditText @JvmOverloads constructor(
                         width + padding,
                         height + padding
                     )
-
                     if (bounds.contains(actionX, actionY)) {
                         onClick(DrawableClickListener.DrawablePosition.RIGHT)
                         return@setOnTouchListener true

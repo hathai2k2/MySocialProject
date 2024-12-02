@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/iv_avatar"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/size_10dp"
+        android:layout_margin="@dimen/size_10dp"
         android:background="@drawable/bg_rounded_input_field"
         android:src="@drawable/ic_account_circle"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/tv_name"
         app:layout_constraintHorizontal_bias="0.5"
@@ -28,8 +29,7 @@
         android:layout_marginStart="@dimen/size_10dp"
         android:textAlignment="textStart"
         android:textSize="@dimen/txt_size_16sp"
-
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="yuasoddd" />
 
@@ -57,10 +57,11 @@
 
 
     <View
+        android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/gray_light"
         android:layout_marginTop="@dimen/size_6dp"
+        android:background="@color/gray_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_message" />

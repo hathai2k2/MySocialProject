@@ -67,7 +67,7 @@ class MessageFragment : BaseFragmentWithViewModel<FragmentMessageBinding,Message
     private fun onChangeWallPager(typeWallPager: WallPagerChat) {
         // Lấy ảnh gốc
         var idImage =  when(typeWallPager){
-            WallPagerChat.NOTHING -> R.drawable.viktor_mobie
+            WallPagerChat.NOTHING -> R.color.white
             WallPagerChat.PW ->R.drawable.power
             WallPagerChat.EK -> R.drawable.ekko_wallpager
             WallPagerChat.EKPW -> R.drawable.ekko_power

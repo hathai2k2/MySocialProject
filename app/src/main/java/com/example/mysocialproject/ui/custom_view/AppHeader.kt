@@ -59,4 +59,8 @@ class AppHeader @JvmOverloads constructor(
     fun onClickLeftIcon(onClick: () -> Unit){
         mViewBinding.ivLeft.setOnClickListener { onClick() }
     }
+    fun onClickCenter(onClick: () -> Unit){
+        mViewBinding.ctFriend.setOnClickListener { onClick() }
+    }
+
 }

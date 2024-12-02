@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="iconResId"
+            type="android.graphics.drawable.Drawable"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btn_left"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_gray_radius_10"
+            android:backgroundTint="@color/color_red"
+            android:src="@drawable/ic_close"
+            android:elevation="1dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_post"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.13" />
+
+        <ImageButton
+            android:id="@+id/buttonCapture"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_corner_blue_radius"
+            android:src="@drawable/ic_dot"
+            android:visibility="visible"
+            android:elevation="1dp"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.2" />
+
+        <ImageButton
+            android:id="@+id/btn_post"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_corner_blue_radius"
+            android:backgroundTint="@color/blue"
+            android:padding="@dimen/size_10dp"
+            android:elevation="1dp"
+            android:src="@{iconResId}"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_genativeAI"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_left"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.2" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_genativeAI"
+            app:layout_constraintStart_toEndOf="@+id/btn_left"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_genativeAI"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_gray_radius_10"
+            android:backgroundTint="@color/white"
+            android:elevation="1dp"
+            android:src="@drawable/ic_gemini"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_post"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.13" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

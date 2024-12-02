@@ -1,6 +1,7 @@
 package com.example.mysocialproject.ui.feature.chat
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mysocialproject.databinding.ItemChatBinding
@@ -17,6 +18,9 @@ class ChatAdapter(
             itemBinding.tvName.text = item.username
             itemBinding.root.setOnClickListener {
                 onCLick(item)
+            }
+            if (itemBinding.tvMessage.text.isEmpty()){
+                itemBinding.tvMessage.text="Hãy nhắn gì đó đi nào ^^"
             }
         }
     }

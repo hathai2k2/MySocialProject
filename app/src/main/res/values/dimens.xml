@@ -21,5 +21,8 @@
     <dimen name="txt_size_32sp">32sp</dimen>
     <dimen name="size_26dp">26dp</dimen>
     <dimen name="size_20sp">20sp</dimen>
+    <dimen name="size_24sp">24sp</dimen>
     <dimen name="txt_40sp">40sp</dimen>
+    <dimen name="size_50dp">50dp</dimen>
+    <dimen name="size_30dp">30dp</dimen>
 </resources>

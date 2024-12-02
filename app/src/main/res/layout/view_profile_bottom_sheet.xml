@@ -14,7 +14,7 @@
             android:id="@+id/view"
             android:layout_width="60dp"
             android:layout_height="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/size_20dp"
             android:background="@drawable/bottom_sheet_holder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="@dimen/size_14dp"
-                android:layout_marginBottom="@dimen/size_10dp"
+                android:layout_marginBottom="@dimen/size_6dp"
                 android:src="@drawable/ic_camera"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -92,7 +92,6 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/size_10dp"
             android:src="@drawable/ic_edit"
-            app:tint="@color/blue"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -112,13 +111,140 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_info"
+            android:layout_marginStart="@dimen/size_10dp"
+            android:layout_marginTop="@dimen/size_20dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintWidth_percent="0.1" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="email: abcdes"
-            android:fontFamily="@font/varelaround_regular"
-            android:textSize="@dimen/size_20sp"
+            android:fontFamily="@font/mplusrounded1c_bold"
+            android:text="Tổng quát"
+            android:textSize="@dimen/size_24sp"
+            android:layout_marginStart="@dimen/size_4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ct1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_14dp"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:background="@drawable/bg_gray_radius_10"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" >
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_email"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/varelaround_regular"
+                android:text="Email: abc123@gmail.com"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:textSize="@dimen/txt_size_16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/size_20dp"
+            android:src="@drawable/ic_setting"
+            android:layout_marginStart="@dimen/size_10dp"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            app:layout_constraintTop_toBottomOf="@+id/ct1"
+            app:layout_constraintWidth_percent="0.1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/mplusrounded1c_bold"
+            android:text="Chức năng"
+            android:textSize="@dimen/size_24sp"
+            android:layout_marginStart="@dimen/size_4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv3"
+            app:layout_constraintStart_toEndOf="@+id/iv3"
+            app:layout_constraintTop_toTopOf="@+id/iv3" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ct2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:paddingBottom="@dimen/size_10dp"
+            android:background="@drawable/bg_gray_radius_10"
+            app:layout_constraintTop_toBottomOf="@+id/iv3" >
+
+            <ImageView
+                android:id="@+id/iv4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_14dp"
+                android:layout_marginStart="@dimen/size_14dp"
+                android:src="@drawable/ic_forgot_password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mplusrounded1c_medium"
+                android:text="Đổi mật khẩu"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:textSize="@dimen/txt_size_16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv4"
+                app:layout_constraintStart_toEndOf="@+id/iv4"
+                app:layout_constraintTop_toTopOf="@+id/iv4" />
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:background="@color/color_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv4" />
+            <ImageView
+                android:id="@+id/iv5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_14dp"
+                android:layout_marginStart="@dimen/size_14dp"
+                android:src="@drawable/ic_logout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mplusrounded1c_medium"
+                android:text="Đăng xuất"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:textSize="@dimen/txt_size_16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv5"
+                app:layout_constraintStart_toEndOf="@+id/iv5"
+                app:layout_constraintTop_toTopOf="@+id/iv5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

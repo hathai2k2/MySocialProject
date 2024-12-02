@@ -43,7 +43,8 @@ class AppButton @JvmOverloads constructor(
                 o.getDimensionPixelSize(R.styleable.AppButton_btnPaddingHorizontal, 0)
             val textSize = o.getDimensionPixelSize(R.styleable.AppButton_btnTextSize, 0)
             val btnFontFamilyId = o.getResourceId(R.styleable.AppButton_btnFontFamily,0)
-
+            val btnIcon = o.getDrawable(R.styleable.AppButton_btnIconLeft)
+            val btnIconRight = o.getDrawable(R.styleable.AppButton_btnIconRight)
             if (text != null) {
                 setText(text)
             }
@@ -54,8 +55,6 @@ class AppButton @JvmOverloads constructor(
             }
 
             setTextColor(textColor)
-
-
 
             if (paddingVertical != 0) {
                 setPaddingVertical(paddingVertical)
@@ -70,10 +69,30 @@ class AppButton @JvmOverloads constructor(
             }
 
             setBtnFontFamily(btnFontFamilyId)
+            if (btnIcon != null) {
+                mViewBinding.ivIcon.visibility = View.VISIBLE
+                setButtonIcon(btnIcon)
+            }else{
+                mViewBinding.ivIcon.visibility = View.GONE
+            }
+            if (btnIconRight != null) {
+                mViewBinding.ivIconRight.visibility = View.VISIBLE
+                setButtonIconRight(btnIconRight)
+            }else{
+                mViewBinding.ivIconRight.visibility = View.GONE
+            }
 
         } finally {
             o.recycle()
         }
+    }
+
+    private fun setButtonIconRight(btnIconRight: Drawable) {
+        mViewBinding.ivIconRight.setImageDrawable(btnIconRight)
+    }
+
+    private fun setButtonIcon(btnIcon: Drawable) {
+        mViewBinding.ivIcon.setImageDrawable(btnIcon)
     }
 
     fun setTextColor(textColor: Int) {
@@ -85,10 +104,6 @@ class AppButton @JvmOverloads constructor(
         mViewBinding.tv.typeface = ResourcesCompat.getFont(context,btnFontFamilyId)
 
     }
-
-
-
-
 
     fun setEnableButton(enable: Boolean) {
         mViewBinding.btn.isEnabled = enable

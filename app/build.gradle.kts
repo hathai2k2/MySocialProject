@@ -56,6 +56,17 @@ kapt {
 }
 dependencies {
     implementation("androidx.activity:activity:1.9.0")
+    implementation(libs.androidx.camera.view)
+    implementation(libs.firebase.storage.ktx)
+
+    val camerax_version = "1.3.4"
+    implementation ("androidx.camera:camera-core:${camerax_version}")
+    implementation ("androidx.camera:camera-camera2:${camerax_version}")
+    implementation ("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation ("androidx.camera:camera-video:${camerax_version}")
+
+    implementation ("androidx.camera:camera-view:${camerax_version}")
+    implementation ("androidx.camera:camera-extensions:${camerax_version}")
 //    implementation(libs.firebase.database)
 //    implementation(libs.firebase.auth)
 //    implementation(libs.firebase.storage)
@@ -95,7 +106,9 @@ dependencies {
     annotationProcessor ("androidx.room:room-compiler:$room_version")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.datastore:datastore:1.1.1")
 
+    implementation (libs.audiowave.progressbar)
 
     //Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
@@ -113,6 +126,18 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    implementation ("com.github.bumptech.glide:recyclerview-integration:4.16.0")
+    //paging3
+    implementation ("androidx.paging:paging-runtime-ktx:3.3.0")
+
+    //animartion
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
+    //
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
 
@@ -124,4 +149,13 @@ dependencies {
 
     val multidex_version = "2.0.1"
     implementation("androidx.multidex:multidex:$multidex_version")
+    //gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    //
+    implementation ("com.google.guava:guava:32.1.3-android")
+    //
+    implementation ("org.ocpsoft.prettytime:prettytime:5.0.2.Final")
+    implementation("com.github.marlonlom:timeago:4.0.3")
+
+
 }
