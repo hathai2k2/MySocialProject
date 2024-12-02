@@ -12,12 +12,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -25,13 +22,9 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentPostBinding
-import com.example.mysocialproject.model.Post
+import com.example.mysocialproject.model.PostData
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
-import com.example.mysocialproject.ui.feature.post.PostPagingAdapter.Companion.VIEW_TYPE_IMAGE
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -49,10 +42,10 @@ class PostListFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostView
     private lateinit var imm: InputMethodManager
     private var previousUserId: String? = null
 
-    private val samplePostList = listOf(
-        Post("1", "User 1", "https://example.com/image1.jpg", "Sample content 1"),
-        Post("2", "User 2", "https://example.com/image2.jpg", "Sample content 2"),
-        Post("3", "User 3", "https://example.com/image3.jpg", "Sample content 3")
+    private val samplePostDataLists = listOf(
+        PostData("1", "User 1", "https://example.com/image1.jpg", "Sample content 1"),
+        PostData("2", "User 2", "https://example.com/image2.jpg", "Sample content 2"),
+        PostData("3", "User 3", "https://example.com/image3.jpg", "Sample content 3")
     )
 
     override fun getViewModelClass(): Class<PostViewModel> {

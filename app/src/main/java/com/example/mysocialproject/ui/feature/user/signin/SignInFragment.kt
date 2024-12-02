@@ -33,5 +33,9 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>() {
             }
         }
 
+        mViewBinding.tvNavForgotPassword.setOnClickListener {
+            val directions = SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment()
+            findNavController().navigate(directions)
+        }
     }
 }

@@ -24,4 +24,7 @@
     <string name="label_input_name">Nhập tên của bạn:</string>
     <string name="label_continues">Tiếp tục</string>
     <string name="label_input_email">Nhập địa chỉ email:</string>
+    <string name="label_save">Lưu</string>
+    <string name="label_change_name">Thay đổi tên</string>
+    <string name="label_change_password">Thay đổi mật khẩu</string>
 </resources>

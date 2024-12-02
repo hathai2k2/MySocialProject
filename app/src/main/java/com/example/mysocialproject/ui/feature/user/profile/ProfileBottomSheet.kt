@@ -15,16 +15,22 @@ import com.example.mysocialproject.ui.base.BaseBottomSheetFragment
 
 
 class ProfileBottomSheet(
-    private val onclick: () -> Unit
+    private val onChangeAvatar: () -> Unit,
+    private val onChangeName: () -> Unit,
+    private val onChangePassword: () -> Unit,
+    private val onLogout: () -> Unit,
 ) : BaseBottomSheetFragment<ViewProfileBottomSheetBinding>() {
     override fun getLayoutId()=R.layout.view_profile_bottom_sheet
 
     companion object{
         fun show(
             fragmentManager: FragmentManager,
-            onclick: () -> Unit
+            onChangeAvatar: () -> Unit,
+            onChangeName: () -> Unit,
+            onChangePassword: () -> Unit,
+            onLogout: () -> Unit,
         ){
-            val dialog= ProfileBottomSheet(onclick)
+            val dialog= ProfileBottomSheet(onChangeAvatar, onChangeName, onChangePassword, onLogout)
             dialog.show(fragmentManager, ProfileBottomSheet::class.java.name)
         }
     }
@@ -53,8 +59,18 @@ class ProfileBottomSheet(
         super.onViewCreated(view, savedInstanceState)
         // Set a click listener to trigger image picking
         mViewBinding.imAvatar.setOnClickListener {
-            onclick()
+            onChangeAvatar()
         }
+        mViewBinding.groupChangePassword.setOnClickListener { 
+            onChangePassword()
+        }
+        mViewBinding.ivEdtName.setOnClickListener {
+            onChangeName()
+        }
+        mViewBinding.groupLogOut.setOnClickListener {
+            onLogout()
+        }
+
     }
 
 }

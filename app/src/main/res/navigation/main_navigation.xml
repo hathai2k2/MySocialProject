@@ -31,6 +31,13 @@
             app:exitAnim="@anim/scale_up"
             app:popEnterAnim="@anim/slide_down"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/scale_up"
+            app:popEnterAnim="@anim/scale_down"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -43,6 +50,13 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_down"
             app:popEnterAnim="@anim/scale_up"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signUpFragment_to_signupProfileFragment"
+            app:destination="@id/signupProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/scale_up"
+            app:popEnterAnim="@anim/scale_down"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
@@ -85,4 +99,14 @@
         android:name="com.example.mysocialproject.ui.feature.post.PostFragment"
         android:label="fragment_post"
         tools:layout="@layout/fragment_post" />
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.mysocialproject.ui.feature.user.forgot_password.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" />
+    <fragment
+        android:id="@+id/signupProfileFragment"
+        android:name="com.example.mysocialproject.ui.feature.user.profile.SignupProfileFragment"
+        android:label="fragment_signup_profile"
+        tools:layout="@layout/fragment_signup_profile" />
 </navigation>

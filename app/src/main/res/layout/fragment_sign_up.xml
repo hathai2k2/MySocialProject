@@ -56,7 +56,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
             <com.example.mysocialproject.ui.custom_view.AppButton
-                android:id="@+id/btn_sign_in"
+                android:id="@+id/btn_sign_up"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
@@ -78,9 +78,9 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/mplusrounded1c_bold"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@+id/btn_sign_in"
-                app:layout_constraintStart_toStartOf="@+id/btn_sign_in"
-                app:layout_constraintTop_toBottomOf="@+id/btn_sign_in" />
+                app:layout_constraintEnd_toEndOf="@+id/btn_sign_up"
+                app:layout_constraintStart_toStartOf="@+id/btn_sign_up"
+                app:layout_constraintTop_toBottomOf="@+id/btn_sign_up" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

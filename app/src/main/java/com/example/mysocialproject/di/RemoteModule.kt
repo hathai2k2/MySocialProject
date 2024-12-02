@@ -3,6 +3,10 @@ package com.example.mysocialproject.di
 import android.content.Context
 import androidx.room.Room
 import com.example.mysocialproject.extension.Constant
+import com.example.mysocialproject.networking.AppDataHelper
+import com.example.mysocialproject.networking.AppDataManager
+import com.example.mysocialproject.networking.pref.AppPrefManager
+import com.example.mysocialproject.networking.pref.PrefHelper
 import com.example.mysocialproject.networking.room.AppDatabase
 import com.example.mysocialproject.networking.room.MessageDao
 import com.example.mysocialproject.networking.room.UserDao
@@ -16,6 +20,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
+    @Singleton
+    @Provides
+    fun provideAppDataManager(appDataManager: AppDataManager): AppDataHelper = appDataManager
+
+    @Singleton
+    @Provides
+    fun providePreference(mPref: AppPrefManager): PrefHelper = mPref
 
     @Provides
     @Singleton

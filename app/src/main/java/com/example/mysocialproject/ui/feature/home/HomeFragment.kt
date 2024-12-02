@@ -10,6 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentHomeBinding
 import com.example.mysocialproject.ui.base.BaseFragment
+import com.example.mysocialproject.ui.dialog.DialogUtil
 import com.example.mysocialproject.ui.feature.friend.FriendBottomSheet
 import com.example.mysocialproject.ui.feature.user.profile.ProfileBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +35,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             onClickLeftIcon {
                 ProfileBottomSheet.show(
                     fragmentManager = childFragmentManager,
-                    onclick = {}
+                    onChangeAvatar = {},
+                    onChangeName = {
+                        DialogUtil.showChangeTextDialog(
+                            context = requireContext(),
+                            label = context.getString(R.string.label_change_name),
+                            onConfirm = {name->}
+                        )
+                    },
+                    onChangePassword = {
+                        DialogUtil.showChangeTextDialog(
+                            context = requireContext(),
+                            label = context.getString(R.string.label_change_password),
+                            onConfirm = {password->}
+                        )
+                    },
+                    onLogout = {},
                 )
             }
             onClickCenter {

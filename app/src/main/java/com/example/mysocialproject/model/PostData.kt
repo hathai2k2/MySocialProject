@@ -2,7 +2,7 @@ package com.example.mysocialproject.model
 
 import com.google.firebase.Timestamp
 
-data class Post(
+data class PostData(
     val postId:String="",
     val userId: String="",
     val userName: String?="",

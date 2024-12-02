@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -25,7 +24,7 @@ import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ItemPostImageBinding
 import com.example.mysocialproject.databinding.ItemPostRecordBinding
 
-import com.example.mysocialproject.model.Post
+import com.example.mysocialproject.model.PostData
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,24 +39,24 @@ import java.util.Locale
 
 
 class PostPagingAdapter(
-    private val isCurrentUser: (Post) -> Boolean,
+    private val isCurrentUser: (PostData) -> Boolean,
     private val lifecycleOwner: LifecycleOwner,
     private val context: Context,
     private val activity: FragmentActivity,
     private val onPostViewed: (String) -> Unit
 ) :
-    PagingDataAdapter<Post, RecyclerView.ViewHolder>(POST_COMPARATOR) {
+    PagingDataAdapter<PostData, RecyclerView.ViewHolder>(POST_Data_COMPARATOR) {
 
     companion object {
         const val VIEW_TYPE_IMAGE = 0
         const val VIEW_TYPE_VOICE = 1
 
-        private val POST_COMPARATOR = object : DiffUtil.ItemCallback<Post>() {
-            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+        private val POST_Data_COMPARATOR = object : DiffUtil.ItemCallback<PostData>() {
+            override fun areItemsTheSame(oldItem: PostData, newItem: PostData): Boolean {
                 return oldItem.postId == newItem.postId
             }
 
-            override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+            override fun areContentsTheSame(oldItem: PostData, newItem: PostData): Boolean {
                 return oldItem == newItem
             }
         }
@@ -89,12 +88,12 @@ class PostPagingAdapter(
         private var currentLikesLiveData: LiveData<List<Pair<String, List<String>>>>? = null
 
         fun bind(
-            post: Post, isCurrentUserForPost: Boolean,
+            postData: PostData, isCurrentUserForPost: Boolean,
             lifecycleOwner: LifecycleOwner, context: Context, activity: FragmentActivity
         ) {
-            if (post.userAvatar != null) {
+            if (postData.userAvatar != null) {
                 Glide.with(itemBinding.root.context)
-                    .load(post.userAvatar)
+                    .load(postData.userAvatar)
                     .thumbnail(0.25f)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.ic_user)
@@ -106,13 +105,13 @@ class PostPagingAdapter(
             }
 
             // Tải ảnh bài đăng
-            if (post.imageURL != null) {
+            if (postData.imageURL != null) {
                 Glide.with(itemBinding.root.context)
-                    .load(post.imageURL)
+                    .load(postData.imageURL)
                     .thumbnail(0.5f)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.ic_loading)
-                    .signature(ObjectKey(post.postId))
+                    .signature(ObjectKey(postData.postId))
                     .override(720, 720)
                     .transition(DrawableTransitionOptions.withCrossFade(100))
                     .into(itemBinding.ivPost)
@@ -145,11 +144,11 @@ class PostPagingAdapter(
                 }
 
             } else {
-                itemBinding.tvName.text = post.userName
+                itemBinding.tvName.text = postData.userName
                 itemBinding.tvActivity.visibility = View.GONE
             }
             val prettyTime = PrettyTime(Locale("vi"))
-            val formattedTime = prettyTime.format(post.createdAt!!.toDate())
+            val formattedTime = prettyTime.format(postData.createdAt!!.toDate())
             itemBinding.tvTimer.text = formattedTime.replace("cách đây ", "")
                 .replace("giây", "vừa xong")
 
@@ -175,14 +174,14 @@ class PostPagingAdapter(
 
         private var currentLikesLiveData: LiveData<List<Pair<String, List<String>>>>? = null
         fun bind(
-            post: Post,
+            postData: PostData,
             isCurrentUserForPost: Boolean,
             lifecycleOwner: LifecycleOwner,
             activity: FragmentActivity
         ) {
-            if (post.userAvatar != null) {
+            if (postData.userAvatar != null) {
                 Glide.with(itemBinding.root.context)
-                    .load(post.userAvatar)
+                    .load(postData.userAvatar)
                     .thumbnail(0.25f)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.ic_user)
@@ -193,7 +192,7 @@ class PostPagingAdapter(
                 itemBinding.imgAvtUserPost.setImageResource(R.drawable.ic_user)
             }
 
-            post.voiceURL?.let { url ->
+            postData.voiceURL?.let { url ->
                 downloadAudio(url)
             } ?: run {
                 Log.e("VoiceViewHolder", "Voice URL is null")
@@ -223,11 +222,11 @@ class PostPagingAdapter(
                 }
 
             } else {
-                itemBinding.tvNameUserPost.text = post.userName
+                itemBinding.tvNameUserPost.text = postData.userName
                 itemBinding.tvActivity.visibility = View.GONE
             }
             val prettyTime = PrettyTime(Locale("vi"))
-            val formattedTime = prettyTime.format(post.createdAt!!.toDate())
+            val formattedTime = prettyTime.format(postData.createdAt!!.toDate())
             itemBinding.timeStamp.text = formattedTime.replace(" trước", "").replace("cách đây ", "")
                 .replace("giây", "vừa xong")
 
@@ -405,7 +404,7 @@ class PostPagingAdapter(
         }
     }
 
-    fun getPost(position: Int): Post? {
+    fun getPost(position: Int): PostData? {
         return getItem(position)
     }
 

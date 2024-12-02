@@ -80,14 +80,14 @@
             android:text="Ten nguoi dung"
             android:fontFamily="@font/mplusrounded1c_bold"
             android:textSize="@dimen/txt_size_32sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintEnd_toStartOf="@+id/iv_edt_name"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout1" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/iv_edt_name"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/size_10dp"
@@ -186,21 +186,22 @@
             app:layout_constraintBottom_toBottomOf="@+id/iv3"
             app:layout_constraintStart_toEndOf="@+id/iv3"
             app:layout_constraintTop_toTopOf="@+id/iv3" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ct2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10dp"
-            android:paddingBottom="@dimen/size_10dp"
             android:background="@drawable/bg_gray_radius_10"
-            app:layout_constraintTop_toBottomOf="@+id/iv3" >
+            android:paddingBottom="@dimen/size_10dp"
+            app:layout_constraintTop_toBottomOf="@+id/iv3">
 
             <ImageView
                 android:id="@+id/iv4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_14dp"
                 android:layout_marginStart="@dimen/size_14dp"
+                android:layout_marginTop="@dimen/size_14dp"
                 android:src="@drawable/ic_forgot_password"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -208,13 +209,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_10dp"
                 android:fontFamily="@font/mplusrounded1c_medium"
                 android:text="Đổi mật khẩu"
-                android:layout_marginStart="@dimen/size_10dp"
                 android:textSize="@dimen/txt_size_16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv4"
                 app:layout_constraintStart_toEndOf="@+id/iv4"
                 app:layout_constraintTop_toTopOf="@+id/iv4" />
+
             <View
                 android:id="@+id/view3"
                 android:layout_width="match_parent"
@@ -224,26 +226,48 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv4" />
+
             <ImageView
                 android:id="@+id/iv5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_14dp"
                 android:layout_marginStart="@dimen/size_14dp"
+                android:layout_marginTop="@dimen/size_14dp"
                 android:src="@drawable/ic_logout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view3" />
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_10dp"
                 android:fontFamily="@font/mplusrounded1c_medium"
                 android:text="Đăng xuất"
-                android:layout_marginStart="@dimen/size_10dp"
                 android:textSize="@dimen/txt_size_16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv5"
                 app:layout_constraintStart_toEndOf="@+id/iv5"
                 app:layout_constraintTop_toTopOf="@+id/iv5" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_change_password"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="iv4"
+                app:layout_constraintBottom_toTopOf="@+id/view3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="iv5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/group_change_password" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
