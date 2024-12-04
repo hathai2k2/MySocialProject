@@ -15,7 +15,6 @@ abstract class BaseViewModel<N> : ViewModel() {
     private var _error = MutableLiveData<Throwable>()
     var error: LiveData<Throwable> = _error
 
-
     fun getNavigator() = mNavigator?.get()
 
     fun setNavigator(navigator: N) {

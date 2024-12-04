@@ -22,7 +22,7 @@ import androidx.core.widget.doAfterTextChanged
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ViewEditTextBinding
 
-const val DEFAULT_CHARACTER_PASSWORD = '●'
+
 
 class AppEditText @JvmOverloads constructor(
     context: Context,
@@ -229,6 +229,7 @@ class AppEditText @JvmOverloads constructor(
 
     fun getText() = mViewBinding.editText.text.toString()
     fun clearText() = mViewBinding.editText.text.clear()
+    fun setFocusEdt() = mViewBinding.editText.requestFocus()
 
 
     fun addChangeTextListener(onTextChange: (s: String) -> Unit) {

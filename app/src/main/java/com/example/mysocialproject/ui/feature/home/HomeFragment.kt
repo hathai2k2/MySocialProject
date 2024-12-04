@@ -1,33 +1,59 @@
 package com.example.mysocialproject.ui.feature.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.mysocialproject.BR
+import com.example.mysocialproject.MainViewModel
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentHomeBinding
 import com.example.mysocialproject.ui.base.BaseFragment
+import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.dialog.DialogUtil
 import com.example.mysocialproject.ui.feature.friend.FriendBottomSheet
 import com.example.mysocialproject.ui.feature.user.profile.ProfileBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel>(),HomeNavigation {
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
-
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
     private val CAMERA_PERMISSION_REQUEST_CODE = 1002
     private var currentFragmentPosition = 0
     lateinit var gestureDetector: GestureDetector
+    override fun getViewModelClass(): Class<HomeViewModel> {
+        return HomeViewModel::class.java
+    }
+
+    override fun getBindingVariable(): Int {
+        return BR.viewModel
+    }
+
+    override fun initViewModel(): Lazy<HomeViewModel> {
+        return viewModels()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mViewModel.setNavigator(this)
+        mainViewModel.show()
+        mViewModel.getInfo()
         mViewBinding.header.apply {
+            mViewModel.getUserResult.observe(viewLifecycleOwner){
+                it?.avatarUser?.toUri()?.let { it1 -> setAvatarUri(it1) }
+            }
             onClickRightIcon {
                 val action = HomeFragmentDirections.actionGlobalChatFragment()
                 findNavController().navigate(action)
@@ -35,22 +61,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             onClickLeftIcon {
                 ProfileBottomSheet.show(
                     fragmentManager = childFragmentManager,
-                    onChangeAvatar = {},
+                    onChangeAvatar = {uri->
+                        if (uri != null) {
+                            mViewModel.updateAvatar(uri)
+                            mViewBinding.header.setAvatarUri(uri)
+                        }
+                    },
                     onChangeName = {
                         DialogUtil.showChangeTextDialog(
                             context = requireContext(),
                             label = context.getString(R.string.label_change_name),
-                            onConfirm = {name->}
+                            onConfirm = {name->
+                                mViewModel.updateName(name)
+                                hideKeyboard()
+                            }
                         )
                     },
                     onChangePassword = {
                         DialogUtil.showChangeTextDialog(
                             context = requireContext(),
                             label = context.getString(R.string.label_change_password),
-                            onConfirm = {password->}
+                            onConfirm = {password->
+                                mViewModel.updatePassword(password)
+                            }
                         )
                     },
-                    onLogout = {},
+                    onLogout = {
+                        mViewModel.logout()
+                    },
+                    userData = mViewModel.getUserResult.value
                 )
             }
             onClickCenter {
@@ -93,6 +132,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         mViewBinding.viewPager2.isUserInputEnabled = false
 
         gestureDetector = GestureDetector(requireContext(), GestureListener())
+        mViewBinding.root.setOnTouchListener{v,event->
+            gestureDetector.onTouchEvent(event)
+            true
+        }
     }
 
     private fun openPost() {
@@ -126,6 +169,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onDestroyView() {
         super.onDestroyView()
         mViewBinding.viewPager2.adapter = null
+    }
+
+    override fun onLogOut() {
+        val action = HomeFragmentDirections.actionGlobalSplashFragment()
+        findNavController().navigate(action)
     }
 
 }

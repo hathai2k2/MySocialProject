@@ -3,6 +3,7 @@ package com.example.mysocialproject.ui.dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.WindowManager
 
 object DialogUtil {
     fun showChangeTextDialog(

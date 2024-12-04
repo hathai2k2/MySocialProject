@@ -48,7 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_circle_image_gray"
-                android:padding="40dp"
                 android:src="@drawable/ic_user"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +67,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.example.mysocialproject.ui.custom_view.AppEditText
-            android:id="@+id/appEditText2"
+            android:id="@+id/edt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/size_10dp"
@@ -79,6 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/ct_avatar" />
 
         <com.example.mysocialproject.ui.custom_view.AppButton
+            android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:btnText="@string/label_continues"

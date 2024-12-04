@@ -5,23 +5,45 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentSignInBinding
 import com.example.mysocialproject.ui.base.BaseFragment
+import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.custom_view.DrawableClickListener
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class SignInFragment : BaseFragment<FragmentSignInBinding>() {
+@AndroidEntryPoint
+class SignInFragment : BaseFragmentWithViewModel<FragmentSignInBinding,SignInViewModel>(),SignInNavigation {
     override fun getLayoutId(): Int {
         return R.layout.fragment_sign_in
     }
 
+    override fun getViewModelClass(): Class<SignInViewModel> {
+        return SignInViewModel::class.java
+    }
+
+    override fun getBindingVariable(): Int {
+       return BR.viewModel
+    }
+
+    override fun initViewModel(): Lazy<SignInViewModel> {
+        return viewModels<SignInViewModel>()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mViewModel.setNavigator(this)
         mViewBinding.btnSignIn.setButtonClickListener {
-            var action = SignInFragmentDirections.actionGlobalHomeFragment()
-            findNavController().navigate(action)
+            hideKeyboard()
+            if (mViewBinding.edtEmail.getText().isNotEmpty() || mViewBinding.edtPassword.getText().isNotEmpty()) {
+                mViewModel.signIn(
+                    email = mViewBinding.edtEmail.getText(),
+                    password = mViewBinding.edtPassword.getText()
+                )
+            }
         }
         mViewBinding.tvSignUp.setOnClickListener {
             var action = SignInFragmentDirections.actionSignInFragmentToSignUpFragment2()
@@ -37,5 +59,10 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>() {
             val directions = SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment()
             findNavController().navigate(directions)
         }
+    }
+
+    override fun onSuccess() {
+        val action = SignInFragmentDirections.actionGlobalHomeFragment()
+        findNavController().navigate(action)
     }
 }

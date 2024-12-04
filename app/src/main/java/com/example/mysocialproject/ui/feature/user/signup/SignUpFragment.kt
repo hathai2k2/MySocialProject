@@ -12,6 +12,7 @@ import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentSignUpBinding
 import com.example.mysocialproject.ui.base.BaseFragment
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
+import com.example.mysocialproject.ui.custom_view.DrawableClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +31,7 @@ class SignUpFragment : BaseFragmentWithViewModel<FragmentSignUpBinding,SignUpVie
         super.onViewCreated(view, savedInstanceState)
         mViewModel.setNavigator(this)
         mViewBinding.btnSignUp.setButtonClickListener {
+            hideKeyboard()
             if (mViewBinding.edtEmail.getText().isNotEmpty() || mViewBinding.edtPassword.getText().isNotEmpty()) {
                 mViewModel.signUp(
                     email = mViewBinding.edtEmail.getText(),
@@ -41,7 +43,11 @@ class SignUpFragment : BaseFragmentWithViewModel<FragmentSignUpBinding,SignUpVie
             var action = SignUpFragmentDirections.actionSignUpFragmentToSignInFragment()
             findNavController().navigate(action)
         }
-
+        mViewBinding.edtPassword.setRightDrawableClick { position ->
+            if (position == DrawableClickListener.DrawablePosition.RIGHT) {
+                mViewBinding.edtPassword.togglePasswordVisibility()
+            }
+        }
     }
 
     override fun onSuccess() {

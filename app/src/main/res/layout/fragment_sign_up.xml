@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:edtLabel="Mật khẩu"
+                app:edtDrawableRight="@drawable/ic_eye"
                 app:edtLabelTextColor="@color/blue"
                 app:edtLabelTextSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"

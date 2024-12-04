@@ -67,7 +67,7 @@ class PostListFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        setupRecyclerView()
+        setupRecyclerView()
 
 //
 //

@@ -1,4 +1,4 @@
-package com.example.mysocialproject.ui.feature.user.signup
+package com.example.mysocialproject.ui.feature.user.signin
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -10,26 +10,28 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val appDataHelper: AppDataHelper,
-):BaseViewModel<SignUpNavigation>() {
-
-    fun signUp(email: String, password: String){
+): BaseViewModel<SignInNavigation>(){
+    fun signIn(email: String, password: String){
         viewModelScope.launch {
             try {
-                val result = appDataHelper.signUp(email, password)
+               var result = appDataHelper.signIn(email, password)
                 if (result.isSuccess){
+                    Log.d("SignInViewModel", "Sign in successful")
                     getNavigator()?.onSuccess()
+                }else{
+                    Log.e("SignInViewModel", "Sign in failed: ${result.exceptionOrNull()?.message}")
                 }
             }catch (e:Exception){
-                Log.e("SignUpViewModel", "Error signing up", e)
+                Log.e("SignInViewModel", "Error signing in", e)
             }
-
-
         }
+
     }
+
 }
 
-interface SignUpNavigation{
+interface SignInNavigation{
     fun onSuccess()
 }

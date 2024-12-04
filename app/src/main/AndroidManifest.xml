@@ -42,7 +42,8 @@
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:configChanges="uiMode|orientation|screenSize">
+            android:configChanges="uiMode|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +53,7 @@
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.yourapp.fileprovider"
+            android:authorities="com.example.mysocialproject.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

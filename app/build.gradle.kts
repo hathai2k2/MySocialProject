@@ -58,6 +58,7 @@ dependencies {
     implementation("androidx.activity:activity:1.9.0")
     implementation(libs.androidx.camera.view)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.analytics)
 
     val camerax_version = "1.3.4"
     implementation ("androidx.camera:camera-core:${camerax_version}")
@@ -118,12 +119,13 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-//    implementation("com.google.firebase:firebase-messaging")
-//    implementation("com.google.firebase:firebase-analytics")
-//    implementation ("com.google.firebase:firebase-config")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-config")
     implementation("com.google.firebase:firebase-auth")
-//    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-dynamic-links")
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")

@@ -109,4 +109,5 @@
         android:name="com.example.mysocialproject.ui.feature.user.profile.SignupProfileFragment"
         android:label="fragment_signup_profile"
         tools:layout="@layout/fragment_signup_profile" />
+    <action android:id="@+id/action_global_splashFragment" app:destination="@id/splashFragment" app:popUpToInclusive="true"/><action android:id="@+id/action_global_signupProfileFragment" app:destination="@id/signupProfileFragment"/>
 </navigation>

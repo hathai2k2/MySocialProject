@@ -1,6 +1,7 @@
 package com.example.mysocialproject.ui.custom_view
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.AttributeSet
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.bumptech.glide.Glide
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ViewEditTextBinding
 import com.example.mysocialproject.databinding.ViewHeaderBinding
@@ -63,4 +65,13 @@ class AppHeader @JvmOverloads constructor(
         mViewBinding.ctFriend.setOnClickListener { onClick() }
     }
 
+    fun setAvatarUri(uri:Uri){
+        Glide.with(context)
+            .load(uri)
+            .centerCrop()
+            .circleCrop()
+            .placeholder(R.drawable.bg_gray_radius_10)
+            .error(R.drawable.ic_account_circle)
+            .into(mViewBinding.ivLeft)
+    }
 }

@@ -30,4 +30,6 @@ abstract class BaseFragmentWithViewModel<T : ViewDataBinding, V : BaseViewModel<
             }
         }
     }
+
+
 }

@@ -9,4 +9,6 @@
     <external-files-path
         name="external_files"
         path="." />
+    <!-- Đường dẫn đến bộ nhớ trong (ví dụ: lưu ảnh vào thư mục app) -->
+    <files-path name="internal_files" path="." />
 </paths>

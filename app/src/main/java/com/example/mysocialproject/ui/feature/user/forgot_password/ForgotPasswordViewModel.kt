@@ -1,4 +1,4 @@
-package com.example.mysocialproject.ui.feature.user.signup
+package com.example.mysocialproject.ui.feature.user.forgot_password
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -8,28 +8,25 @@ import com.example.mysocialproject.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
+class ForgotPasswordViewModel @Inject constructor(
     private val appDataHelper: AppDataHelper,
-):BaseViewModel<SignUpNavigation>() {
-
-    fun signUp(email: String, password: String){
+):BaseViewModel<ForgotPasswordNavigation>() {
+    fun forgotPassword(email:String) {
         viewModelScope.launch {
             try {
-                val result = appDataHelper.signUp(email, password)
-                if (result.isSuccess){
+                val result = appDataHelper.forgotPassword(email)
+                if (result.isSuccess) {
                     getNavigator()?.onSuccess()
                 }
             }catch (e:Exception){
-                Log.e("SignUpViewModel", "Error signing up", e)
+                Log.e("ForgotPasswordViewModel", "Error forgot password", e)
             }
-
-
         }
     }
 }
 
-interface SignUpNavigation{
+
+interface ForgotPasswordNavigation{
     fun onSuccess()
 }

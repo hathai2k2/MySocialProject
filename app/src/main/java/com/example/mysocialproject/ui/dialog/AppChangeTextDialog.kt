@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.DialogChangeTextBinding
@@ -23,12 +24,16 @@ class AppChangeTextDialog(
         mViewBinding = DialogChangeTextBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
         setCancelable(false)
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        mViewBinding.edtText.setFocusEdt()
         mViewBinding.ivClose.setOnClickListener {
             dismiss()
         }
         mViewBinding.tvLabel.text = label
-        mViewBinding.btnConfirm.setOnClickListener {
-            onConfirm(mViewBinding.edtText.getText())
+        mViewBinding.btnConfirm.setButtonClickListener {
+            mViewBinding.edtText.getText().let {
+                onConfirm(it)
+            }
             dismiss()
         }
     }
