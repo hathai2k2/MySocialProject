@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.RoundedCorner
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,7 +19,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.signature.ObjectKey
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ItemPostImageBinding
@@ -42,7 +45,6 @@ class PostPagingAdapter(
     private val isCurrentUser: (PostData) -> Boolean,
     private val lifecycleOwner: LifecycleOwner,
     private val context: Context,
-    private val activity: FragmentActivity,
     private val onPostViewed: (String) -> Unit
 ) :
     PagingDataAdapter<PostData, RecyclerView.ViewHolder>(POST_Data_COMPARATOR) {
@@ -89,7 +91,7 @@ class PostPagingAdapter(
 
         fun bind(
             postData: PostData, isCurrentUserForPost: Boolean,
-            lifecycleOwner: LifecycleOwner, context: Context, activity: FragmentActivity
+            lifecycleOwner: LifecycleOwner, context: Context
         ) {
             if (postData.userAvatar != null) {
                 Glide.with(itemBinding.root.context)
@@ -97,27 +99,32 @@ class PostPagingAdapter(
                     .thumbnail(0.25f)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.ic_user)
+                    .centerCrop()
+                    .circleCrop()
                     .transition(DrawableTransitionOptions.withCrossFade(100))
-                    .override(100, 100)
-                    .into(itemBinding.ivPost)
+                    .into(itemBinding.imgAvtUserPost)
             } else {
-                itemBinding.ivPost.setImageResource(R.drawable.ic_user)
+                itemBinding.imgAvtUserPost.setImageResource(R.drawable.ic_user)
             }
 
             // Tải ảnh bài đăng
             if (postData.imageURL != null) {
                 Glide.with(itemBinding.root.context)
                     .load(postData.imageURL)
-                    .thumbnail(0.5f)
+                    .centerCrop()
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(150)))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.ic_loading)
                     .signature(ObjectKey(postData.postId))
-                    .override(720, 720)
                     .transition(DrawableTransitionOptions.withCrossFade(100))
                     .into(itemBinding.ivPost)
             } else {
                 itemBinding.ivPost.setImageResource(R.drawable.ic_loading)
-
+            }
+            if (postData.content?.isNotEmpty() == true){
+                itemBinding.tvContent.text = postData.content
+            }else{
+                itemBinding.tvContent.visibility = View.GONE
             }
 
             Log.d("checkiscurrentposst", "isCurrentUserForPost: \${isCurrentUserForPost}")
@@ -152,11 +159,7 @@ class PostPagingAdapter(
             itemBinding.tvTimer.text = formattedTime.replace("cách đây ", "")
                 .replace("giây", "vừa xong")
 
-
-
-//            itemBinding.postxml = post
-
-
+            itemBinding.postxml = postData
         }
 
     }
@@ -177,12 +180,13 @@ class PostPagingAdapter(
             postData: PostData,
             isCurrentUserForPost: Boolean,
             lifecycleOwner: LifecycleOwner,
-            activity: FragmentActivity
         ) {
             if (postData.userAvatar != null) {
                 Glide.with(itemBinding.root.context)
                     .load(postData.userAvatar)
                     .thumbnail(0.25f)
+                    .centerCrop()
+                    .circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.ic_user)
                     .transition(DrawableTransitionOptions.withCrossFade(100))
@@ -230,7 +234,7 @@ class PostPagingAdapter(
             itemBinding.timeStamp.text = formattedTime.replace(" trước", "").replace("cách đây ", "")
                 .replace("giây", "vừa xong")
 
-//            itemBinding.postvoicexml = post
+            itemBinding.postvoicexml = postData
         }
 
         private fun downloadAudio(url: String) {
@@ -253,9 +257,9 @@ class PostPagingAdapter(
                         if (time == 60) {
                             itemBinding.tvTimer.text = "01:00"
                         } else if (time >= 10) {
-                            itemBinding.tvTimer.text = "00:\${time.toString()}"
+                            itemBinding.tvTimer.text = "00:${time.toString()}"
                         } else {
-                            itemBinding.tvTimer.text = "00:0\${time.toString()}"
+                            itemBinding.tvTimer.text = "00:0${time.toString()}"
                         }
                         itemBinding.play.setOnClickListener {
 
@@ -316,23 +320,23 @@ class PostPagingAdapter(
         private fun setupWaveformView() {
             itemBinding.wave.onProgressListener = object : OnProgressListener {
                 override fun onProgressChanged(progress: Float, byUser: Boolean) {
-                    Log.d("TAGY", "Progress set: \$progress, and it's \$byUser that user did this")
+                    Log.d("TAG", "Progress set: \$progress, and it's \$byUser that user did this")
                     if (byUser && isplay) {
                         val seekToPosition = (mediaPlayer!!.duration * progress / 100.0).toInt()
 
-                        Log.d("TAGY", "Seeking to position: \$seekToPosition")
+                        Log.d("TAG", "Seeking to position: \$seekToPosition")
                         mediaPlayer?.seekTo(seekToPosition)
                     }
                 }
 
                 override fun onStartTracking(progress: Float) {
-                    Log.d("TAGY", "Started tracking from \$progress")
+                    Log.d("TAG", "Started tracking from \$progress")
                 }
 
                 override fun onStopTracking(progress: Float) {
                     if (isplay) {
                         val seekToPosition = (mediaPlayer!!.duration * progress / 100.0).toInt()
-                        Log.d("TAGY", "Seeking to position: \$seekToPosition")
+                        Log.d("TAG", "Seeking to position: \$seekToPosition")
                         mediaPlayer?.seekTo(seekToPosition)
                     }
                 }
@@ -359,18 +363,15 @@ class PostPagingAdapter(
             Log.d("checkiscurrentposst", "in position: \${position}")
             val isCurrentUserForPost = isCurrentUser(post)
             when (holder) {
-
                 is ImageViewHolder -> holder.bind(
                     post,
                     isCurrentUserForPost,
                     lifecycleOwner,
                     context,
-                    activity
                 )
 
                 is VoiceViewHolder -> holder.bind(
                     post, isCurrentUserForPost, lifecycleOwner,
-                    activity
                 )
             }
             onPostViewed(post.postId)

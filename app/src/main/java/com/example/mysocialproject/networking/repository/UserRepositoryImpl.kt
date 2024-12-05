@@ -81,6 +81,10 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getCurrentId(): String {
+        return auth.currentUser?.uid ?: ""
+    }
+
     // Hàm kiểm tra avatarUser và nameUser có rỗng không
     override suspend fun checkIfUserFieldsEmpty(userId: String): Boolean {
         return try {

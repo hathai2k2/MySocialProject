@@ -29,9 +29,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentRecordBinding
+import com.example.mysocialproject.model.PostResult
 import com.example.mysocialproject.ui.base.BaseFragment
+import com.example.mysocialproject.ui.feature.post.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import rm.com.audiowave.OnProgressListener
 import java.io.File
@@ -43,6 +47,7 @@ private const val TAG = "RecordFragment"
 
 @AndroidEntryPoint
 class RecordFragment : BaseFragment<FragmentRecordBinding>() {
+    private val postViewModel: PostViewModel by viewModels()
     override fun getLayoutId(): Int {
         return R.layout.fragment_record
     }
@@ -103,18 +108,18 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
 
         setupWaveformView()
 
-//        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
-//            when (result) {
-//                is PostRepository.PostResult.Success -> {
-//                    resetVoiceRecording()
-//                }
-//
-//                else -> {
-//                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            }
-//        }
+        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is PostResult.Success -> {
+                    resetVoiceRecording()
+                }
+
+                else -> {
+                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
         mViewBinding.btnGroupLayout.btnLeft.setOnClickListener {
             resetVoiceRecording()
         }
@@ -544,7 +549,30 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
                 File(fileName)
             )
 
-//            postViewModel.addPost(fileUri, binding.edt1.text.toString(), false)
+        postViewModel.addPost(fileUri, mViewBinding.edt1.text.toString(), false)
+            postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is PostResult.Success -> {
+                        // Nếu thành công, điều hướng đến PostFragment
+                        val direction = HomeFragmentDirections.actionHomeFragmentToPostFragment()
+                        findNavController().navigate(direction)
+
+                        // Khôi phục giao diện
+                        mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
+                    }
+
+                    is PostResult.Failure -> {
+                        // Nếu thất bại, hiển thị thông báo lỗi
+                        Toast.makeText(context, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
+
+                        // Khôi phục giao diện
+                        mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
+                        mViewBinding.btnGroupLayout.btnPost.isEnabled = true
+                        mViewBinding.btnGroupLayout.btnLeft.visibility = View.VISIBLE
+                        mViewBinding.btnGroupLayout.btnPost.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
         mViewBinding.btnGroupLayout.btnPost.setOnLongClickListener {
             val vibrator = requireContext().getSystemService(Vibrator::class.java)

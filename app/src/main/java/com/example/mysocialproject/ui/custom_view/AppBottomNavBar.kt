@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ViewBottomNavBarBinding
 import com.example.mysocialproject.databinding.ViewHeaderBinding
+import com.example.mysocialproject.extension.onSingleClick
 
 
 class AppBottomNavBar @JvmOverloads constructor(
@@ -54,14 +55,17 @@ class AppBottomNavBar @JvmOverloads constructor(
         }
     }
     fun onClickRightIcon(onClick:()->Unit){
-        mViewBinding.ivRight.setOnClickListener { onClick() }
+        mViewBinding.ivRight.onSingleClick { onClick() }
     }
     fun onClickLeftIcon(onClick: () -> Unit){
-        mViewBinding.ivLeft.setOnClickListener { onClick() }
+        mViewBinding.ivLeft.onSingleClick { onClick() }
     }
 
     fun onClickCenterIcon(onClick: () -> Unit){
-        mViewBinding.ivCenter.setOnClickListener { onClick() }
+        mViewBinding.ivCenter.onSingleClick { onClick() }
+    }
+    fun onTitleClick(onClick: () -> Unit){
+        mViewBinding.tvTitle.onSingleClick { onClick() }
 
     }
 }

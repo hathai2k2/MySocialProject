@@ -1,10 +1,13 @@
 package com.example.mysocialproject.ui.feature.home
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,10 +18,12 @@ import com.example.mysocialproject.BR
 import com.example.mysocialproject.MainViewModel
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentHomeBinding
+import com.example.mysocialproject.model.PostResult
 import com.example.mysocialproject.ui.base.BaseFragment
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.dialog.DialogUtil
 import com.example.mysocialproject.ui.feature.friend.FriendBottomSheet
+import com.example.mysocialproject.ui.feature.post.PostViewModel
 import com.example.mysocialproject.ui.feature.user.profile.ProfileBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +32,7 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
+    private val postViewModel: PostViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
     private val CAMERA_PERMISSION_REQUEST_CODE = 1002
@@ -126,7 +132,7 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
                 }
             }
             onClickCenterIcon {
-//                openPost()
+                openPost()
             }
         }
         mViewBinding.viewPager2.isUserInputEnabled = false
@@ -135,6 +141,17 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
         mViewBinding.root.setOnTouchListener{v,event->
             gestureDetector.onTouchEvent(event)
             true
+        }
+
+        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is PostResult.Success -> {
+                    openPost()
+                }
+                else-> {
+                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -174,6 +191,10 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
     override fun onLogOut() {
         val action = HomeFragmentDirections.actionGlobalSplashFragment()
         findNavController().navigate(action)
+    }
+
+    override fun onOpenPost() {
+
     }
 
 }

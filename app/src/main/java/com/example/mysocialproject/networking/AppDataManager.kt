@@ -1,12 +1,16 @@
 package com.example.mysocialproject.networking
 
 import android.net.Uri
+import androidx.paging.PagingData
+import com.example.mysocialproject.model.PostData
+import com.example.mysocialproject.model.PostResult
 import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.networking.pref.PrefHelper
 import com.example.mysocialproject.networking.repository.FriendRepository
 import com.example.mysocialproject.networking.repository.MessageRepository
 import com.example.mysocialproject.networking.repository.PostRepository
 import com.example.mysocialproject.networking.repository.UserRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AppDataManager @Inject constructor(
@@ -71,6 +75,22 @@ class AppDataManager @Inject constructor(
 
     override suspend fun showData(userId: String): String {
         return userRepo.showData(userId)
+    }
+
+    override fun getCurrentId(): String {
+        return userRepo.getCurrentId()
+    }
+
+    override suspend fun addPost(contentUri: Uri, content: String, isImage: Boolean): PostResult {
+        return postRepo.addPost(contentUri, content, isImage)
+    }
+
+    override fun getPosts(): Flow<PagingData<PostData>> {
+        return postRepo.getPosts()
+    }
+
+    override suspend fun updateViewedBy(postId: String): Boolean {
+        return postRepo.updateViewedBy(postId)
     }
 
 }

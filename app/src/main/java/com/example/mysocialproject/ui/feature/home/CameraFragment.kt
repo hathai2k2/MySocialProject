@@ -36,9 +36,15 @@ import androidx.camera.extensions.ExtensionMode
 import androidx.camera.extensions.ExtensionsManager
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentCameraBinding
+import com.example.mysocialproject.model.PostResult
 import com.example.mysocialproject.ui.base.BaseFragment
+import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
+import com.example.mysocialproject.ui.feature.post.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.UUID
@@ -46,14 +52,28 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @AndroidEntryPoint
-class CameraFragment : BaseFragment<FragmentCameraBinding>() {
+class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewModel>(),HomeNavigation {
+    private val postViewModel: PostViewModel by viewModels()
     override fun getLayoutId(): Int {
         return R.layout.fragment_camera
+    }
+
+    override fun getViewModelClass(): Class<HomeViewModel> {
+        return HomeViewModel::class.java
+    }
+
+    override fun getBindingVariable(): Int {
+        return BR.viewModel
+    }
+
+    override fun initViewModel(): Lazy<HomeViewModel> {
+        return viewModels()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mViewModel.setNavigator(this)
         if (allPermissionsGranted()) {
             startCamera()
 
@@ -313,9 +333,39 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
                         mViewBinding.btnGroupLayout.progressBar.visibility = View.VISIBLE
                         val content = mViewBinding.edt1.text.toString()
 
+                        postViewModel.addPost(savedUri, content, true)
 
+                        // Quan sát kết quả
+                        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
+                            when (result) {
+                                is PostResult.Success -> {
+                                    // Thành công, điều hướng đến PostFragment
+                                    val direction =
+                                        HomeFragmentDirections.actionHomeFragmentToPostFragment()
+                                    findNavController().navigate(direction)
 
-//                        postViewModel.addPost(savedUri, content, true)
+                                    // Khôi phục giao diện
+                                    mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
+                                }
+
+                                is PostResult.Failure -> {
+                                    // Thất bại, hiển thị thông báo lỗi
+                                    Toast.makeText(
+                                        context,
+                                        "Error: ${result.error}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    // Khôi phục giao diện
+                                    mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
+                                    mViewBinding.btnGroupLayout.btnPost.isEnabled = true
+                                    mViewBinding.btnGroupLayout.btnLeft.visibility = View.VISIBLE
+                                    mViewBinding.btnGroupLayout.btnGenativeAI.visibility =
+                                        View.VISIBLE
+                                    mViewBinding.btnGroupLayout.btnPost.visibility = View.VISIBLE
+                                }
+                            }
+                        }
                     }
 
 
@@ -595,6 +645,14 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
         fun getRequiredPermissions(): Array<String> {
             return REQUIRED_PERMISSIONS
         }
+    }
+
+    override fun onLogOut() {
+
+    }
+
+    override fun onOpenPost() {
+
     }
 
 

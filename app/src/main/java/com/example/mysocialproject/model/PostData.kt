@@ -14,3 +14,8 @@ data class PostData(
     val hiddenForUsers: List<String> = emptyList(),
     val viewedBy: List<String> = emptyList()
 )
+
+sealed class PostResult {
+    data class Success(val postId: String) : PostResult()
+    data class Failure(val error: String) : PostResult()
+}

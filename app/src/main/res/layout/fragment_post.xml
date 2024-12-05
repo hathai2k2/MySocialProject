@@ -6,16 +6,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <com.example.mysocialproject.ui.custom_view.AppHeader
+            android:id="@+id/appHeader3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headerIvLeft="@drawable/ic_account_circle"
+            app:headerIvRight="@drawable/ic_chat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/emptyListPost"
             android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/appHeader3"
+            app:layout_constraintBottom_toTopOf="@+id/appBottomNavBar2">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="EMPTY"
+                android:text="@string/label_no_post"
+                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -24,41 +35,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/postsContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/scrollview_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appHeader3"
-                app:shimmer_duration="600"
-                app:shimmer_repeat_mode="restart">
-
-                <include layout="@layout/item_post_record_shimmer" />
-
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-            <com.example.mysocialproject.ui.custom_view.AppHeader
-                android:id="@+id/appHeader3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/scrollview_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appHeader3">
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/appHeader3"
+            app:layout_constraintBottom_toTopOf="@+id/appBottomNavBar2">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_post"
@@ -67,10 +46,10 @@
                     app:layout_constraintBottom_toTopOf="@+id/scrollview_btn"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/appHeader3"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="1"
-                    tools:listitem="@layout/item_post_record" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    tools:listitem="@layout/item_post_image" />
+
 
             <HorizontalScrollView
                 android:id="@+id/scrollview_btn"
@@ -79,7 +58,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginBottom="20dp"
                 android:background="@android:color/transparent"
-                app:layout_constraintBottom_toTopOf="@+id/appBottomNavBar2"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -159,15 +138,7 @@
 
             </HorizontalScrollView>
 
-            <com.example.mysocialproject.ui.custom_view.AppBottomNavBar
-                android:id="@+id/appBottomNavBar2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:BottomNavBarIvLeft="@drawable/ic_export"
-                app:BottomNavBarIvRight="@drawable/ic_delete"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/realedittextLayout"
@@ -190,7 +161,6 @@
                     app:layout_constraintEnd_toStartOf="@+id/tv_send"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
                     android:id="@+id/tv_send"
                     android:layout_width="0dp"
@@ -203,10 +173,19 @@
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/edt_comment"
                     app:layout_constraintEnd_toEndOf="parent"
-
                     app:layout_constraintTop_toTopOf="@+id/edt_comment" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.example.mysocialproject.ui.custom_view.AppBottomNavBar
+            android:id="@+id/appBottomNavBar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:BottomNavBarIvLeft="@drawable/ic_export"
+            app:BottomNavBarIvRight="@drawable/ic_delete"
+            app:BottomNavBarTitle="Đăng bài"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

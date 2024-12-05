@@ -176,4 +176,5 @@ class HomeViewModel @Inject constructor(
 
 interface HomeNavigation {
     fun onLogOut()
+    fun onOpenPost()
 }

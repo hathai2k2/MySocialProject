@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mysocialproject.model.room.MessageEntity
 import com.example.mysocialproject.networking.FakeDataGenerator
 import com.example.mysocialproject.networking.repository.MessageRepository
+import com.example.mysocialproject.networking.repository.MessageRepositoryImpl
 import com.example.mysocialproject.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MessageViewModel @Inject constructor(
-    private val repository: MessageRepository
+    private val repository: MessageRepositoryImpl
 ) : BaseViewModel<Any>() {
     init {
         insertFakeMessages()

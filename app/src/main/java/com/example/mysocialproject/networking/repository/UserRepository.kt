@@ -16,4 +16,5 @@ interface UserRepository {
     suspend fun updatePassword(newPassword: String): Result<Boolean>
     suspend fun checkIfUserFieldsEmpty(userId: String): Boolean
     suspend fun showData(userId: String): String
+    fun getCurrentId(): String
 }

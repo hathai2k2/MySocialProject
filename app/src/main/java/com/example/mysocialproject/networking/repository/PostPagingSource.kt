@@ -10,9 +10,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 
-class PostPagingSource(
+class PostPagingSource @Inject constructor(
     private val fireStore: FirebaseFirestore,
     private val auth: FirebaseAuth
 ) : PagingSource<QuerySnapshot, PostData>() {
