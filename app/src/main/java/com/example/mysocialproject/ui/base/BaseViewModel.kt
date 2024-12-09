@@ -1,5 +1,6 @@
 package com.example.mysocialproject.ui.base
 
+import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,5 +45,6 @@ abstract class BaseViewModel<N> : ViewModel() {
     ) {
 
     }
+
 
 }

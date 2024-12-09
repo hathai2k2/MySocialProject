@@ -1,6 +1,7 @@
 package com.example.mysocialproject.ui.feature.splash
 
 import androidx.lifecycle.viewModelScope
+import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.networking.AppDataHelper
 import com.example.mysocialproject.networking.repository.UserRepositoryImpl
 import com.example.mysocialproject.ui.base.BaseViewModel
@@ -14,24 +15,29 @@ class SplashViewModel @Inject constructor(
     fun checkLogin(){
         viewModelScope.launch {
            val isLogin = appDataHelper.isUserLoggedIn()
-            val userId = appDataHelper.getUserId()
+            val uid = appDataHelper.getUserId()
+            val userData = appDataHelper.getInfoUser()
             val isEmptyFields = appDataHelper.getUserId()
                 ?.let { appDataHelper.checkIfUserFieldsEmpty(it) }
             if (isLogin){
                 if (isEmptyFields == true){
                     getNavigator()?.openSignupProfile()
                 }else{
-                    getNavigator()?.openHome()
+                    if (uid != null) {
+                        userData.getOrNull()?.let { getNavigator()?.openHome(uid, it) }
+                    }
                 }
             }else{
                 getNavigator()?.openLogin()
             }
         }
     }
+
+
 }
 
 interface SplashNavigation{
-    fun openHome()
+    fun openHome(uid:String,userData: UserData)
     fun openLogin()
     fun openSignupProfile()
 }

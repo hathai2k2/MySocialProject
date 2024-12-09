@@ -17,7 +17,7 @@ class AppPrefManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) : PrefHelper {
     private val data: Flow<Preferences> get() = context.dataStore.data
-    private val userIdKey : Preferences.Key<String> = stringPreferencesKey("user_id")
+    private val userIdKey : Preferences.Key<String> = stringPreferencesKey("user_id2")
 
     //flow
     private val userIdFlow: Flow<String?> = data.map {
@@ -36,5 +36,11 @@ class AppPrefManager @Inject constructor(
 
     override suspend fun getUserId(): String? {
         return userIdFlow.firstOrNull()
+    }
+
+    override suspend fun clearApp() {
+        context.dataStore.edit {
+            it.clear()
+        }
     }
 }

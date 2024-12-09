@@ -1,42 +1,53 @@
 package com.example.mysocialproject.ui.feature.home
 
 import android.annotation.SuppressLint
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.mysocialproject.BR
 import com.example.mysocialproject.MainViewModel
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentHomeBinding
 import com.example.mysocialproject.model.PostResult
-import com.example.mysocialproject.ui.base.BaseFragment
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.dialog.DialogUtil
 import com.example.mysocialproject.ui.feature.friend.FriendBottomSheet
+import com.example.mysocialproject.ui.feature.friend.FriendViewModel
 import com.example.mysocialproject.ui.feature.post.PostViewModel
 import com.example.mysocialproject.ui.feature.user.profile.ProfileBottomSheet
+import com.example.mysocialproject.ui.feature.user.profile.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel>(),HomeNavigation {
+class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding, HomeViewModel>(),
+    HomeNavigation {
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
+
+    private val TAG = HomeFragment::class.java.name
     private val postViewModel: PostViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
+    private val friendViewModel: FriendViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+    private val args: HomeFragmentArgs by navArgs()
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
     private val CAMERA_PERMISSION_REQUEST_CODE = 1002
     private var currentFragmentPosition = 0
+    private var backPressedOnce = false
     lateinit var gestureDetector: GestureDetector
     override fun getViewModelClass(): Class<HomeViewModel> {
         return HomeViewModel::class.java
@@ -47,63 +58,75 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
     }
 
     override fun initViewModel(): Lazy<HomeViewModel> {
-        return viewModels()
+        return viewModels<HomeViewModel>()
     }
 
+    override fun onResume() {
+        super.onResume()
+        profileViewModel.getInfo()
+    }
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel.setNavigator(this)
-        mainViewModel.show()
-        mViewModel.getInfo()
+        mainViewModel.logUserData()
+        profileViewModel.getInfo()
         mViewBinding.header.apply {
-            mViewModel.getUserResult.observe(viewLifecycleOwner){
+
+            profileViewModel.getUserResult.observe(viewLifecycleOwner) {
                 it?.avatarUser?.toUri()?.let { it1 -> setAvatarUri(it1) }
-            }
-            onClickRightIcon {
-                val action = HomeFragmentDirections.actionGlobalChatFragment()
-                findNavController().navigate(action)
-            }
-            onClickLeftIcon {
-                ProfileBottomSheet.show(
-                    fragmentManager = childFragmentManager,
-                    onChangeAvatar = {uri->
-                        if (uri != null) {
-                            mViewModel.updateAvatar(uri)
-                            mViewBinding.header.setAvatarUri(uri)
+                onClickRightIcon {
+
+                }
+                onClickLeftIcon {
+                    if (it != null) {
+                        ProfileBottomSheet.show(
+                            fragmentManager = childFragmentManager,
+                            onChangeAvatar = { uri ->
+                                if (uri != null) {
+                                    profileViewModel.updateAvatar(uri)
+                                    mViewBinding.header.setAvatarUri(uri)
+                                }
+                            },
+                            onChangeName = {
+                                DialogUtil.showChangeTextDialog(
+                                    context = requireContext(),
+                                    label = context.getString(R.string.label_change_name),
+                                    onConfirm = { name ->
+                                        profileViewModel.updateName(name)
+                                        hideKeyboard()
+                                    }
+                                )
+                            },
+                            onChangePassword = {
+                                DialogUtil.showChangeTextDialog(
+                                    context = requireContext(),
+                                    label = context.getString(R.string.label_change_password),
+                                    onConfirm = { password ->
+                                        profileViewModel.updatePassword(password)
+                                    }
+                                )
+                            },
+                            onLogout = {
+                                mViewModel.logout()
+                            },
+                            userData = it
+                        )
+                    }
+                }
+                onClickCenter {
+                    friendViewModel.resetDynamicLink()
+                    FriendBottomSheet.show(
+                        fragmentManager = childFragmentManager,
+                        friendViewModel = friendViewModel,
+                        onOpenShareLink = {
+                            friendViewModel.createDynamicLink()
                         }
-                    },
-                    onChangeName = {
-                        DialogUtil.showChangeTextDialog(
-                            context = requireContext(),
-                            label = context.getString(R.string.label_change_name),
-                            onConfirm = {name->
-                                mViewModel.updateName(name)
-                                hideKeyboard()
-                            }
-                        )
-                    },
-                    onChangePassword = {
-                        DialogUtil.showChangeTextDialog(
-                            context = requireContext(),
-                            label = context.getString(R.string.label_change_password),
-                            onConfirm = {password->
-                                mViewModel.updatePassword(password)
-                            }
-                        )
-                    },
-                    onLogout = {
-                        mViewModel.logout()
-                    },
-                    userData = mViewModel.getUserResult.value
-                )
+                    )
+                }
             }
-            onClickCenter {
-                FriendBottomSheet.show(
-                    fragmentManager = childFragmentManager,
-                    onOpenShareLink = {}
-                )
-            }
+
+
         }
         mViewBinding.viewPager2.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int {
@@ -138,7 +161,7 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
         mViewBinding.viewPager2.isUserInputEnabled = false
 
         gestureDetector = GestureDetector(requireContext(), GestureListener())
-        mViewBinding.root.setOnTouchListener{v,event->
+        mViewBinding.root.setOnTouchListener { v, event ->
             gestureDetector.onTouchEvent(event)
             true
         }
@@ -148,11 +171,86 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
                 is PostResult.Success -> {
                     openPost()
                 }
-                else-> {
-                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT).show()
+
+                else -> {
+                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
+//        DialogUtil.showAddFriendDialog(
+//            context = requireContext(),
+//            friendViewModel = friendViewModel,
+//            onConfirm = {
+//                // Handle friend request on confirmation
+//                friendViewModel.handleFriendRequest("KyH8KCgh0pgxFiPXvr76xh5Vux03")
+//            }
+//        )
+
+
+        args.curentId.let { uid ->
+
+            Log.d("sss", "uid: $uid")
+
+            // Fetch user information for the current user
+            friendViewModel.getinforUserSendlink(uid)
+
+            // Observe the user information LiveData
+
+            friendViewModel.infoUserSendlink.observe(viewLifecycleOwner) { result ->
+                val userName = result.first
+                val avatar = result.second
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (userName != null && avatar != null) {
+                        // If user info is available, show the dialog
+                        DialogUtil.showAddFriendDialog(
+                            context = requireContext(),
+                            friendViewModel = friendViewModel,
+                            onConfirm = {
+                                // Handle friend request on confirmation
+                                friendViewModel.handleFriendRequest(uid)
+                            }
+                        )
+                        mainViewModel.clearPref() // Clear preferences after showing the dialog
+                    } else {
+                        // If user info is null, log the error and show a toast
+                        Log.d("TAG", "NULL DIALOG")
+//                            mainViewModel.clearPref()
+                        Toast.makeText(
+                            requireContext(),
+                            "Lỗi, vui lòng thử lại sau!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }, 2000)
+
+            }
+
+        }
+        // Add OnBackPressedCallback to handle back press
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (backPressedOnce) {
+                        // Nếu nhấn back lần nữa, thoát ứng dụng
+                        requireActivity().finishAffinity() // Kết thúc Activity và ứng dụng
+                    } else {
+                        // Nếu nhấn lần đầu, hiển thị Toast thông báo
+                        backPressedOnce = true
+                        Toast.makeText(
+                            requireContext(),
+                            "Nhấn lần nữa để thoát",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // Reset lại biến backPressedOnce sau 2 giây
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            backPressedOnce = false
+                        }, 2000)
+                    }
+                }
+            })
     }
 
     private fun openPost() {
@@ -183,6 +281,7 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding,HomeViewModel
         }
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         mViewBinding.viewPager2.adapter = null

@@ -2,6 +2,7 @@ package com.example.mysocialproject.networking.repository
 
 import android.net.Uri
 import android.util.Log
+import com.example.mysocialproject.model.PostData
 import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.model.room.UserEntity
 import com.example.mysocialproject.networking.room.UserDao
@@ -14,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
+import java.net.URLDecoder
 import java.util.UUID
 import javax.inject.Inject
 
@@ -69,7 +71,7 @@ class UserRepositoryImpl @Inject constructor(
         return auth.currentUser?.uid
     }
 
-    override suspend fun showData(userId: String): String {
+    override suspend fun LogData(userId: String): String {
         return try {
             val userDocument = fireStore.collection("users").document(userId).get().await()
             val user = userDocument.toObject(UserData::class.java)
@@ -138,9 +140,12 @@ class UserRepositoryImpl @Inject constructor(
     ///kiem tra dang nhap
     override fun isUserLoggedIn(): Boolean {
         val current = auth.currentUser
-        return current != null && current.uid != "371wt5dQRwMLEAKYt4qfopguSNf1"
+        return current != null && current.uid != "KyH8KCgh0pgxFiPXvr76xh5Vux03"
     }
-
+    override fun isAdmin(): Boolean {
+        val current = auth.currentUser
+        return current != null && current.uid == "KyH8KCgh0pgxFiPXvr76xh5Vux03"
+    }
     //dang xuat
     override fun logout() {
         fireStore.terminate()
@@ -154,14 +159,29 @@ class UserRepositoryImpl @Inject constructor(
             updateAvatarUrlInFirestore(user.uid, downloadUrl)
 
             // Cập nhật ảnh trong các bài viết (nếu cần)
-            // updateUserAvatarInPosts(user.uid, downloadUrl)
+            updateUserAvatarInPosts(user.uid, downloadUrl)
 
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
+    suspend fun updateUserAvatarInPosts(userId: String, newAvatarUrl: String) {
+        try {
+            val postsRef = fireStore.collection("posts")
+            val querySnapshot = postsRef.whereEqualTo("userId", userId).get().await()
+            val batch = fireStore.batch()
 
+            for (document in querySnapshot.documents) {
+                val postRef = postsRef.document(document.id)
+                batch.update(postRef, "userAvatar", newAvatarUrl)
+            }
+
+            batch.commit().await()
+        } catch (e: Exception) {
+            Log.e("TAG", "Error updating user avatar in posts: ${e.message}", e)
+        }
+    }
     private suspend fun uploadAvatarToStorage(imageUri: Uri, userId: String): String {
         val uniqueID = UUID.randomUUID().toString()
         val fileName = "avt_$userId$uniqueID"
@@ -327,4 +347,103 @@ class UserRepositoryImpl @Inject constructor(
         return password.length >= 6  // Kiểm tra điều kiện mật khẩu
     }
 
+
+    override suspend fun deleteAccount():Result<Boolean>  {
+        val user = auth.currentUser
+        val userId = user?.uid
+        return if (user != null && userId != null) {
+
+            try {
+                //xoa tn
+                val messagesSnapshot = fireStore.collection("messages")
+                    .whereEqualTo("senderId", userId)
+                    .get()
+                    .await()
+
+                for (document in messagesSnapshot.documents) {
+                    document.reference.delete().await()
+                }
+                Log.d("UserRepository", "Deleted ${messagesSnapshot.documents.size} messages.")
+                // xoa like
+                val likesSnapshot = fireStore.collection("likes")
+                    .whereEqualTo("userId", userId)
+                    .get()
+                    .await()
+
+                for (document in likesSnapshot.documents) {
+                    document.reference.delete().await()
+                }
+                Log.d("UserRepository", "Deleted ${likesSnapshot.documents.size} likes.")
+                // xoa khoi ban be
+                val friendshipsSnapshot = fireStore.collection("friendships")
+                    .whereEqualTo("uid1", userId)
+                    .get()
+                    .await()
+
+                for (document in friendshipsSnapshot.documents) {
+                    document.reference.delete().await()
+                }
+                Log.d("UserRepository", "Deleted ${friendshipsSnapshot.documents.size} friendships (uid1).")
+                val friendshipsSnapshot2 = fireStore.collection("friendships")
+                    .whereEqualTo("uid2", userId)
+                    .get()
+                    .await()
+
+                for (document in friendshipsSnapshot2.documents) {
+                    document.reference.delete().await()
+                }
+                Log.d("UserRepository", "Deleted ${friendshipsSnapshot2.documents.size} friendships (uid2).")
+
+
+                val storageRef = storage.reference.child(userId)
+                storageRef.child("avatar").listAll().await().items.forEach { it.delete().await() }
+                storageRef.child("post_voice").listAll().await().items.forEach { it.delete().await() }
+                storageRef.child("post_image").listAll().await().items.forEach { it.delete().await() }
+
+                val postsSnapshot = fireStore.collection("posts")
+                    .whereEqualTo("userId", userId)
+                    .get()
+                    .await()
+
+                for (document in postsSnapshot.documents) {
+                    document.reference.delete().await()
+                }
+                Log.d("UserRepository", "Deleted ${postsSnapshot.documents.size} posts.")
+
+
+                // xoa users
+                fireStore.collection("users").document(userId).delete().await()
+
+                user.delete().await()
+
+                fireStore.terminate()
+                Log.d("UserRepository", "User account deleted.")
+                Result.success(true)
+            } catch (e: Exception) {
+                Log.e("UserRepository", "Error deleting user account: ${e.message}", e)
+                Result.failure(e)
+            }
+        } else {
+            Result.failure(Exception("Chưa đăng nhập"))
+        }
+    }
+    override suspend fun deletenewAccount(): Boolean {
+        val user = auth.currentUser
+        return if (user != null) {
+            try {
+                // xoa users
+                val userId = user.uid
+                fireStore.collection("users").document(userId).delete().await()
+
+                user.delete().await()
+                Log.d("UserRepository", "User account deleted.")
+                true
+            } catch (e: Exception) {
+                Log.e("UserRepository", "Error deleting user account", e)
+                false
+            }
+        } else {
+            false
+        }
+    }
 }

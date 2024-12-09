@@ -10,19 +10,21 @@
     <dimen name="size_14dp">14dp</dimen>
     <dimen name="size_16dp">16dp</dimen>
     <dimen name="size_20dp">20dp</dimen>
+    <dimen name="size_26dp">26dp</dimen>
+    <dimen name="size_30dp">30dp</dimen>
+    <dimen name="size_40dp">40dp</dimen>
+    <dimen name="size_50dp">50dp</dimen>
 
 
-<!--    text size-->
+    <!--    text size-->
     <dimen name="txt_size_6sp">6sp</dimen>
     <dimen name="txt_size_8sp">8sp</dimen>
     <dimen name="txt_size_10sp">10sp</dimen>
     <dimen name="txt_size_16sp">16sp</dimen>
     <dimen name="txt_size_24sp">24sp</dimen>
     <dimen name="txt_size_32sp">32sp</dimen>
-    <dimen name="size_26dp">26dp</dimen>
     <dimen name="size_20sp">20sp</dimen>
     <dimen name="size_24sp">24sp</dimen>
     <dimen name="txt_40sp">40sp</dimen>
-    <dimen name="size_50dp">50dp</dimen>
-    <dimen name="size_30dp">30dp</dimen>
+
 </resources>

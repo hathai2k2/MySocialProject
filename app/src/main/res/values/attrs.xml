@@ -28,6 +28,7 @@
         <attr name="btnFontFamily" format="reference"/>
         <attr name="btnIconLeft" format="reference"/>
         <attr name="btnIconRight" format="reference"/>
+        <attr name="btnBgTint" format="color"/>
     </declare-styleable>
     
     <declare-styleable name="AppHeader">

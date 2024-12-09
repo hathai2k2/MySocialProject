@@ -2,15 +2,48 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="blue">#4EADFE</color>
+    <color name="blue">#007AFF</color>
     <color name="color_bg_button">@color/blue</color>
-    <color name="gray_light">#BDD1C5</color>
+    <color name="gray_light">#E5E5EA</color>
     <color name="green_fire">#88976C</color>
-    <color name="txt_gray">#808080</color>
-    <color name="color_gray">#D9D9D9</color>
-    <color name="bg_image_view">#F5F5F8</color>
     <color name="color_red">#F44336</color>
     <color name="color_yellow">#FFEB3B</color>
     <color name="txt_gray_light">#99F5F5F5</color>
     <color name="shimmer">#CDCDCD</color>
+
+
+    <color name="background_color_start">#FBFCFE</color>
+    <color name="background_color_end">#D6E2F8</color>
+    <color name="brand_color">#3C61DD</color>
+    <color name="brand_color_alpha">#993C61DD</color>
+    <color name="primary_txt_color">#FF000000</color>
+    <color name="subtext_color">#717171</color>
+    <color name="background_gray">#F3F3F3</color>
+    <color name="color_tag_1">#93C673</color>
+    <color name="color_tag_2">#4EBFB9</color>
+    <color name="color_tag_3">#CDB0E9</color>
+    <color name="color_tag_4">#FC9086</color>
+    <color name="red">#FF453A</color>
+    <color name="sub_text">#C6C6C6</color>
+    <color name="menu_background">#ffffff</color>
+    <color name="bottom_menu_inactive">#888888</color>
+    <color name="bottom_menu_active">#5BCAFA</color>
+    <color name="color_gray">#F5F5F5</color>
+
+
+    <color name="colorSecondary">#2274F0</color>
+    <color name="outlineTextColor">#C9C9C9</color>
+    <color name="focusTextColor">#ECECEC</color>
+    <color name="backgroundButtonGray">#999999</color>
+    <color name="backgroundButtonDagger">#D71E1E</color>
+    <color name="white_30">#30FFFFFF</color>
+    <color name="txt_gray">#666666</color>
+    <color name="border_light">#E2E2E2</color>
+    <color name="text_gray_color">#333333</color>
+    <color name="success">#1EB840</color>
+    <color name="button_gray">#E2E2E2</color>
+    <color name="bg_search">#F5F5F5</color>
+    <color name="bg_image_view">#F5F5F8</color>
+    <color name="text_field">#FCFCFC</color>
+    <color name="highlight">#F2C94C</color>
 </resources>

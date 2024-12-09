@@ -23,7 +23,7 @@ class AppChangeTextDialog(
         super.onCreate(savedInstanceState)
         mViewBinding = DialogChangeTextBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
-        setCancelable(false)
+
         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
         mViewBinding.edtText.setFocusEdt()
         mViewBinding.ivClose.setOnClickListener {

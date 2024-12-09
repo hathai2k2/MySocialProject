@@ -11,12 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.mysocialproject.BR
 import com.example.mysocialproject.MainViewModel
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentSignupProfileBinding
+import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
@@ -37,7 +36,7 @@ class SignupProfileFragment : BaseFragmentWithViewModel<FragmentSignupProfileBin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel.setNavigator(this)
-        mainViewModel.show()
+        mainViewModel.logUserData()
         resetImageUriIfLoggedOut()
         setupUI()
 
@@ -115,7 +114,7 @@ class SignupProfileFragment : BaseFragmentWithViewModel<FragmentSignupProfileBin
                 .into(mViewBinding.ivImage)
         }
     }
-    override fun onSuccess() {
+    override fun onSuccess(userData: UserData) {
         val directions = SignupProfileFragmentDirections.actionGlobalHomeFragment()
         findNavController().navigate(directions)
     }

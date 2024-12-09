@@ -11,11 +11,14 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.SavedStateViewModelFactory
 import com.bumptech.glide.Glide
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ViewProfileBottomSheetBinding
 import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.ui.base.BaseBottomSheetFragment
+import com.example.mysocialproject.ui.feature.friend.FriendViewModel
 
 
 class ProfileBottomSheet(
@@ -23,9 +26,11 @@ class ProfileBottomSheet(
     private val onChangeName: () -> Unit,
     private val onChangePassword: () -> Unit,
     private val onLogout: () -> Unit,
-    private val userData: UserData?=null
+    private val userData: UserData
 ) : BaseBottomSheetFragment<ViewProfileBottomSheetBinding>() {
     override fun getLayoutId()=R.layout.view_profile_bottom_sheet
+
+    private var avatarUri: Uri? = null
 
     companion object{
         fun show(
@@ -34,13 +39,12 @@ class ProfileBottomSheet(
             onChangeName: () -> Unit,
             onChangePassword: () -> Unit,
             onLogout: () -> Unit,
-            userData:UserData?=null
+            userData: UserData
         ){
             val dialog= ProfileBottomSheet(onChangeAvatar, onChangeName, onChangePassword, onLogout,userData)
             dialog.show(fragmentManager, ProfileBottomSheet::class.java.name)
         }
     }
-    private var avatarUri: Uri? = null
 
 
 
@@ -70,10 +74,11 @@ class ProfileBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+            avatarUri = userData.avatarUser.toUri()
+            Log.d("TAG", "Avatar URI: $avatarUri")
+            mViewBinding.tvName.text = userData.nameUser
+            mViewBinding.tvEmail.text = userData.emailUser
 
-        mViewBinding.tvName.text = userData?.nameUser
-        mViewBinding.tvEmail.text = userData?.emailUser
-        avatarUri = userData?.avatarUser?.toUri()
         if (avatarUri!= null) {
             mViewBinding.ivNoImage.visibility = View.GONE
             mViewBinding.imAvatar.visibility = View.VISIBLE
@@ -82,7 +87,8 @@ class ProfileBottomSheet(
                 .centerCrop()
                 .circleCrop()
                 .placeholder(R.drawable.bg_circle_image_gray)
-                .error(R.drawable.eath)
+                .error(R.drawable.ic_loading)
+                .fallback(R.drawable.ic_loading)
                 .into(mViewBinding.imAvatar)
             Log.d("TAG","avatarUser: $avatarUri")
         } else {

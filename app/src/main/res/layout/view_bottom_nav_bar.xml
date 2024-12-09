@@ -1,67 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    android:padding="@dimen/size_20dp"
     tools:context=".ui.custom_view.AppBottomNavBar">
 
     <ImageView
         android:id="@+id/iv_left"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintDimensionRatio="1:1"
-        android:src="@drawable/ic_account_circle"
         android:padding="@dimen/size_10dp"
+        android:src="@drawable/ic_account_circle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ct_friend"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/ivCenter"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.468" />
 
     <ImageView
         android:id="@+id/ivCenter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bg_rounded_input_field"
-        android:src="@drawable/ic_home"
-        app:tint="@color/blue"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintWidth_percent="0.15"
         android:padding="@dimen/size_10dp"
+        android:src="@drawable/ic_home"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/iv_left"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_right"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_left"
         app:layout_constraintTop_toTopOf="@+id/iv_left"
-         />
+        app:layout_constraintWidth_percent="0.2"
+        app:tint="@color/blue" />
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/txt_size_24sp"
-        android:padding="@dimen/size_10dp"
-        android:visibility="invisible"
         android:background="@drawable/bg_rounded_input_field"
+        android:padding="@dimen/size_10dp"
+        android:textSize="@dimen/txt_size_24sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/iv_left"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_left"
         tools:text="Home" />
+
     <ImageView
         android:id="@+id/iv_right"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintDimensionRatio="1:1"
-        android:src="@drawable/ic_chat"
         android:padding="@dimen/size_10dp"
-
+        android:src="@drawable/ic_chat"
         app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ct_friend"
+        app:layout_constraintStart_toEndOf="@+id/ivCenter"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

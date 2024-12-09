@@ -1,5 +1,6 @@
 package com.example.mysocialproject.ui.base
 
+import android.R
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -32,10 +33,11 @@ abstract class BaseBottomSheetFragment<T : ViewDataBinding> : BottomSheetDialogF
         val dialog = BottomSheetDialog(requireContext(), theme)
         dialog.setOnShowListener { dialogInterface ->
             val d = dialogInterface as BottomSheetDialog
-            val bottomSheet = d.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheet =
+                d.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.let {
                 val behavior = BottomSheetBehavior.from(it)
-                it.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                it.setBackgroundColor(resources.getColor(R.color.transparent))
 
                 val layoutParams = it.layoutParams
                 if (layoutParams != null) {
@@ -70,7 +72,8 @@ abstract class BaseBottomSheetFragment<T : ViewDataBinding> : BottomSheetDialogF
 
     // Hàm kiểm tra bàn phím có đang hiển thị hay không
     private fun isKeyboardVisible(): Boolean {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val inProp = requireActivity().currentFocus
         return inProp != null && imm.isAcceptingText
     }

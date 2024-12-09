@@ -1,14 +1,15 @@
 package com.example.mysocialproject.ui.custom_view
 
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.os.Bundle
+import android.os.Build
 import android.util.AttributeSet
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -29,6 +30,8 @@ class AppButton @JvmOverloads constructor(
     private val mViewBinding = ViewButtonBinding.inflate(layoutInflater, this, true)
     private val defaultBackground = ContextCompat.getDrawable(context, R.drawable.bg_button)
     private val defautTextColor = ContextCompat.getColor(context, R.color.white)
+    private val defautBackgroundTintableBackgroundView =
+        ContextCompat.getColor(context, R.color.colorSecondary)
 
     init {
         val o = context.obtainStyledAttributes(attrs, R.styleable.AppButton, 0, 0)
@@ -42,9 +45,13 @@ class AppButton @JvmOverloads constructor(
             val paddingHorizontal =
                 o.getDimensionPixelSize(R.styleable.AppButton_btnPaddingHorizontal, 0)
             val textSize = o.getDimensionPixelSize(R.styleable.AppButton_btnTextSize, 0)
-            val btnFontFamilyId = o.getResourceId(R.styleable.AppButton_btnFontFamily,0)
+            val btnFontFamilyId = o.getResourceId(R.styleable.AppButton_btnFontFamily, 0)
             val btnIcon = o.getDrawable(R.styleable.AppButton_btnIconLeft)
             val btnIconRight = o.getDrawable(R.styleable.AppButton_btnIconRight)
+            val btnBgTin =
+                o.getColor(R.styleable.AppButton_btnBgTint, defautBackgroundTintableBackgroundView)
+
+
             if (text != null) {
                 setText(text)
             }
@@ -72,18 +79,35 @@ class AppButton @JvmOverloads constructor(
             if (btnIcon != null) {
                 mViewBinding.ivIcon.visibility = View.VISIBLE
                 setButtonIcon(btnIcon)
-            }else{
+            } else {
                 mViewBinding.ivIcon.visibility = View.GONE
             }
             if (btnIconRight != null) {
                 mViewBinding.ivIconRight.visibility = View.VISIBLE
                 setButtonIconRight(btnIconRight)
-            }else{
+            } else {
                 mViewBinding.ivIconRight.visibility = View.GONE
             }
 
+            setBgTin(btnBgTin)
         } finally {
             o.recycle()
+        }
+    }
+
+    fun showProgressBar(isProgressBar: Boolean) {
+        mViewBinding.progressBar.visibility = if (isProgressBar) View.VISIBLE else View.GONE
+    }
+
+    private fun setBgTin(btnBgTin: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            mViewBinding.btn.background.colorFilter =
+                BlendModeColorFilter(btnBgTin, BlendMode.SRC_ATOP)
+        } else {
+            mViewBinding.btn.background.setColorFilter(
+                btnBgTin,
+                PorterDuff.Mode.SRC_ATOP
+            )
         }
     }
 
@@ -101,7 +125,7 @@ class AppButton @JvmOverloads constructor(
 
     private fun setBtnFontFamily(btnFontFamilyId: Int) {
         if (btnFontFamilyId == 0) return
-        mViewBinding.tv.typeface = ResourcesCompat.getFont(context,btnFontFamilyId)
+        mViewBinding.tv.typeface = ResourcesCompat.getFont(context, btnFontFamilyId)
 
     }
 

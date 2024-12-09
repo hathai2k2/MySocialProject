@@ -1,6 +1,7 @@
 package com.example.mysocialproject
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
@@ -11,7 +12,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.example.mysocialproject.networking.AppDataHelper
-import com.example.mysocialproject.networking.repository.UserRepositoryImpl
 import com.example.mysocialproject.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -34,10 +34,10 @@ class MainViewModel @Inject constructor(
 
     private val _imgUri = MutableLiveData<Uri?>()
     val imgUri: LiveData<Uri?> = _imgUri
-    fun show() {
+    fun logUserData() {
         viewModelScope.launch {
             appDataHelper.getUserId()?.let { userId ->
-                val user =   appDataHelper.showData(userId)
+                val user =   appDataHelper.LogData(userId)
                 Log.d("TAG", "show: $user")
             }
         }
@@ -64,7 +64,6 @@ class MainViewModel @Inject constructor(
                 .load(imgUri)
                 .centerCrop()
                 .circleCrop()
-//                .override(300, 300)
                 .placeholder(R.drawable.bg_circle_image_gray)
                 .submit()
                 .get()
@@ -95,5 +94,28 @@ class MainViewModel @Inject constructor(
             null
         }
     }
+    fun handleDynamicLink(intent: Intent) {
+        appDataHelper.handleDynamicLink(intent) { result ->
+            Log.d("LinkVmodel", "handleDynamicLink callback result: $result")
+            result?.let {
+                setCurrentId(it)
+            }
+        }
+    }
+
+    fun setCurrentId(currentId: String) {
+        viewModelScope.launch {
+            appDataHelper.setUserId(currentId)
+        }
+    }
+
+
+    fun clearPref(){
+        viewModelScope.launch {
+            appDataHelper.clearApp()
+        }
+    }
+
+
 }
 

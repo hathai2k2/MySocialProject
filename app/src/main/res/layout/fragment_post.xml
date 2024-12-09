@@ -10,6 +10,7 @@
             android:id="@+id/appHeader3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:headerTitle=""
             app:headerIvLeft="@drawable/ic_account_circle"
             app:headerIvRight="@drawable/ic_chat"
             app:layout_constraintEnd_toEndOf="parent"

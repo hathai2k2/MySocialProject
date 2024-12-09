@@ -30,10 +30,11 @@ class AppHeader @JvmOverloads constructor(
             val ivLeft = o.getDrawable(R.styleable.AppHeader_headerIvLeft)
             val ivRight = o.getDrawable(R.styleable.AppHeader_headerIvRight)
 
-            if (headerTitle ==null){
+            if (headerTitle == null){
                 mViewBinding.ctFriend.visibility = View.VISIBLE
                 mViewBinding.tvTitle.visibility = View.INVISIBLE
-            }else{
+            }
+            else{
                 mViewBinding.ctFriend.visibility = View.INVISIBLE
                 mViewBinding.tvTitle.visibility = View.VISIBLE
                 mViewBinding.tvTitle.text = headerTitle
@@ -66,12 +67,18 @@ class AppHeader @JvmOverloads constructor(
     }
 
     fun setAvatarUri(uri:Uri){
-        Glide.with(context)
-            .load(uri)
-            .centerCrop()
-            .circleCrop()
-            .placeholder(R.drawable.bg_gray_radius_10)
-            .error(R.drawable.ic_account_circle)
-            .into(mViewBinding.ivLeft)
+        if (uri !=null){
+            Glide.with(context)
+                .load(uri)
+                .centerCrop()
+                .circleCrop()
+                .placeholder(R.drawable.bg_gray_radius_10)
+                .error(R.drawable.ic_loading)
+                .into(mViewBinding.ivLeft)
+        }else{
+            mViewBinding.ivLeft.setImageDrawable(context.getDrawable(R.drawable.ic_loading))
+        }
+
     }
 }
+

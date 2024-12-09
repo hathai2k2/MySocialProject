@@ -1,3 +1,5 @@
+import java.util.Properties
+import java.io.FileInputStream
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,6 +7,7 @@ plugins {
     id ("com.google.dagger.hilt.android")
     id ("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.firebase.crashlytics")
     id("kotlin-kapt")
     id("org.jetbrains.kotlin.plugin.serialization")
@@ -13,7 +16,12 @@ plugins {
 android {
     namespace = "com.example.mysocialproject"
     compileSdk = 34
-
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        val inputStream = FileInputStream(localPropertiesFile)
+        localProperties.load(inputStream)
+    }
     defaultConfig {
         applicationId = "com.example.mysocialproject"
         minSdk = 24
@@ -22,6 +30,8 @@ android {
         versionName = "1.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GEMINI_API_KEY", "\"${localProperties.getProperty("apiKey")}\"")
     }
 
     buildTypes {

@@ -39,6 +39,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialproject.BR
+import com.example.mysocialproject.MainViewModel
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentCameraBinding
 import com.example.mysocialproject.model.PostResult
@@ -57,6 +58,7 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
     override fun getLayoutId(): Int {
         return R.layout.fragment_camera
     }
+
 
     override fun getViewModelClass(): Class<HomeViewModel> {
         return HomeViewModel::class.java

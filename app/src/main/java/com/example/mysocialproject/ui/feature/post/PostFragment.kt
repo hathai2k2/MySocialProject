@@ -28,10 +28,13 @@ import com.example.mysocialproject.databinding.FragmentPostBinding
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.dialog.DialogUtil
 import com.example.mysocialproject.ui.feature.friend.FriendBottomSheet
+import com.example.mysocialproject.ui.feature.friend.FriendViewModel
 import com.example.mysocialproject.ui.feature.home.HomeFragmentDirections
+import com.example.mysocialproject.ui.feature.home.HomeNavigation
 import com.example.mysocialproject.ui.feature.home.HomeViewModel
 import com.example.mysocialproject.ui.feature.post.PostPagingAdapter.Companion.VIEW_TYPE_IMAGE
 import com.example.mysocialproject.ui.feature.user.profile.ProfileBottomSheet
+import com.example.mysocialproject.ui.feature.user.profile.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -42,7 +45,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @AndroidEntryPoint
-class PostFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostViewModel>() {
+class PostFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostViewModel>(),HomeNavigation {
 
     private lateinit var postAdapter: PostPagingAdapter
 
@@ -52,6 +55,8 @@ class PostFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostViewMode
     private lateinit var imm: InputMethodManager
     private var previousUserId: String? = null
     private val homeViewModel: HomeViewModel by viewModels()
+    private val profileViewModel : ProfileViewModel by viewModels()
+    private val friendViewModel : FriendViewModel by viewModels()
 
     override fun getViewModelClass(): Class<PostViewModel> {
         return PostViewModel::class.java
@@ -69,65 +74,66 @@ class PostFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostViewMode
         return R.layout.fragment_post
     }
 
+    override fun onResume() {
+        super.onResume()
+        profileViewModel.getInfo()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel.setNavigator(this)
-        homeViewModel.getInfo()
+        profileViewModel.getInfo()
         mViewBinding.appHeader3.apply {
-            homeViewModel.getUserResult.observe(viewLifecycleOwner) {
+            profileViewModel.getUserResult.observe(viewLifecycleOwner) {
                 it?.avatarUser?.toUri()?.let { it1 -> setAvatarUri(it1) }
-            }
-            onClickRightIcon {
-                val action = HomeFragmentDirections.actionGlobalChatFragment()
-                findNavController().navigate(action)
-            }
-            onClickLeftIcon {
-                ProfileBottomSheet.show(
-                    fragmentManager = childFragmentManager,
-                    onChangeAvatar = { uri ->
-                        if (uri != null) {
-                            homeViewModel.updateAvatar(uri)
-                            mViewBinding.appHeader3.setAvatarUri(uri)
-                        }
-                    },
-                    onChangeName = {
-                        DialogUtil.showChangeTextDialog(
-                            context = requireContext(),
-                            label = context.getString(R.string.label_change_name),
-                            onConfirm = { name ->
-                                homeViewModel.updateName(name)
-                                hideKeyboard()
-                            }
+                onClickRightIcon {
+
+                }
+                onClickLeftIcon {
+                    if (it != null) {
+                        ProfileBottomSheet.show(
+                            fragmentManager = childFragmentManager,
+                            onChangeAvatar = { uri ->
+                                if (uri != null) {
+                                    profileViewModel.updateAvatar(uri)
+                                    mViewBinding.appHeader3.setAvatarUri(uri)
+                                }
+                            },
+                            onChangeName = {
+                                DialogUtil.showChangeTextDialog(
+                                    context = requireContext(),
+                                    label = context.getString(R.string.label_change_name),
+                                    onConfirm = { name ->
+                                        profileViewModel.updateName(name)
+                                        hideKeyboard()
+                                    }
+                                )
+                            },
+                            onChangePassword = {
+                                DialogUtil.showChangeTextDialog(
+                                    context = requireContext(),
+                                    label = context.getString(R.string.label_change_password),
+                                    onConfirm = { password ->
+                                        profileViewModel.updatePassword(password)
+                                    }
+                                )
+                            },
+                            onLogout = {
+                                homeViewModel.logout()
+                            },
+                            userData = it
                         )
-                    },
-                    onChangePassword = {
-                        DialogUtil.showChangeTextDialog(
-                            context = requireContext(),
-                            label = context.getString(R.string.label_change_password),
-                            onConfirm = { password ->
-                                homeViewModel.updatePassword(password)
-                            }
-                        )
-                    },
-                    onLogout = {
-                        homeViewModel.logout()
-                        val action = PostFragmentDirections.actionGlobalSplashFragment()
-                        findNavController().navigate(action)
-                    },
-                    userData = homeViewModel.getUserResult.value
-                )
+                    }
+                }
             }
-            onClickCenter {
-                FriendBottomSheet.show(
-                    fragmentManager = childFragmentManager,
-                    onOpenShareLink = {}
-                )
-            }
+
         }
         mViewBinding.appBottomNavBar2.apply {
             onTitleClick {
-                val action = PostFragmentDirections.actionGlobalHomeFragment()
-                findNavController().navigate(action)
+                profileViewModel.getUserResult.observe(viewLifecycleOwner){userData->
+                    val action = userData?.let { PostFragmentDirections.actionGlobalHomeFragment() }
+                    action?.let { findNavController().navigate(it) }
+                }
+
             }
             onClickLeftIcon {
 
@@ -146,14 +152,14 @@ class PostFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostViewMode
         setupRecyclerView()
 
         mViewBinding.appHeader3.onClickRightIcon {
-            val direction = PostFragmentDirections.actionGlobalChatFragment()
-            findNavController().navigate(direction)
+
         }
         lifecycleScope.launch {
             mViewModel.posts.collectLatest { pagingData ->
                 postAdapter.submitData(pagingData)
             }
         }
+
 
         postAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
@@ -375,5 +381,14 @@ class PostFragment : BaseFragmentWithViewModel<FragmentPostBinding, PostViewMode
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         context.startActivity(Intent.createChooser(shareIntent, null))
+    }
+
+    override fun onLogOut() {
+        val action = PostFragmentDirections.actionGlobalSplashFragment()
+        findNavController().navigate(action)
+    }
+
+    override fun onOpenPost() {
+
     }
 }

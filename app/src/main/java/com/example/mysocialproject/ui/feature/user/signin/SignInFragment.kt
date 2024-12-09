@@ -1,16 +1,13 @@
 package com.example.mysocialproject.ui.feature.user.signin
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentSignInBinding
-import com.example.mysocialproject.ui.base.BaseFragment
+import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.custom_view.DrawableClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,8 +58,8 @@ class SignInFragment : BaseFragmentWithViewModel<FragmentSignInBinding,SignInVie
         }
     }
 
-    override fun onSuccess() {
-        val action = SignInFragmentDirections.actionGlobalHomeFragment()
+    override fun onSuccess(userData: UserData) {
+        val action = SignInFragmentDirections.actionGlobalHomeFragment(              )
         findNavController().navigate(action)
     }
 }

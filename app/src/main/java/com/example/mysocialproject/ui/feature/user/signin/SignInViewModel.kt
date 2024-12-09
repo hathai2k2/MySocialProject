@@ -2,8 +2,8 @@ package com.example.mysocialproject.ui.feature.user.signin
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.networking.AppDataHelper
-import com.example.mysocialproject.networking.repository.UserRepositoryImpl
 import com.example.mysocialproject.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +19,9 @@ class SignInViewModel @Inject constructor(
                var result = appDataHelper.signIn(email, password)
                 if (result.isSuccess){
                     Log.d("SignInViewModel", "Sign in successful")
-                    getNavigator()?.onSuccess()
+                   val userData =  appDataHelper.getInfoUser()
+
+                    userData.getOrNull()?.let { getNavigator()?.onSuccess(it) }
                 }else{
                     Log.e("SignInViewModel", "Sign in failed: ${result.exceptionOrNull()?.message}")
                 }
@@ -33,5 +35,5 @@ class SignInViewModel @Inject constructor(
 }
 
 interface SignInNavigation{
-    fun onSuccess()
+    fun onSuccess(userData: UserData)
 }
