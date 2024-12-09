@@ -1,6 +1,7 @@
 package com.example.mysocialproject.ui.feature.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,17 +11,21 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.mysocialproject.BR
+import com.example.mysocialproject.MainActivity
 import com.example.mysocialproject.MainViewModel
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentHomeBinding
+import com.example.mysocialproject.extension.BackPressHandler
 import com.example.mysocialproject.model.PostResult
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.dialog.DialogUtil
@@ -30,6 +35,7 @@ import com.example.mysocialproject.ui.feature.post.PostViewModel
 import com.example.mysocialproject.ui.feature.user.profile.ProfileBottomSheet
 import com.example.mysocialproject.ui.feature.user.profile.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding, HomeViewModel>(),
@@ -69,8 +75,18 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding, HomeViewMode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel.setNavigator(this)
-        mainViewModel.logUserData()
-        profileViewModel.getInfo()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            profileViewModel.getInfo()
+            mainViewModel.logUserData()
+            friendViewModel.getCurrentId()
+        }
+
+        friendViewModel.currentId.observe(viewLifecycleOwner){
+            (requireActivity() as MainActivity).showDialog(it)
+        }
+
+
         mViewBinding.header.apply {
 
             profileViewModel.getUserResult.observe(viewLifecycleOwner) {
@@ -109,6 +125,7 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding, HomeViewMode
                             },
                             onLogout = {
                                 mViewModel.logout()
+
                             },
                             userData = it
                         )
@@ -125,7 +142,8 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding, HomeViewMode
                     )
                 }
             }
-
+            friendViewModel.getFriendship()
+            friendViewModel.getFriendAccepted()
 
         }
         mViewBinding.viewPager2.adapter = object : FragmentStateAdapter(this) {
@@ -178,79 +196,8 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding, HomeViewMode
                 }
             }
         }
-//        DialogUtil.showAddFriendDialog(
-//            context = requireContext(),
-//            friendViewModel = friendViewModel,
-//            onConfirm = {
-//                // Handle friend request on confirmation
-//                friendViewModel.handleFriendRequest("KyH8KCgh0pgxFiPXvr76xh5Vux03")
-//            }
-//        )
-
-
-        args.curentId.let { uid ->
-
-            Log.d("sss", "uid: $uid")
-
-            // Fetch user information for the current user
-            friendViewModel.getinforUserSendlink(uid)
-
-            // Observe the user information LiveData
-
-            friendViewModel.infoUserSendlink.observe(viewLifecycleOwner) { result ->
-                val userName = result.first
-                val avatar = result.second
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if (userName != null && avatar != null) {
-                        // If user info is available, show the dialog
-                        DialogUtil.showAddFriendDialog(
-                            context = requireContext(),
-                            friendViewModel = friendViewModel,
-                            onConfirm = {
-                                // Handle friend request on confirmation
-                                friendViewModel.handleFriendRequest(uid)
-                            }
-                        )
-                        mainViewModel.clearPref() // Clear preferences after showing the dialog
-                    } else {
-                        // If user info is null, log the error and show a toast
-                        Log.d("TAG", "NULL DIALOG")
-//                            mainViewModel.clearPref()
-                        Toast.makeText(
-                            requireContext(),
-                            "Lỗi, vui lòng thử lại sau!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }, 2000)
-
-            }
-
-        }
-        // Add OnBackPressedCallback to handle back press
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (backPressedOnce) {
-                        // Nếu nhấn back lần nữa, thoát ứng dụng
-                        requireActivity().finishAffinity() // Kết thúc Activity và ứng dụng
-                    } else {
-                        // Nếu nhấn lần đầu, hiển thị Toast thông báo
-                        backPressedOnce = true
-                        Toast.makeText(
-                            requireContext(),
-                            "Nhấn lần nữa để thoát",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        // Reset lại biến backPressedOnce sau 2 giây
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            backPressedOnce = false
-                        }, 2000)
-                    }
-                }
-            })
+        // Gọi BackPressHandler để xử lý back press
+        BackPressHandler.handleBackPress(viewLifecycleOwner, requireActivity() as AppCompatActivity)
     }
 
     private fun openPost() {
@@ -288,8 +235,8 @@ class HomeFragment : BaseFragmentWithViewModel<FragmentHomeBinding, HomeViewMode
     }
 
     override fun onLogOut() {
-        val action = HomeFragmentDirections.actionGlobalSplashFragment()
-        findNavController().navigate(action)
+        mainViewModel.clearPref()
+        (requireActivity() as MainActivity).logoutAndReset()
     }
 
     override fun onOpenPost() {

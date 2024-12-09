@@ -73,8 +73,7 @@ class SplashFragment : BaseFragmentWithViewModel<FragmentSplashBinding, SplashVi
         }, 2000)
     }
 
-    override fun openHome(uid:String,userData: UserData) {
-
+    override fun openHome(uid:String) {
         val action = SplashFragmentDirections.actionSplashFragmentToHomeFragment(
             curentId = uid,
         )
@@ -83,12 +82,12 @@ class SplashFragment : BaseFragmentWithViewModel<FragmentSplashBinding, SplashVi
 
     override fun openLogin() {
         val action = SplashFragmentDirections.actionSplashFragmentToSignInFragment()
-        findNavController().navigate(action)
+        findNavController().navigate(action, NavOptions.Builder().setPopUpTo(R.id.splashFragment,true).build())
     }
 
     override fun openSignupProfile() {
         val action = SplashFragmentDirections.actionGlobalSignupProfileFragment()
-        findNavController().navigate(action)
+        findNavController().navigate(action, NavOptions.Builder().setPopUpTo(R.id.splashFragment,true).build())
     }
 
 

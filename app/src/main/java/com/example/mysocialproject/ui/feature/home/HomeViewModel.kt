@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 appDataHelper.logout()
+                appDataHelper.clearApp()
                 getNavigator()?.onLogOut()
             } catch (e: Exception) {
                 Log.d("TAG", "logout: " + e.message)

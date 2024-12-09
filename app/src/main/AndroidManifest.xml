@@ -43,10 +43,8 @@
         tools:replace="android:fullBackupContent"
         tools:targetApi="34">
         <activity
-            android:name=".ui.feature.chat.ChatActivity"
-            android:exported="false"/>
-        <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:configChanges="uiMode|orientation|screenSize"
             android:exported="true"
             android:windowSoftInputMode="stateVisible|adjustResize">

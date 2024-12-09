@@ -2,11 +2,13 @@ package com.example.mysocialproject.ui.feature.user.signin
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentSignInBinding
+import com.example.mysocialproject.extension.BackPressHandler
 import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import com.example.mysocialproject.ui.custom_view.DrawableClickListener
@@ -56,10 +58,13 @@ class SignInFragment : BaseFragmentWithViewModel<FragmentSignInBinding,SignInVie
             val directions = SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment()
             findNavController().navigate(directions)
         }
+
+        // Gọi BackPressHandler để xử lý back press
+        BackPressHandler.handleBackPress(viewLifecycleOwner, requireActivity() as AppCompatActivity)
     }
 
     override fun onSuccess(userData: UserData) {
-        val action = SignInFragmentDirections.actionGlobalHomeFragment(              )
+        val action = SignInFragmentDirections.actionSignInFragmentToHomeFragment()
         findNavController().navigate(action)
     }
 }

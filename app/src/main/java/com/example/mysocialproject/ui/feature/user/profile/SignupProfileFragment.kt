@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import com.example.mysocialproject.BR
 import com.example.mysocialproject.MainViewModel
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentSignupProfileBinding
+import com.example.mysocialproject.extension.BackPressHandler
 import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +41,8 @@ class SignupProfileFragment : BaseFragmentWithViewModel<FragmentSignupProfileBin
         mainViewModel.logUserData()
         resetImageUriIfLoggedOut()
         setupUI()
-
+        // Gọi BackPressHandler để xử lý back press
+        BackPressHandler.handleBackPress(viewLifecycleOwner, requireActivity() as AppCompatActivity)
         // Initialize image picker launcher
         imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {

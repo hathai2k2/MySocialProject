@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val appDataHelper: AppDataHelper,
-) : BaseViewModel<Any>() {
+) : BaseViewModel<MainNavigation>() {
 
     private val _imgUriInitialized = MutableLiveData<Boolean>(false)
     val imgUriInitialized: LiveData<Boolean> = _imgUriInitialized
@@ -37,14 +37,16 @@ class MainViewModel @Inject constructor(
     fun logUserData() {
         viewModelScope.launch {
             appDataHelper.getUserId()?.let { userId ->
-                val user =   appDataHelper.LogData(userId)
+                val user = appDataHelper.LogData(userId)
                 Log.d("TAG", "show: $user")
             }
         }
     }
+
     fun isUserLoggedOut(): Boolean {
         return !appDataHelper.isUserLoggedIn()
     }
+
     // Handle image result and resize it
     fun handleImageResult(context: Context, imgUri: Uri) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -94,11 +96,16 @@ class MainViewModel @Inject constructor(
             null
         }
     }
+
     fun handleDynamicLink(intent: Intent) {
         appDataHelper.handleDynamicLink(intent) { result ->
             Log.d("LinkVmodel", "handleDynamicLink callback result: $result")
             result?.let {
-                setCurrentId(it)
+                if (isLoggedIn()) {
+                    getNavigator()?.setCurrentId(it)
+                } else {
+                    setCurrentId(it)
+                }
             }
         }
     }
@@ -109,8 +116,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun isLoggedIn(): Boolean {
+        return appDataHelper.isUserLoggedIn()
+    }
 
-    fun clearPref(){
+    fun clearPref() {
         viewModelScope.launch {
             appDataHelper.clearApp()
         }
@@ -119,3 +129,6 @@ class MainViewModel @Inject constructor(
 
 }
 
+interface MainNavigation {
+    fun setCurrentId(uid: String)
+}

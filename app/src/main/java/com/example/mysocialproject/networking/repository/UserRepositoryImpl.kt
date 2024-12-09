@@ -23,7 +23,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
     private val auth: FirebaseAuth,
-    private val fireStore: FirebaseFirestore,
+    private var fireStore: FirebaseFirestore,
     private val storage: FirebaseStorage,
 ) : UserRepository {
 
@@ -103,6 +103,7 @@ class UserRepositoryImpl @Inject constructor(
     ////dang nhap
     override suspend fun signIn(email: String, password: String): Result<Boolean> {
         return try {
+            fireStore = FirebaseFirestore.getInstance()
             auth.signInWithEmailAndPassword(email, password).await()
 
             Result.success(true)
@@ -148,7 +149,7 @@ class UserRepositoryImpl @Inject constructor(
     }
     //dang xuat
     override fun logout() {
-        fireStore.terminate()
+//        fireStore.terminate()
         auth.signOut()
     }
 

@@ -38,21 +38,35 @@ class FriendBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-// Get the BottomSheet view
+        // Get the BottomSheet view
         bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
 
         // Add custom callback to BottomSheet
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 // Handle state changes
-                Log.d("BottomSheet", "State changed: $newState")
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        Log.d("FriendBottomSheet", "BottomSheet expanded")
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        Log.d("FriendBottomSheet", "BottomSheet collapsed")
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        Log.d("FriendBottomSheet", "BottomSheet hidden")
+                    }
+                    else -> {}
+                }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // Handle sliding
-                Log.d("BottomSheet", "Sliding offset: $slideOffset")
+                // Handle sliding behavior (optional)
             }
         })
+        setupFriendBottomSheet()
+    }
+
+    private fun setupFriendBottomSheet() {
         // Set up the share link button
         mViewBinding.btnShareLink.setButtonClickListener {
             onOpenShareLink()
@@ -126,19 +140,5 @@ class FriendBottomSheet(
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // Optionally remove the callback if no longer needed
-        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
-    }
 
-    private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
-            // Handle state changes
-        }
-
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            // Handle sliding
-        }
-    }
 }

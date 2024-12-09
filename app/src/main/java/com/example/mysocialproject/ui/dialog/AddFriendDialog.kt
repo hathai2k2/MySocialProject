@@ -44,7 +44,7 @@ class AddFriendDialog(
 
         mViewBinding.btnConfirm.setButtonClickListener {
             onConfirm()
-            dismiss()
+
         }
 
         mViewBinding.btnCancel.setButtonClickListener {
@@ -52,7 +52,7 @@ class AddFriendDialog(
         }
 
 
-//        observeViewModel()
+        observeViewModel()
     }
 
     private fun observeViewModel() {

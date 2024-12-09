@@ -42,5 +42,7 @@ abstract class BaseFragment<V:ViewDataBinding>:Fragment() {
             requireContext().hideKeyboard(focusView)
         }
     }
+    fun onBackPress() {
 
+    }
 }

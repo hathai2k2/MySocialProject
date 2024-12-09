@@ -24,8 +24,9 @@ class SplashViewModel @Inject constructor(
                     getNavigator()?.openSignupProfile()
                 }else{
                     if (uid != null) {
-                        userData.getOrNull()?.let { getNavigator()?.openHome(uid, it) }
+                     getNavigator()?.openHome(uid )
                     }
+
                 }
             }else{
                 getNavigator()?.openLogin()
@@ -37,7 +38,7 @@ class SplashViewModel @Inject constructor(
 }
 
 interface SplashNavigation{
-    fun openHome(uid:String,userData: UserData)
+    fun openHome(uid:String)
     fun openLogin()
     fun openSignupProfile()
 }

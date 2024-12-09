@@ -136,7 +136,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-dynamic-links")
-
+    implementation("com.google.android.gms:play-services-base:18.5.0")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
     implementation ("com.github.bumptech.glide:recyclerview-integration:4.16.0")

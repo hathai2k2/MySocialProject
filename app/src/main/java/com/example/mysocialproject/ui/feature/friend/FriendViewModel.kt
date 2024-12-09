@@ -61,6 +61,7 @@ class FriendViewModel @Inject constructor(
 
     suspend fun getCurrentId() {
         _currentId.value = appDataHelper.getUserId()
+        Log.d("TAG", "getCurrentId pref: ${_currentId.value}")
     }
 
     fun resetDynamicLink() {
@@ -82,6 +83,7 @@ class FriendViewModel @Inject constructor(
     }
 
     fun handleFriendRequest(senderUid: String) {
+        Log.d("requestfriend", "$senderUid")
         _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -90,10 +92,12 @@ class FriendViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         _loading.value = true
                         _friendRequest.value = true
+                        Log.d("requestfriend", "isSuccess")
                     }
                 } else {
                     val exception = result.exceptionOrNull()
                     withContext(Dispatchers.Main) {
+                        Log.e("requestfriend", "isFail")
                         _friendRequest.value = false
                         _loading.value = false
                         _errorMessage.value = exception?.message
@@ -110,13 +114,14 @@ class FriendViewModel @Inject constructor(
         }
     }
 
+    // Lấy danh sách bạn bè
     fun getFriendship() {
         appDataHelper.getFriendships { result ->
             result.onSuccess {
                 _listFriendData.postValue(it)
-                Log.d("friendrequestVmdol", "${_listFriendData.postValue(it)}")
+                Log.d("friendViewModel", "Friendship list updated: $it")
             }.onFailure {
-
+                Log.e("friendViewModel", "Error: ${it.message}")
             }
         }
     }
