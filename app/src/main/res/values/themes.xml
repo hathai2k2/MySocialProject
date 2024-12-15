@@ -4,22 +4,34 @@
         <item name="android:textColorPrimary">@color/black</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/blue</item>
         <!-- Secondary brand color. -->
         <item name="colorOnSecondary">@color/blue</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l" tools:ignore="ObsoleteSdkInt">?attr/colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowIsTranslucent">true</item>
+<!--        <item name="android:windowIsTranslucent">true</item>-->
         <item name="android:textSize">@dimen/txt_size_16sp</item>
         <item name="android:fontFamily">@font/mplusrounded1c_medium</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="android:windowTranslucentStatus">true</item>
-<!--        <item name="android:forceblackAllowed" tools:targetApi="q">false</item>-->
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+
+
     </style>
 
     <style name="Theme.MySocialProject" parent="Base.Theme.MySocialProject" />
+
+    <style name="Theme.MySocialProject.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+        <item name="appWidgetRadius">16dp</item>
+
+        <item name="appWidgetInnerRadius">8dp</item>
+    </style>
+
+    <style name="Theme.MySocialProject.AppWidgetContainer" parent="Theme.MySocialProject.AppWidgetContainerParent">
+
+        <item name="appWidgetPadding">16dp</item>
+    </style>
 </resources>

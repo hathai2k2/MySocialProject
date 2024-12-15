@@ -1,26 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="authVModel"
+            type="com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel" />
+
+        <variable
+            name="frVmodel"
+            type="com.example.mysocialproject.ui.feature.viewmodel.FriendViewmodel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".MainActivity">
-        <fragment
-            android:id="@+id/nav_host_fragment"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/btn_group_layout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_bottom_sheet_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:background="@drawable/edittextbd10dp"
+                android:backgroundTint="@color/colorbtnctive"
+                android:padding="8dp"
+                app:tint="@color/black"
+                android:src="@drawable/ic_account" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_bottom_sheet_friends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorbtnctive"
+                tools:text="20 Bạn bè"
+                android:textColor="@color/black"
+                android:textSize="15.56sp"
+                app:icon="@drawable/ic_lstfr" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/btn_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/edittextbd10dp"
+                    android:backgroundTint="@color/colorbtnctive"
+                    android:padding="10dp"
+                    app:tint="@color/black"
+                    android:src="@drawable/ic_chat" />
+                <TextView
+                    android:id="@+id/countmessage"
+                    android:paddingHorizontal="2dp"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/key"
+                    android:background="@drawable/edittextbd10dp"
+                    android:layout_gravity="top|end"
+                    android:layout_height="wrap_content"
+                    android:text="0"/>
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:defaultNavHost="true"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_fnc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:navGraph="@navigation/main_navigation"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_group_layout" />
 
 
+        <LinearLayout
+            android:id="@+id/btn_fnc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/btnCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittextbd10dp"
+                android:backgroundTint="@color/color_active"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_cam" />
+
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:id="@+id/xembai"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/edittextbd10dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:backgroundTint="@color/colorbtnctive"
+                android:paddingHorizontal="20dp">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Trang chủ"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="14.56sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@android:color/transparent" />
+                <TextView
+                    android:id="@+id/newposttxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittextbd10dp"
+                    android:backgroundTint="@color/color_active"
+                    android:layout_marginStart="2dp"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="1dp"
+                    android:layout_marginEnd="0dp"
+                    tools:text="+10"
+                    android:textColor="@color/white"
+                   />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btnRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittextbd10dp"
+                android:backgroundTint="@color/colorbtnctive"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_mic" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

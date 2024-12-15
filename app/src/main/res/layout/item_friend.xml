@@ -1,61 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/size_10dp"
-        android:background="@drawable/bg_rounded_input_field"
-        android:src="@drawable/ic_account_circle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/tv_name"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.1" />
+    <data>
+        <variable
+            name="friends"
+            type="com.example.mysocialproject.ui.feature.model.User" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/size_10dp"
-        android:textAlignment="textStart"
-        android:textSize="@dimen/txt_size_16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
-        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
-        tools:text="JAYCE TALIS" />
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/btnRemove"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="W,1:2"
-        app:layout_constraintWidth_percent="0.15"
-        android:src="@drawable/ic_close"
-        app:tint="@color/black"
-        android:layout_marginEnd="@dimen/size_10dp"
-        android:backgroundTint="@color/color_gray"
-        android:background="@drawable/bg_gray_radius_10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avt_request"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginEnd="10dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/avt_circle"
+            app:strokeColor="@color/subkey"
+            app:strokeWidth="3dp" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/size_6dp"
-        android:background="@color/gray_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/name_frRequets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{friends.nameUser}"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+
+
+        <ImageButton
+            android:id="@+id/btn_remove"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_dialog"
+            android:elevation="1dp"
+            android:paddingHorizontal="20dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:src="@drawable/ic_close" />
+    </LinearLayout>
+</layout>

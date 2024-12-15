@@ -41,4 +41,10 @@
         <attr name="BottomNavBarIvLeft" format="reference"/>
         <attr name="BottomNavBarIvRight" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="AppWidgetAttrs">
+        <attr name="appWidgetPadding" format="dimension" />
+        <attr name="appWidgetInnerRadius" format="dimension" />
+        <attr name="appWidgetRadius" format="dimension" />
+    </declare-styleable>
 </resources>

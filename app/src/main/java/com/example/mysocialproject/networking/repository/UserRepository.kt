@@ -1,23 +1,23 @@
 package com.example.mysocialproject.networking.repository
 
 import android.net.Uri
-import com.example.mysocialproject.model.UserData
+import com.example.mysocialproject.ui.feature.model.User
 
 interface UserRepository {
     suspend fun signUp(email: String, password: String): Result<Boolean>
-    suspend fun signIn(email: String, password: String): Result<Boolean>
-    suspend fun forgotPassword(email: String): Result<Boolean>
+    suspend fun createAvtandNameUser(imageUri: Uri, name: String): Result<Boolean>
+    suspend fun login(email: String, password: String): Result<Boolean>
     fun isUserLoggedIn(): Boolean
     fun isAdmin(): Boolean
-    fun logout()
+    suspend fun getInfoUser(): Result<User>
+    fun getCurrentUid(): String
+    suspend fun forgotPassword(email: String): Result<Boolean>
+    suspend fun updateUserAvatarInPosts(userId: String, newAvatarUrl: String)
     suspend fun updateAvatar(imageUri: Uri): Result<Boolean>
-    suspend fun createProfile(imageUri: Uri, name: String): Result<Boolean>
-    suspend fun getInfoUser(): Result<UserData>
+    suspend fun updateUserNameInPosts(userId: String, newName: String)
     suspend fun updateName(newName: String): Result<Boolean>
     suspend fun updatePassword(newPassword: String): Result<Boolean>
-    suspend fun checkIfUserFieldsEmpty(userId: String): Boolean
-    suspend fun LogData(userId: String): String
-    fun getCurrentId(): String
-    suspend fun deleteAccount():Result<Boolean>
+    suspend fun deleteAccount(): Result<Boolean>
     suspend fun deletenewAccount(): Boolean
+    fun logout()
 }

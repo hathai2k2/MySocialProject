@@ -46,4 +46,17 @@
     <color name="bg_image_view">#F5F5F8</color>
     <color name="text_field">#FCFCFC</color>
     <color name="highlight">#F2C94C</color>
+
+
+    <color name="bg_input">@color/light_blue_50</color>
+    <color name="key">@color/blue</color>
+    <color name="dark">#101010</color>
+    <color name="subkey">@color/light_blue_200</color>
+    <color name="keylight">@color/light_blue_50</color>
+    <color name="btndf">#222124</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="SameWhite">#707070</color>
 </resources>

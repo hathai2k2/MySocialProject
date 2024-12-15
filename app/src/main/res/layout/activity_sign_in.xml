@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="authVModel"
+            type="com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".manageraccount.SignInActivity">
+
+        <LinearLayout
+            android:id="@+id/titleLogin"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittextbd10dp"
+                android:padding="5dp"
+                android:layout_marginStart="12dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_back"
+                app:backgroundTint="@color/colorbtnctive"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="24dp"
+                android:gravity="center_vertical"
+                android:text="Nhập tài khoản của bạn"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/Ed_email_signin"
+            style="@style/textfield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="24sp"
+            android:hint="Email của bạn"
+            app:helperText="@{authVModel.emailHelperTextLg}"
+            app:colorOutline="@color/black"
+            android:textColorHint="@color/txt_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleLogin"
+            app:hintAnimationEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailCreate"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:text="@={authVModel.email}"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/black"
+                android:textColorLink="@color/black"
+                android:textSize="16sp"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/Ed_password_signin"
+            style="@style/textfield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24sp"
+            app:error="@{authVModel.pwErrorLg}"
+            app:helperText="@{authVModel.passwordHelperTextLg}"
+            android:hint="Mật khẩu của bạn"
+            app:colorOutline="@color/black"
+            android:textColorHint="@color/txt_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Ed_email_signin"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/key"
+            app:passwordToggleTintMode="src_in">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pwCreate"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:text="@={authVModel.password}"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/subkey"
+                android:textColorLink="@color/black"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:backgroundTint="@color/colorbtnctive"
+            android:gravity="center"
+            android:text="Bạn đã quên mật khẩu ?"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Ed_password_signin" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_signin"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/blue"
+            android:gravity="center"
+            android:text="Tiếp tục"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:enabled="false"
+            app:icon="@drawable/ic_next"
+            app:iconTint="@color/white"
+            app:iconGravity="textEnd"
+            app:iconSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/Ed_password_signin"
+            app:layout_constraintStart_toStartOf="@+id/Ed_password_signin" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="@{authVModel.loading ?  android.view.View.VISIBLE :  android.view.View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_signin"
+            app:layout_constraintEnd_toEndOf="@+id/btn_signin"
+            app:layout_constraintStart_toStartOf="@+id/btn_signin"
+            app:layout_constraintTop_toTopOf="@+id/btn_signin" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -178,7 +178,7 @@
             android:gravity="center_horizontal"
             android:padding="@dimen/size_10dp"
             android:text="Không có hoạt động nào 💖"
-            android:background="@drawable/bg_post"
+            android:background="@drawable/bg_post_boder"
             android:textColor="@color/txt_gray_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

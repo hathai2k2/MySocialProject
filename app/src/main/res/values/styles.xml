@@ -22,4 +22,22 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="textfield" >
+<!--        <item name="android:textColorHint">#C5C5C5</item>-->
+        <item name="boxStrokeErrorColor">@color/red</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="helperTextTextColor">@color/black</item>
+<!--        <item name="android:textColorSecondary">@color/blue</item>-->
+<!--        <item name="cursorColor">@color/blue</item>-->
+<!--        <item name="cursorErrorColor">@color/subkey</item>-->
+        <item name="errorEnabled">true</item>
+        <item name="errorTextColor">@color/red</item>
+<!--        <item name="hintTextColor">#C8FFFFFF</item>-->
+        <item name="errorIconTint">@color/red</item>
+<!--        <item name="android:layout_marginHorizontal">24dp</item>-->
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
+    </style>
 </resources>

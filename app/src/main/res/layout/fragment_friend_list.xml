@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vmodel"
+            type="com.example.mysocialproject.ui.feature.viewmodel.FriendViewmodel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/listfriendbottomsheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_bottom_sheet">
+
+        <View
+            android:id="@+id/btn_close"
+            android:layout_width="60dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bottom_sheet_holder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Bạn bè của bạn"
+                    android:textColor="@color/black"
+                    android:textFontWeight="500"
+                    android:textSize="32sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="60dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_searhfr"
+                    android:drawableTint="@color/black"
+                    android:gravity="center"
+                    android:text="  Tìm kiếm bạn bè từ ứng dụng khác"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_senlink"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="20dp"
+                    android:backgroundTint="@color/color_active"
+                    android:gravity="center"
+                    android:shadowColor="@color/subkey"
+                    android:text="Ấn để chia sẻ liên kết cá nhân"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    app:cornerRadius="26dp"
+                    app:icon="@drawable/ic_link"
+                    app:iconGravity="textStart"
+                    app:iconSize="28dp"
+                    app:iconTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/total_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:drawableLeft="@drawable/ic_requestfr"
+                    android:gravity="center"
+                    android:text="  Lời mời kết bạn (0)"
+                    android:drawableTint="@color/black"
+                    android:textColor="@color/black"
+                    android:textFontWeight="500"
+                    android:textSize="18sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listrequestFriend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="10dp"/>
+
+                <TextView
+                    android:id="@+id/total_friends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:drawableLeft="@drawable/ic_lstfr"
+                    android:drawableTint="@color/black"
+                    android:gravity="center"
+                    android:text="  Bạn bè của bạn"
+                    android:textColor="@color/black"
+                    android:textFontWeight="500"
+                    android:textSize="18sp" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listfriend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="frRequest"
+            type="com.example.mysocialproject.ui.feature.model.Friendship" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avt_request"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginEnd="10dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/avt_circle"
+            app:strokeColor="@color/subkey"
+            app:strokeWidth="3dp" />
+
+        <TextView
+            android:id="@+id/name_frRequets"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{frRequest.userName}"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/time_stamp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+
+        <ImageButton
+            android:id="@+id/btn_accept"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/corner_radius_16dp"
+            android:paddingHorizontal="20dp"
+            app:backgroundTint="@color/key"
+            android:gravity="center"
+            app:tint="@color/white"
+            android:src="@drawable/ic_check" />
+
+        <ImageButton
+            android:id="@+id/btn_unaccept"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_dialog"
+            android:elevation="1dp"
+            android:paddingHorizontal="20dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:src="@drawable/ic_close" />
+    </LinearLayout>
+</layout>

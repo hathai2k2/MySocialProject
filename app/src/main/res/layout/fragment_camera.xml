@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.feature.home.CameraFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="pViewmodel"
+            type="com.example.mysocialproject.ui.feature.viewmodel.PostViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       >
+        tools:context=".home.CameraFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="5dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="1dp"
+            app:cardElevation="4dp"
             app:layout_constraintBottom_toTopOf="@+id/btn_group_layout"
-            app:layout_constraintDimensionRatio="H,1:1.2"
+            app:layout_constraintDimensionRatio="H,1:1.4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,9 +32,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_camera">
+                android:background="@color/white">
 
-                <!-- Camera Grid Layout -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/grid_layout"
                     android:layout_width="0dp"
@@ -38,7 +43,7 @@
                     app:layout_constraintStart_toStartOf="@id/viewFinder"
                     app:layout_constraintTop_toTopOf="@id/viewFinder">
 
-                    <!-- Guidelines for 3x3 grid -->
+                    <!-- Guideline để chia layout thành 3 cột -->
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline_vertical_1"
                         android:layout_width="wrap_content"
@@ -53,6 +58,7 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.667" />
 
+                    <!-- Guideline để chia layout thành 3 hàng -->
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline_horizontal_1"
                         android:layout_width="wrap_content"
@@ -67,7 +73,9 @@
                         android:orientation="horizontal"
                         app:layout_constraintGuide_percent="0.667" />
 
-                    <!-- Grid cells -->
+                    <!-- Các view trong lưới 3x3 -->
+
+
                     <View
                         android:id="@+id/cell_1_1"
                         android:layout_width="1dp"
@@ -77,6 +85,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/guideline_vertical_1"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
                     <View
                         android:id="@+id/cell_1_2"
@@ -88,6 +97,7 @@
                         app:layout_constraintEnd_toStartOf="@id/guideline_vertical_2"
                         app:layout_constraintTop_toTopOf="parent" />
 
+
                     <View
                         android:id="@+id/cell_2_1"
                         android:layout_width="0dp"
@@ -98,6 +108,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_1" />
 
+
                     <View
                         android:id="@+id/cell_2_2"
                         android:layout_width="match_parent"
@@ -107,15 +118,15 @@
                         app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- Camera preview and focus circle -->
                 <androidx.camera.view.PreviewView
                     android:id="@+id/viewFinder"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintDimensionRatio="H,1:1.2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -124,85 +135,90 @@
                     android:id="@+id/focusCircle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/bg_circle_white"
+                    android:src="@drawable/focus_circle"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/viewFinder"
                     app:layout_constraintEnd_toEndOf="@id/viewFinder"
                     app:layout_constraintStart_toStartOf="@id/viewFinder"
                     app:layout_constraintTop_toTopOf="@id/viewFinder" />
 
-                <!-- Bottom Controls -->
-                <androidx.constraintlayout.widget.ConstraintLayout
+
+                <LinearLayout
                     android:id="@+id/fnc_lauout"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="12dp"
-                    android:background="@drawable/bg_top_radius_10"
+                    android:background="@drawable/fncboder"
                     android:gravity="center"
-                    app:layout_constraintBottom_toTopOf="@id/viewFinder"
+                    app:layout_constraintBottom_toTopOf="@+id/viewFinder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <ImageButton
                         android:id="@+id/buttonFlash"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:background="#00FFFFFF"
                         android:contentDescription="Flash"
-                        android:src="@drawable/ic_flashoff"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/buttonSwitchCamera"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:src="@drawable/ic_flashoff" />
+
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <ImageButton
                         android:id="@+id/buttonSwitchCamera"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:background="#00FFFFFF"
                         android:contentDescription="Chuyển cam"
-                        android:src="@drawable/ic_flipcam"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/Btnnratio1x"
-                        app:layout_constraintStart_toEndOf="@id/buttonFlash"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:src="@drawable/ic_flipcam" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <ImageButton
                         android:id="@+id/Btnnratio1x"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:background="#00FFFFFF"
                         android:contentDescription="Zoom 2x"
-                        android:src="@drawable/ic_zoom"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/btn_exposure"
-                        app:layout_constraintStart_toEndOf="@id/buttonSwitchCamera"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:src="@drawable/ic_zoom" />
+
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <ImageButton
                         android:id="@+id/btn_exposure"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:background="#00FFFFFF"
-                        android:src="@drawable/ic_exposure"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/Btnnratio1x"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:src="@drawable/ic_exposure" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
 
 
-                <!-- SeekBar for Brightness -->
                 <SeekBar
                     android:id="@+id/brightnessSb"
                     android:layout_width="match_parent"
@@ -210,14 +226,14 @@
                     android:max="5"
                     android:min="-5"
                     android:progressTint="#C1C1C0"
-                    android:thumbTint="@color/blue"
+                    android:thumbTint="@color/key"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewFinder" />
 
-                <!-- Captured Image and EditText -->
+
                 <ImageView
                     android:id="@+id/imageViewCaptured"
                     android:layout_width="0dp"
@@ -236,41 +252,115 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="14dp"
                     android:background="@null"
-                    android:fontFamily="@font/mplusrounded1c_bold"
                     android:gravity="start"
                     android:hint="Nhập gì đó..."
                     android:imeOptions="actionDone"
                     android:maxLength="300"
                     android:padding="2dp"
                     android:singleLine="true"
+                    android:textColor="@color/dark"
+                    android:textColorHint="@color/dark"
+                    android:textSize="15.6sp"
+                    android:textStyle="bold"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewCaptured" />
+                    app:layout_constraintTop_toBottomOf="@+id/grid_layout" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </androidx.cardview.widget.CardView>
 
-        <!-- Button Group Layout -->
-       <include
-           android:id="@+id/btn_group_layout"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           layout="@layout/view_btn_group"
-           app:iconResId="@{@drawable/ic_upload}"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/card"/>
+        <LinearLayout
+            android:id="@+id/btn_group_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card">
 
-        <!-- Centerline Guideline -->
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5" />
+
+            <ImageButton
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/avt_circle"
+                android:elevation="1dp"
+                app:tint="@color/black"
+                android:src="@drawable/ic_cancle"
+                android:visibility="invisible" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/buttonCapture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cornerradius"
+                android:src="@drawable/ic_circle"
+                app:backgroundTint="@null" />
+
+            <ImageButton
+                android:id="@+id/btn_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/avt_circle"
+                android:elevation="1dp"
+                android:backgroundTint="@color/light_blue_50"
+                android:visibility="gone"
+                android:src="@drawable/ic_upload"
+                />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:indeterminateTint="@color/blue"
+                android:visibility="gone" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_genativeAI"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/avt_circle"
+                android:elevation="1dp"
+                android:backgroundTint="@color/colorbtnctive"
+                android:src="@drawable/ic_gemini"
+                android:visibility="invisible" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_centerline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

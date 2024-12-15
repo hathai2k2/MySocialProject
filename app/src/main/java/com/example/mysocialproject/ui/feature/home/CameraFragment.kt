@@ -18,8 +18,10 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.util.Size
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.SeekBar
 import android.widget.Toast
@@ -36,115 +38,24 @@ import androidx.camera.extensions.ExtensionMode
 import androidx.camera.extensions.ExtensionsManager
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.mysocialproject.BR
-import com.example.mysocialproject.MainViewModel
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentCameraBinding
-import com.example.mysocialproject.model.PostResult
-import com.example.mysocialproject.ui.base.BaseFragment
-import com.example.mysocialproject.ui.base.BaseFragmentWithViewModel
-import com.example.mysocialproject.ui.feature.post.PostViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.mysocialproject.ui.feature.bottomdialogai.PromptDialog
+import com.example.mysocialproject.ui.feature.chat.FriendListprivateBottomSheet
+import com.example.mysocialproject.ui.feature.repository.PostRepository
+import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
 import java.io.File
 import java.util.UUID
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@AndroidEntryPoint
-class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewModel>(),HomeNavigation {
-    private val postViewModel: PostViewModel by viewModels()
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_camera
-    }
+@RequiresApi(Build.VERSION_CODES.O)
+class CameraFragment : Fragment() {
 
-
-    override fun getViewModelClass(): Class<HomeViewModel> {
-        return HomeViewModel::class.java
-    }
-
-    override fun getBindingVariable(): Int {
-        return BR.viewModel
-    }
-
-    override fun initViewModel(): Lazy<HomeViewModel> {
-        return viewModels()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mViewModel.setNavigator(this)
-        if (allPermissionsGranted()) {
-            startCamera()
-
-        } else {
-            requestPermissions()
-        }
-        cameraExecutor = Executors.newSingleThreadExecutor()
-        mViewBinding.btnGroupLayout.buttonCapture.setOnClickListener {
-            val vibrator =  requireContext().getSystemService(Vibrator::class.java)
-            if (vibrator?.hasAmplitudeControl() == true) {
-                val vibrationEffect = VibrationEffect.createOneShot(
-                    40,
-                    VibrationEffect.EFFECT_TICK
-                )
-                vibrator.vibrate(vibrationEffect)
-            } else {
-
-                vibrator?.vibrate(40)
-            }
-            val scaleDownAnimator = ValueAnimator.ofFloat(0.92f, 1f).apply { // Giả sử icon ban đầu là 80dp
-                duration = 200
-                interpolator = DecelerateInterpolator()
-                addUpdateListener { valueAnimator ->
-                    val scale = valueAnimator.animatedValue as Float
-                    mViewBinding.btnGroupLayout.buttonCapture.scaleX = scale
-                    mViewBinding.btnGroupLayout.buttonCapture.scaleY = scale
-                }
-            }
-
-            scaleDownAnimator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-
-                }
-            })
-            scaleDownAnimator.start()
-
-
-            takePhoto()
-        }
-        mViewBinding.buttonSwitchCamera.setOnClickListener {
-            switchCamera()
-        }
-        mViewBinding.buttonFlash.setOnClickListener {
-            flash()
-        }
-        mViewBinding.Btnnratio1x.setOnClickListener {
-            zoom()
-        }
-        tapToFocus()
-        mViewBinding.btnGroupLayout.btnLeft.setOnClickListener {
-            startCamera()
-            clearImg()
-        }
-        mViewBinding.btnExposure.setOnClickListener {
-            val vibrator =  requireContext().getSystemService(Vibrator::class.java)
-            if (vibrator?.hasAmplitudeControl() == true) {
-                val vibrationEffect = VibrationEffect.createOneShot(
-                    40,
-                    VibrationEffect.EFFECT_TICK
-                )
-                vibrator.vibrate(vibrationEffect)
-            } else {
-
-                vibrator?.vibrate(40)
-            }
-
-            mViewBinding.brightnessSb.visibility = View.VISIBLE
-        }
-    }
+    lateinit var viewBinding: FragmentCameraBinding
 
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
@@ -156,6 +67,7 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
 
     private var iszoom = false
     private var currentFlashMode = ImageCapture.FLASH_MODE_OFF
+    private lateinit var postViewModel: PostViewModel
     private lateinit var cameraProvider: ProcessCameraProvider
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
@@ -177,54 +89,165 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
                 startCamera()
             }
         }
-    private val hideSeekBarRunnable = Runnable { mViewBinding.brightnessSb.visibility = View.GONE }
+    private val hideSeekBarRunnable = Runnable { viewBinding.brightnessSb.visibility = View.GONE }
     private val hideSeekBarHandler = Handler(Looper.getMainLooper())
     private fun disiablebtn() {
-        mViewBinding.buttonSwitchCamera.isEnabled = false
-        mViewBinding.buttonFlash.isEnabled = false
-        mViewBinding.Btnnratio1x.isEnabled = false
-        mViewBinding.btnExposure.isEnabled = false
+        viewBinding.buttonSwitchCamera.isEnabled = false
+        viewBinding.buttonFlash.isEnabled = false
+        viewBinding.Btnnratio1x.isEnabled = false
+        viewBinding.btnExposure.isEnabled = false
     }
-    private fun clearImg() {
-        mViewBinding.btnGroupLayout.btnPost.isEnabled = true
-        mViewBinding.imageViewCaptured.setImageDrawable(null)
-        mViewBinding.edt1.text.clear()
-        mViewBinding.imageViewCaptured.visibility = View.GONE
-        mViewBinding.viewFinder.visibility = View.VISIBLE
-        mViewBinding.edt1.visibility = View.GONE
-        mViewBinding.fncLauout.visibility = View.VISIBLE
-        mViewBinding.btnGroupLayout.btnPost.visibility = View.GONE
-        mViewBinding.btnGroupLayout.buttonCapture.visibility = View.VISIBLE
-        mViewBinding.btnGroupLayout.btnLeft.visibility = View.INVISIBLE
-        mViewBinding.btnGroupLayout.btnGenativeAI.visibility = View.INVISIBLE
-        mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
-        mViewBinding.brightnessSb.visibility = View.VISIBLE
-//        postViewModel.clearContentgena()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_camera, container, false)
+        postViewModel = ViewModelProvider(requireActivity()).get(PostViewModel::class.java)
+        return viewBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+// kiem tra xem tat ca quyen da ok chua
+        if (allPermissionsGranted()) {
+            startCamera()
+
+        } else {
+            requestPermissions()
+        }
+        cameraExecutor = Executors.newSingleThreadExecutor()
+        viewBinding.buttonCapture.setOnClickListener {
+            val vibrator = requireContext().getSystemService(Vibrator::class.java)
+            if (vibrator?.hasAmplitudeControl() == true) {
+                val vibrationEffect = VibrationEffect.createOneShot(
+                    40,
+                    VibrationEffect.EFFECT_TICK
+                )
+                vibrator.vibrate(vibrationEffect)
+            } else {
+
+                vibrator?.vibrate(40)
+            }
+            val scaleDownAnimator =
+                ValueAnimator.ofFloat(0.92f, 1f).apply { // Giả sử icon ban đầu là 80dp
+                    duration = 200
+                    interpolator = DecelerateInterpolator()
+                    addUpdateListener { valueAnimator ->
+                        val scale = valueAnimator.animatedValue as Float
+                        viewBinding.buttonCapture.scaleX = scale
+                        viewBinding.buttonCapture.scaleY = scale
+                    }
+                }
+
+            scaleDownAnimator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+
+                }
+            })
+            scaleDownAnimator.start()
+
+
+            takePhoto()
+        }
+
+
+
+        viewBinding.buttonSwitchCamera.setOnClickListener {
+            swipcam()
+        }
+        viewBinding.buttonFlash.setOnClickListener {
+            flash()
+        }
+
+
+
+
+        viewBinding.Btnnratio1x.setOnClickListener {
+
+            zoom()
+        }
+        tabtofocus()
+
+
+        /////////////
+        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is PostRepository.PostResult.Success -> {
+                    deleImg()
+                }
+
+                else -> {
+                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+
+        viewBinding.btnLeft.setOnClickListener {
+            startCamera()
+            deleImg()
+        }
+        viewBinding.btnExposure.setOnClickListener {
+            val vibrator = requireContext().getSystemService(Vibrator::class.java)
+            if (vibrator?.hasAmplitudeControl() == true) {
+                val vibrationEffect = VibrationEffect.createOneShot(
+                    40,
+                    VibrationEffect.EFFECT_TICK
+                )
+                vibrator.vibrate(vibrationEffect)
+            } else {
+
+                vibrator?.vibrate(40)
+            }
+
+            viewBinding.brightnessSb.visibility = View.VISIBLE
+        }
+
+    }
+
+
+    private fun deleImg() {
+        viewBinding.btnPost.isEnabled = true
+        viewBinding.imageViewCaptured.setImageDrawable(null)
+        viewBinding.edt1.text.clear()
+        viewBinding.imageViewCaptured.visibility = View.GONE
+        viewBinding.viewFinder.visibility = View.VISIBLE
+        viewBinding.btnPost.visibility = View.GONE
+        viewBinding.edt1.visibility = View.GONE
+        viewBinding.fncLauout.visibility = View.VISIBLE
+        viewBinding.buttonCapture.visibility = View.VISIBLE
+        viewBinding.btnLeft.visibility = View.INVISIBLE
+        viewBinding.btnGenativeAI.visibility = View.INVISIBLE
+        viewBinding.progressBar.visibility = View.GONE
+        viewBinding.brightnessSb.visibility = View.VISIBLE
+        postViewModel.clearContentgena()
     }
 
     private fun zoom() {
         if (iszoom == true) {
             cameraControl.setZoomRatio(1.0f)
-            mViewBinding.Btnnratio1x.setImageResource(R.drawable.ic_zoom)
+            viewBinding.Btnnratio1x.setImageResource(R.drawable.ic_zoom)
             iszoom = false
         } else {
             cameraControl.setZoomRatio(2.0f)
-            mViewBinding.Btnnratio1x.setImageResource(R.drawable.ic_nonzoom)
+            viewBinding.Btnnratio1x.setImageResource(R.drawable.ic_nonzoom)
             iszoom = true
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun tapToFocus () {
-        mViewBinding.viewFinder.setOnTouchListener { _, event ->
+    private fun tabtofocus() {
+        viewBinding.viewFinder.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                val factory = mViewBinding.viewFinder.meteringPointFactory
+                val factory = viewBinding.viewFinder.meteringPointFactory
                 val point = factory.createPoint(event.x, event.y)
                 val action = FocusMeteringAction.Builder(point).build()
                 cameraControl.startFocusAndMetering(action)
 
 
-                val focusCircle = mViewBinding.focusCircle
+                val focusCircle = viewBinding.focusCircle
                 focusCircle.x = event.x - focusCircle.width / 2
                 focusCircle.y = event.y
                 focusCircle.visibility = View.VISIBLE
@@ -244,12 +267,12 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
         }
         currentFlashMode = when (currentFlashMode) {
             ImageCapture.FLASH_MODE_ON -> {
-                mViewBinding.buttonFlash.setImageResource(R.drawable.ic_flashoff)
+                viewBinding.buttonFlash.setImageResource(R.drawable.ic_flashoff)
                 ImageCapture.FLASH_MODE_OFF
             }
 
             ImageCapture.FLASH_MODE_OFF -> {
-                mViewBinding.buttonFlash.setImageResource(R.drawable.ic_flashon)
+                viewBinding.buttonFlash.setImageResource(R.drawable.ic_flashon)
                 ImageCapture.FLASH_MODE_ON
             }
 
@@ -258,8 +281,9 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
         imageCapture?.setFlashMode(currentFlashMode)
     }
 
-    private fun requestCameraPermission() {
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+    private fun capquyencam() {
+        val dialog =
+            androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
         dialog.setTitle("Bật quyền truy cập Máy ảnh")
             .setMessage("Đến cài đặt ứng dụng cấp quyền để ứng dụng được hoạt động đúng đắn!")
             .setPositiveButton("ĐẾN CÀI ĐẶT") { dialog, _ ->
@@ -280,7 +304,7 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
     private fun takePhoto() {
 
         if (!allPermissionsGranted()) {
-            requestCameraPermission()
+            capquyencam()
         }
 
         //imgcaptur : xem th nay dc khoi tao chua
@@ -308,79 +332,49 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = output.savedUri ?: return
-                    mViewBinding.imageViewCaptured.apply {
+                    viewBinding.imageViewCaptured.apply {
                         visibility = View.VISIBLE
-                        mViewBinding.viewFinder.visibility = View.INVISIBLE
+                        viewBinding.viewFinder.visibility = View.INVISIBLE
                         setImageURI(savedUri)
                     }
 
                     cameraProvider.unbindAll()
 
-                    mViewBinding.apply {
-                        btnGroupLayout.btnLeft.visibility = View.VISIBLE
+                    viewBinding.apply {
+                        btnLeft.visibility = View.VISIBLE
                         edt1.visibility = View.VISIBLE
                         fncLauout.visibility = View.INVISIBLE
-                        btnGroupLayout.btnPost.visibility = View.VISIBLE
-                        btnGroupLayout.buttonCapture.visibility = View.GONE
-                        btnGroupLayout.btnGenativeAI.visibility = View.VISIBLE
+                        btnPost.visibility = View.VISIBLE
+                        buttonCapture.visibility = View.GONE
+                        btnGenativeAI.visibility = View.VISIBLE
                         brightnessSb.visibility = View.GONE
                     }
 
 
-                    mViewBinding.btnGroupLayout.btnPost.setOnClickListener {
-                        mViewBinding.btnGroupLayout.btnPost.isEnabled = false
-                        mViewBinding.btnGroupLayout.btnLeft.visibility = View.INVISIBLE
-                        mViewBinding.btnGroupLayout.btnGenativeAI.visibility = View.INVISIBLE
-                        mViewBinding.btnGroupLayout.btnPost.visibility = View.GONE
-                        mViewBinding.btnGroupLayout.progressBar.visibility = View.VISIBLE
-                        val content = mViewBinding.edt1.text.toString()
+                    viewBinding.btnPost.setOnClickListener {
+                        viewBinding.btnPost.isEnabled = false
+                        viewBinding.btnLeft.visibility = View.INVISIBLE
+                        viewBinding.btnGenativeAI.visibility = View.INVISIBLE
+                        viewBinding.btnPost.visibility = View.GONE
+                        viewBinding.progressBar.visibility = View.VISIBLE
+                        val content = viewBinding.edt1.text.toString()
+
+
 
                         postViewModel.addPost(savedUri, content, true)
-
-                        // Quan sát kết quả
-                        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
-                            when (result) {
-                                is PostResult.Success -> {
-                                    // Thành công, điều hướng đến PostFragment
-                                    val direction =
-                                        HomeFragmentDirections.actionHomeFragmentToPostFragment()
-                                    findNavController().navigate(direction)
-
-                                    // Khôi phục giao diện
-                                    mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
-                                }
-
-                                is PostResult.Failure -> {
-                                    // Thất bại, hiển thị thông báo lỗi
-                                    Toast.makeText(
-                                        context,
-                                        "Error: ${result.error}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                    // Khôi phục giao diện
-                                    mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
-                                    mViewBinding.btnGroupLayout.btnPost.isEnabled = true
-                                    mViewBinding.btnGroupLayout.btnLeft.visibility = View.VISIBLE
-                                    mViewBinding.btnGroupLayout.btnGenativeAI.visibility =
-                                        View.VISIBLE
-                                    mViewBinding.btnGroupLayout.btnPost.visibility = View.VISIBLE
-                                }
-                            }
-                        }
                     }
 
 
-                    mViewBinding.btnGroupLayout.btnPost.setOnLongClickListener {
+                    viewBinding.btnPost.setOnLongClickListener {
 
-                        val vibrator =  requireContext().getSystemService(Vibrator::class.java)
+                        val vibrator = requireContext().getSystemService(Vibrator::class.java)
                         vibrator?.vibrate(50)
 
-                        val content = mViewBinding.edt1.text.toString()
+                        val content = viewBinding.edt1.text.toString()
 
-//
-//                        val bottomSheet = FriendListprivateBottomSheet(savedUri, null, content)
-//                        bottomSheet.show(childFragmentManager, bottomSheet.tag)
+
+                        val bottomSheet = FriendListprivateBottomSheet(savedUri, null, content)
+                        bottomSheet.show(childFragmentManager, bottomSheet.tag)
                         true
                     }
 
@@ -388,13 +382,13 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
                         requireContext().contentResolver,
                         savedUri
                     )
-                    mViewBinding.btnGroupLayout.btnGenativeAI.setOnClickListener {
-//                        val dialog = PromptDialog(imageBitmap)
-//                        dialog.show(childFragmentManager, "prompt_dialog")
-//
-//                        postViewModel.contentgena.observe(viewLifecycleOwner) { content ->
-//                            viewBinding.edt1.setText(content ?: "")
-//                        }
+                    viewBinding.btnGenativeAI.setOnClickListener {
+                        val dialog = PromptDialog(imageBitmap)
+                        dialog.show(childFragmentManager, "prompt_dialog")
+
+                        postViewModel.contentgena.observe(viewLifecycleOwner) { content ->
+                            viewBinding.edt1.setText(content ?: "")
+                        }
                     }
                 }
             }
@@ -406,7 +400,7 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
         return cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA
     }
 
-    private fun switchCamera () {
+    private fun swipcam() {
         if (cameraProvider == null) {
             Log.e(TAG, "cameraprovider chưa được khởi tạo. Không thể xoay cam")
             return
@@ -414,13 +408,13 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
 
         cameraSelector = when (cameraSelector) {
             CameraSelector.DEFAULT_BACK_CAMERA -> {
-                mViewBinding.buttonSwitchCamera.animate().rotationBy(-180f).start()
+                viewBinding.buttonSwitchCamera.animate().rotationBy(-180f).start()
                 CameraSelector.DEFAULT_FRONT_CAMERA
 
             }
 
             CameraSelector.DEFAULT_FRONT_CAMERA -> {
-                mViewBinding.buttonSwitchCamera.animate().rotationBy(180f).start()
+                viewBinding.buttonSwitchCamera.animate().rotationBy(180f).start()
                 CameraSelector.DEFAULT_BACK_CAMERA
             }
 
@@ -436,122 +430,6 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
             Log.e(TAG, "xoay loi", exc)
         }
     }
-    private fun startCamera() {
-        val cameraProviderFuture =
-            ProcessCameraProvider.getInstance(requireContext().applicationContext)
-
-        cameraProviderFuture.addListener({
-            // Get CameraProvider instance
-            cameraProvider = cameraProviderFuture.get()
-            cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-            try {
-                // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
-                bindCameraUseCases()
-
-            } catch (exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
-            }
-
-        }, ContextCompat.getMainExecutor(requireContext().applicationContext))
-    }
-
-    private fun bindCameraUseCases() {
-        val targetResolution = Size(1080, 1080)
-        val preview = Preview.Builder()
-            .setTargetResolution(Size(720, 720))
-            .build()
-            .also {
-                it.setSurfaceProvider(mViewBinding.viewFinder.surfaceProvider)
-            }
-
-        // Khởi tạo ImageCapture
-        imageCapture = ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
-            .setTargetResolution(targetResolution)
-            .setFlashMode(currentFlashMode)
-            .setJpegQuality(100)
-            .build()
-
-        val extensionsManagerFuture =
-            ExtensionsManager.getInstanceAsync(requireContext(), cameraProvider)
-        extensionsManagerFuture.addListener(
-            {
-                val extensionsManager = extensionsManagerFuture.get()
-                val cameraSelectorToUse = when {
-                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.AUTO) -> {
-                        extensionsManager.getExtensionEnabledCameraSelector(
-                            cameraSelector,
-                            ExtensionMode.AUTO
-                        )
-                    }
-
-                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.HDR) -> {
-                        extensionsManager.getExtensionEnabledCameraSelector(
-                            cameraSelector,
-                            ExtensionMode.HDR
-                        )
-                    }
-
-                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.BOKEH) -> {
-                        extensionsManager.getExtensionEnabledCameraSelector(
-                            cameraSelector,
-                            ExtensionMode.BOKEH
-                        )
-                    }
-
-                    extensionsManager.isExtensionAvailable(
-                        cameraSelector,
-                        ExtensionMode.FACE_RETOUCH
-                    ) -> {
-                        extensionsManager.getExtensionEnabledCameraSelector(
-                            cameraSelector,
-                            ExtensionMode.FACE_RETOUCH
-                        )
-                    }
-
-                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.NIGHT) -> {
-                        extensionsManager.getExtensionEnabledCameraSelector(
-                            cameraSelector,
-                            ExtensionMode.NIGHT
-                        )
-                    }
-
-                    else -> cameraSelector
-                }
-
-                try {
-                    cameraProvider.unbindAll()
-
-                    val camera = cameraProvider.bindToLifecycle(
-                        viewLifecycleOwner,
-                        cameraSelectorToUse,
-                        preview,
-                        imageCapture
-                    )
-                    Log.d("CameraCheck", "HDR enabled: ${(ExtensionMode.HDR)}")
-                    Log.d("CameraCheck", "Bokeh enabled: ${(ExtensionMode.BOKEH)}")
-                    Log.d("CameraCheck", "Face Retouch enabled: ${(ExtensionMode.FACE_RETOUCH)}")
-                    Log.d("CameraCheck", "Night enabled: ${(ExtensionMode.NIGHT)}")
-
-                    cameraControl = camera.cameraControl
-                    cameraInfo = camera.cameraInfo
-                    brightnessSlider()
-                } catch (e: Exception) {
-                    Log.e("CameraCheckloi", "Camera không khả dụng ${e.message}")
-                    Toast.makeText(
-                        requireContext(),
-                        "Camera không khả dụng, Vui lòng thử đổi camera trước",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            }, ContextCompat.getMainExecutor(requireContext())
-        )
-
-
-    }
 
     private fun brightnessSlider() {
 
@@ -566,7 +444,7 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
             currentExposureIndex = it.exposureCompensationIndex
         }
 
-        mViewBinding.brightnessSb.apply {
+        viewBinding.brightnessSb.apply {
             max = maxExposureIndex - minExposureIndex
             progress = 0
             progress = currentExposureIndex - minExposureIndex
@@ -597,6 +475,134 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
                 }
             })
         }
+    }
+
+
+    fun startCamera() {
+        val cameraProviderFuture =
+            ProcessCameraProvider.getInstance(requireContext().applicationContext)
+
+        cameraProviderFuture.addListener({
+            // Used to bind the lifecycle of cameras to the lifecycle owner
+            cameraProvider = cameraProviderFuture.get()
+            cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            try {
+                // Unbind use cases before rebinding
+                cameraProvider.unbindAll()
+
+                bindCameraUseCases()
+
+            } catch (exc: Exception) {
+                Log.e(TAG, "Use case binding failed", exc)
+            }
+
+        }, ContextCompat.getMainExecutor(requireContext().applicationContext))
+    }
+
+    private fun bindCameraUseCases() {
+
+        val targetResolution = Size(1080, 1080)
+        val preview = Preview.Builder()
+            .setTargetResolution(Size(720, 720))
+            .build()
+            .also {
+                it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
+            }
+
+        // Khởi tạo ImageCapture
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+            .setTargetResolution(targetResolution)
+            .setFlashMode(currentFlashMode)
+            .setJpegQuality(100)
+            .build()
+
+
+        val extensionsManagerFuture =
+            ExtensionsManager.getInstanceAsync(requireContext(), cameraProvider)
+        extensionsManagerFuture.addListener(
+            {
+                val extensionsManager = extensionsManagerFuture.get()
+                val cameraSelectorToUse = when {
+                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.AUTO) -> {
+                        extensionsManager.getExtensionEnabledCameraSelector(
+                            cameraSelector,
+                            ExtensionMode.AUTO
+
+                        )
+                    }
+
+                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.HDR) -> {
+                        extensionsManager.getExtensionEnabledCameraSelector(
+                            cameraSelector,
+                            ExtensionMode.HDR
+                        )
+
+
+                    }
+
+                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.BOKEH) -> {
+                        extensionsManager.getExtensionEnabledCameraSelector(
+                            cameraSelector,
+                            ExtensionMode.BOKEH
+                        )
+                    }
+
+                    extensionsManager.isExtensionAvailable(
+                        cameraSelector,
+                        ExtensionMode.FACE_RETOUCH
+                    ) -> {
+                        extensionsManager.getExtensionEnabledCameraSelector(
+                            cameraSelector,
+                            ExtensionMode.FACE_RETOUCH
+                        )
+                    }
+
+                    extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.NIGHT) -> {
+                        extensionsManager.getExtensionEnabledCameraSelector(
+                            cameraSelector,
+                            ExtensionMode.NIGHT
+                        )
+                    }
+
+                    else -> cameraSelector
+                }
+
+
+
+
+                try {
+                    cameraProvider.unbindAll()
+
+                    val camera = cameraProvider.bindToLifecycle(
+                        viewLifecycleOwner,
+                        cameraSelectorToUse,
+                        preview,
+                        imageCapture
+                    )
+
+                    Log.d("CameraCheck", "HDR enabled: ${(ExtensionMode.HDR)}")
+                    Log.d("CameraCheck", "Bokeh enabled: ${(ExtensionMode.BOKEH)}")
+                    Log.d("CameraCheck", "Face Retouch enabled: ${(ExtensionMode.FACE_RETOUCH)}")
+                    Log.d("CameraCheck", "Night enabled: ${(ExtensionMode.NIGHT)}")
+
+                    cameraControl = camera.cameraControl
+                    cameraInfo = camera.cameraInfo
+                    brightnessSlider()
+                } catch (e: Exception) {
+                    Log.e("CameraCheckloi", "Camera không khả dụng ${e.message}")
+                    Toast.makeText(
+                        requireContext(),
+                        "Camera không khả dụng, Vui lòng thử đổi camera trước",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }, ContextCompat.getMainExecutor(requireContext())
+        )
+
+
     }
 
     private fun requestPermissions() {
@@ -630,6 +636,11 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
         cameraProvider.unbindAll()
     }
 
+    fun getCameraProvider(): ProcessCameraProvider? {
+        return cameraProvider
+    }
+
+
     companion object {
 
 
@@ -648,14 +659,5 @@ class CameraFragment : BaseFragmentWithViewModel<FragmentCameraBinding,HomeViewM
             return REQUIRED_PERMISSIONS
         }
     }
-
-    override fun onLogOut() {
-
-    }
-
-    override fun onOpenPost() {
-
-    }
-
 
 }

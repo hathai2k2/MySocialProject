@@ -73,21 +73,30 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
     fun showActivity(
         t: Class<*>,
         bundle: Bundle? = null,
-        enter: Int = R.anim.slide_in_right,
-        exit: Int = R.anim.slide_out_left
+        enter: Int = R.anim.slide_in_down,
+        exit: Int = R.anim.slide_out_down
     ) {
-        Intent(this, t).apply {
-            if(bundle != null) {
+        val intent = Intent(this, t).apply {
+            if (bundle != null) {
                 putExtras(bundle)
             }
-            val animationBundle = ActivityOptions.makeCustomAnimation(
-                this@BaseActivity,
-                enter,
-                exit
-            ).toBundle()
-            startActivity(this, animationBundle)
         }
+
+        // Thêm FLAG_ACTIVITY_NEW_TASK và FLAG_ACTIVITY_CLEAR_TASK vào intent
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        // Tạo hoạt ảnh chuyển đổi giữa các Activity
+        val animationBundle = ActivityOptions.makeCustomAnimation(
+            this@BaseActivity,
+            enter,
+            exit
+        ).toBundle()
+
+        // Bắt đầu Activity với animation
+        startActivity(intent, animationBundle)
+        finish()
     }
+
 
     fun checkPermission(
         permissions: List<String>,

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/layoutwidgetpost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/corner_radius_16dp"
+    android:minHeight="110dp"
+    android:minWidth="110dp">
+
+    <ImageView
+        android:adjustViewBounds="true"
+        android:id="@+id/imageView_post"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="110dp"
+        android:minWidth="110dp"
+        android:foreground="@drawable/corner_radius_16dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_1" />
+
+    <LinearLayout
+        android:id="@+id/layout_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_avatar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/avt_circle"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/avt_base" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#4B101010"
+            android:padding="4dp"
+            android:minWidth="40dp"
+            android:minHeight="20dp"
+            android:background="@drawable/corner_radius_16dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_Name_UserPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Tên người dùng"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_Caption_Post"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:backgroundTint="#4B101010"
+        android:paddingHorizontal="10dp"
+        android:background="@drawable/corner_radius_16dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content"
+        android:text="Nội dung bài đăng" />
+    <TextView
+        android:id="@+id/createAtpost"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:backgroundTint="#4B101010"
+        android:paddingHorizontal="10dp"
+        android:background="@drawable/corner_radius_16dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content"
+        android:text="" />
+</FrameLayout>

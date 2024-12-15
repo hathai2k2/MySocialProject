@@ -21,7 +21,9 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,119 +31,30 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentRecordBinding
-import com.example.mysocialproject.model.PostResult
-import com.example.mysocialproject.ui.base.BaseFragment
-import com.example.mysocialproject.ui.feature.post.PostViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.mysocialproject.ui.feature.bottomdialogai.PromptDialogVoice
+import com.example.mysocialproject.ui.feature.chat.FriendListprivateBottomSheet
+import com.example.mysocialproject.ui.feature.repository.PostRepository
+import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
 import rm.com.audiowave.OnProgressListener
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.util.UUID
 
-private const val TAG = "RecordFragment"
+@RequiresApi(Build.VERSION_CODES.O)
+class RecordFragment : Fragment() {
 
-@AndroidEntryPoint
-class RecordFragment : BaseFragment<FragmentRecordBinding>() {
-    private val postViewModel: PostViewModel by viewModels()
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_record
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val audioFileName = UUID.randomUUID().toString() + ".aac"
-        fileName = File(requireActivity().externalCacheDir, audioFileName).absolutePath
-        requestPermissions()
-        mediaPlayer = MediaPlayer()
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
-        //record
-        mViewBinding.btnGroupLayout.buttonCapture.setOnClickListener {
-            val vibrator = requireContext().getSystemService(Vibrator::class.java)
-            if (vibrator?.hasAmplitudeControl() == true) {
-                val vibrationEffect = VibrationEffect.createOneShot(
-                    30,
-                    VibrationEffect.EFFECT_TICK
-                )
-                vibrator.vibrate(vibrationEffect)
-            } else {
-
-                vibrator?.vibrate(30)
-            }
-            toggleRecording()
-        }
-
-        mViewBinding.play.apply {
-            text = "Ghi âm"
-
-            if (isEnabled == false) {
-                backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gray_light)
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            }
-
-            setOnClickListener {
-                val vibrator = requireContext().getSystemService(Vibrator::class.java)
-                if (vibrator?.hasAmplitudeControl() == true) {
-                    val vibrationEffect = VibrationEffect.createOneShot(
-                        40,
-                        VibrationEffect.EFFECT_TICK
-                    )
-                    vibrator.vibrate(vibrationEffect)
-                } else {
-
-                    vibrator?.vibrate(40)
-                }
-                if (!isPlaying) {
-                    playAudio(fileName)
-                    text = "Dừng"
-                } else {
-                    stopPlaying()
-                    text = "Phát"
-                }
-            }
-        }
-
-        setupWaveformView()
-
-        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is PostResult.Success -> {
-                    resetVoiceRecording()
-                }
-
-                else -> {
-                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-        mViewBinding.btnGroupLayout.btnLeft.setOnClickListener {
-            resetVoiceRecording()
-        }
-
-        ///tom tat ghi am
-//        mViewBinding.btnGroupLayout.btnGenativeAI.setOnClickListener {
-//            val dialog = PromptDialogVoice(prompt)
-//            dialog.show(childFragmentManager, "prompt_dialog")
-//            Log.d("TAGYyyyyyyyyyyyyyyyyyyyy", "onViewCreated: $prompt")
-//            postViewModel.contentvoice.observe(viewLifecycleOwner) { content ->
-//                mViewBinding.edt1.setText(content ?: "")
-//            }
-//        }
-        postAudio()
-    }
-
+    lateinit var binding: FragmentRecordBinding
     private var isRecording: Boolean = false
     private var isPlaying: Boolean = false
     private lateinit var fileName: String
     private lateinit var mediaRecorder: MediaRecorder
-
-    //    private lateinit var postViewModel: PostViewModel
+    private lateinit var postViewModel: PostViewModel
     private lateinit var mediaPlayer: MediaPlayer
     private val RECORDING_MEDIA_RECORDER_MAX_DURATION = 60000
     private lateinit var countDownTimer: CountDownTimer
@@ -158,10 +71,10 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
                 }
             }
             if (!permissionGranted) {
-                mViewBinding.play.text = getString(R.string.txt_record)
+                binding.play.text = "Ghi âm"
                 Toast.makeText(
                     context,
-                    getString(R.string.txt_request_record),
+                    "Yêu cầu cấp quyền thu âm, vào cài đặt ứng dụng để cấp quyền!",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -208,19 +121,20 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
             Log.e("SpeechRecognizer", "Lỗi: $errorMessage")
         }
 
+
         override fun onResults(results: Bundle?) {
             Log.d("SpeechRecognizer", "onResults called")
             val recognizedText =
                 results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0) ?: ""
             prompt = recognizedText
             if (prompt != "") {
-                mViewBinding.btnGroupLayout.btnGenativeAI.visibility = View.VISIBLE
+                binding.btnGenativeAI.visibility = View.VISIBLE
             }
-//            postViewModel.genarateTemp(recognizedText)
-//            postViewModel.recognizedText.observe(viewLifecycleOwner){
-//                binding.edt1.setText(it)
-//                Log.d("SpeechRecognizer", "Prompt nhận đc: $it")
-//            }
+            postViewModel.genarateTemp(recognizedText)
+            postViewModel.recognizedText.observe(viewLifecycleOwner) {
+                binding.edt1.setText(it)
+                Log.d("SpeechRecognizer", "Prompt nhận đc: $it")
+            }
 
             Log.d("SpeechRecognizer", "Văn bản được nhận diện: $recognizedText")
             Log.d("SpeechRecognizer", "Prompt nhận đc: $prompt")
@@ -241,42 +155,138 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
     }
 
     private fun setupSpeechRecognizer() {
+
         speechRecognizer.setRecognitionListener(recognitionListener)
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_record, container, false)
+        postViewModel = ViewModelProvider(requireActivity()).get(PostViewModel::class.java)
+        requestPermissions()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val audioFileName = UUID.randomUUID().toString() + ".aac"
+        fileName = File(requireActivity().externalCacheDir, audioFileName).absolutePath
+        requestPermissions()
+        mediaPlayer = MediaPlayer()
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
+
+        //record
+        binding.btnrecord.setOnClickListener {
+            val vibrator = requireContext().getSystemService(Vibrator::class.java)
+            if (vibrator?.hasAmplitudeControl() == true) {
+                val vibrationEffect = VibrationEffect.createOneShot(
+                    30, VibrationEffect.EFFECT_TICK
+                )
+                vibrator.vibrate(vibrationEffect)
+            } else {
+
+                vibrator?.vibrate(30)
+            }
+            toggleRecording()
+        }
+
+
+        binding.play.apply {
+            text = "Ghi âm"
+
+            if (isEnabled == false) {
+                backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.dark)
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+
+            binding.play.setOnClickListener {
+                val vibrator = requireContext().getSystemService(Vibrator::class.java)
+                if (vibrator?.hasAmplitudeControl() == true) {
+                    val vibrationEffect = VibrationEffect.createOneShot(
+                        40, VibrationEffect.EFFECT_TICK
+                    )
+                    vibrator.vibrate(vibrationEffect)
+                } else {
+
+                    vibrator?.vibrate(40)
+                }
+                if (!isPlaying) {
+                    playAudio(fileName)
+                    binding.play.text = "Dừng"
+                } else {
+                    stopPlaying()
+                    binding.play.text = "Phát"
+                }
+            }
+        }
+
+
+
+        setupWaveformView()
+
+
+
+
+        postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is PostRepository.PostResult.Success -> {
+                    resetVoiceRecording()
+                }
+
+                else -> {
+                    Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+        binding.btnLeft.setOnClickListener {
+            resetVoiceRecording()
+        }
+
+        ///tom tat ghi am
+        binding.btnGenativeAI.setOnClickListener {
+            val dialog = PromptDialogVoice(prompt)
+            dialog.show(childFragmentManager, "prompt_dialog")
+            Log.d("TAGYyyyyyyyyyyyyyyyyyyyy", "onViewCreated: $prompt")
+            postViewModel.contentvoice.observe(viewLifecycleOwner) { content ->
+                binding.edt1.setText(content ?: "")
+            }
+        }
+        postAudio()
+    }
+
+
     //reset ghi am
     private fun resetVoiceRecording() {
+
         val audioFile = File(fileName)
         if (audioFile.exists()) {
             audioFile.delete()
         }
-        mViewBinding.wave.setRawData(ByteArray(0))
+        binding.wave.setRawData(ByteArray(0))
         isRecording = false
         isPlaying = false
-        mViewBinding.play.apply {
+        binding.play.apply {
             text = "Ghi âm"
             isEnabled = false
         }
         mediaPlayer.release()
-        mViewBinding.apply {
-            wave.progress = 0f
-            tvTimer.text = "00:59"
-            edt1.text.clear()
-        }
-        mViewBinding.btnGroupLayout.apply {
-            btnLeft.visibility = View.INVISIBLE
-            btnPost.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            btnGenativeAI.visibility = View.INVISIBLE
-            buttonCapture.visibility = View.VISIBLE
-        }
-
+        binding.wave.progress = 0f
+        binding.tvTimer.text = "00:59"
+        binding.edt1.text.clear()
+        binding.btnLeft.visibility = View.INVISIBLE
+        binding.btnPost.visibility = View.GONE
+        binding.btnrecord.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.btnGenativeAI.visibility = View.INVISIBLE
         speechRecognizer.destroy()
-//        postViewModel.clearContentvoice()
-//        postViewModel.clearContentemp()
+        postViewModel.clearContentvoice()
+        postViewModel.clearContentemp()
         setupSpeechRecognizer()
     }
 
-    private fun requestRecordPermission() {
+    private fun capquyencam() {
         val dialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
         dialog.setTitle("Bật quyền truy cập Micro")
             .setMessage("Đến cài đặt ứng dụng và đảm bảo SnapMoment có quyền truy cập micro của bạn")
@@ -287,17 +297,15 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
                     data = Uri.fromParts("package", requireActivity().packageName, null)
                 }
                 startActivity(intent)
-            }
-            .setNegativeButton("HỦY") { dialog, _ ->
+            }.setNegativeButton("HỦY") { dialog, _ ->
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     private fun toggleRecording() {
 
         if (!allPermissionsGranted()) {
-            requestRecordPermission()
+            capquyencam()
         } else {
             if (!isRecording) {
                 startRecording()
@@ -307,30 +315,30 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
                         interpolator = DecelerateInterpolator()
                         addUpdateListener { valueAnimator ->
                             val scale = valueAnimator.animatedValue as Float
-                            mViewBinding.btnGroupLayout.buttonCapture.scaleX = scale
-                            mViewBinding.btnGroupLayout.buttonCapture.scaleY = scale
+                            binding.btnrecord.scaleX = scale
+                            binding.btnrecord.scaleY = scale
                         }
                     }
 
                 scaleDownAnimator.addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        mViewBinding.btnGroupLayout.buttonCapture.setImageResource(R.drawable.ic_square)
-                        mViewBinding.btnGroupLayout.buttonCapture.setBackgroundResource(R.drawable.whitering)
+                        binding.btnrecord.setImageResource(R.drawable.ic_squre)
+                        binding.btnrecord.setBackgroundResource(R.drawable.whitering)
                     }
                 })
 
 
                 scaleDownAnimator.start()
 
-                mViewBinding.play.text = "Đang ghi âm"
-                mViewBinding.play.isEnabled = false
+                binding.play.text = "Đang ghi âm"
+                binding.play.isEnabled = false
             } else {
                 stopRecording()
-                mViewBinding.btnGroupLayout.buttonCapture.scaleX = 1f
-                mViewBinding.btnGroupLayout.buttonCapture.scaleY = 1f
-                mViewBinding.btnGroupLayout.buttonCapture.setImageResource(R.drawable.ic_dot)
-                mViewBinding.btnGroupLayout.buttonCapture.setBackgroundResource(R.drawable.bg_corner_blue_radius)
-                mViewBinding.play.text = "Phát"
+                binding.btnrecord.scaleX = 1f
+                binding.btnrecord.scaleY = 1f
+                binding.btnrecord.setImageResource(R.drawable.ic_circle)
+                binding.btnrecord.setBackgroundResource(R.drawable.cornerradius)
+                binding.play.text = "Phát"
             }
         }
 
@@ -341,12 +349,10 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
 
         val recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
             )
             putStringArrayListExtra(
-                RecognizerIntent.EXTRA_SUPPORTED_LANGUAGES,
-                arrayListOf("vi-VN", "en-US")
+                RecognizerIntent.EXTRA_SUPPORTED_LANGUAGES, arrayListOf("vi-VN", "en-US")
             )
             putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE, Uri.fromFile(File(filename)))
         }
@@ -378,10 +384,11 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
             }
         } else {
             requestPermissions()
-            requestRecordPermission()
+            capquyencam()
         }
     }
 
+    ////
     private fun stopRecording() {
         mediaRecorder.apply {
 
@@ -395,19 +402,20 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
         mediaRecorder = MediaRecorder()
 
         countDownTimer.cancel()
-        mViewBinding.tvTimer.text = "$totalTimer"
+        binding.tvTimer.text = "$totalTimer"
         displayWaveform(fileName)
         Log.d("TAGY", "$fileName")
 
-        mViewBinding.btnGroupLayout.buttonCapture.visibility = View.GONE
-        mViewBinding.btnGroupLayout.btnPost.visibility = View.VISIBLE
-        mViewBinding.btnGroupLayout.btnLeft.visibility = View.VISIBLE
+        binding.btnrecord.visibility = View.GONE
+        binding.btnPost.visibility = View.VISIBLE
+        binding.btnLeft.visibility = View.VISIBLE
 
         Handler(Looper.getMainLooper()).postDelayed({
-            mViewBinding.play.isEnabled = true
+            binding.play.isEnabled = true
         }, 100)
 
     }
+
 
     //hien thi progress
     private val updateWaveform = object : Runnable {
@@ -416,7 +424,7 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
                 if (isPlaying) {
                     val progress = (player.currentPosition.toFloat() / player.duration) * 100
                     Log.d("TAGY", "$progress , $player.duration")
-                    mViewBinding.wave.progress = progress
+                    binding.wave.progress = progress
                     handler.postDelayed(this, 1) // Update every 50ms for smooth animation
                 }
             }
@@ -444,11 +452,11 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
 
     private fun stopPlaying() {
         mediaPlayer.stop()
-        mViewBinding.play.text = "Phát"
+        binding.play.text = "Phát"
         isPlaying = false
         speechRecognizer.stopListening()
         handler.removeCallbacks(updateWaveform)
-        mViewBinding.wave.progress = 0f
+        binding.wave.progress = 0f
         mediaPlayer.reset()
         mediaPlayer.release()
     }
@@ -468,7 +476,7 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
 
     //way
     private fun setupWaveformView() {
-        mViewBinding.wave.onProgressListener = object : OnProgressListener {
+        binding.wave.onProgressListener = object : OnProgressListener {
             override fun onProgressChanged(progress: Float, byUser: Boolean) {
                 Log.d("TAGY", "Progress set: $progress, and it's $byUser that user did this")
                 if (byUser && isPlaying) {
@@ -507,26 +515,27 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
                     val minutes = seconds / 60
                     val remainingSeconds = seconds % 60
                     val sd = millisUntilFinished / 1000
-                    mViewBinding.tvTimer.text = String.format("%02d:%02d", minutes, sd % 60)
+                    binding.tvTimer.text = String.format("%02d:%02d", minutes, sd % 60)
                     totalTimer = String.format("%02d:%02d", minutes, remainingSeconds)
                 }
 
                 override fun onFinish() {
                     if (isRecording) {
                         stopRecording()
-                        mViewBinding.play.text = "phát"
+                        binding.play.text = "phát"
                     }
                 }
 
             }.start()
     }
 
+
     private fun displayWaveform(audioFilePath: String) {
         try {
             val inputStream = FileInputStream(audioFilePath)
             val audioData = inputStream.readBytes()
 
-            mViewBinding.wave.setRawData(audioData)
+            binding.wave.setRawData(audioData)
 
             Log.d("TAGY", "Waveform ok")
             Log.d("TAGY", "$fileName")
@@ -537,56 +546,29 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>() {
 
     ///dang baiiii
     private fun postAudio() {
-        mViewBinding.btnGroupLayout.btnPost.setOnClickListener {
-            mViewBinding.btnGroupLayout.btnPost.isEnabled = false
-            mViewBinding.btnGroupLayout.btnLeft.visibility = View.INVISIBLE
-            mViewBinding.btnGroupLayout.btnPost.visibility = View.GONE
-            mViewBinding.btnGroupLayout.progressBar.visibility = View.VISIBLE
+        binding.btnPost.setOnClickListener {
+            binding.btnPost.isEnabled = false
+            binding.btnLeft.visibility = View.INVISIBLE
+            binding.btnPost.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
 
             val fileUri = FileProvider.getUriForFile(
-                requireContext(),
-                "${requireContext().packageName}.fileprovider",
-                File(fileName)
+                requireContext(), "${requireContext().packageName}.fileprovider", File(fileName)
             )
 
-        postViewModel.addPost(fileUri, mViewBinding.edt1.text.toString(), false)
-            postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
-                when (result) {
-                    is PostResult.Success -> {
-                        // Nếu thành công, điều hướng đến PostFragment
-                        val direction = HomeFragmentDirections.actionHomeFragmentToPostFragment()
-                        findNavController().navigate(direction)
-
-                        // Khôi phục giao diện
-                        mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
-                    }
-
-                    is PostResult.Failure -> {
-                        // Nếu thất bại, hiển thị thông báo lỗi
-                        Toast.makeText(context, "Error: ${result.error}", Toast.LENGTH_SHORT).show()
-
-                        // Khôi phục giao diện
-                        mViewBinding.btnGroupLayout.progressBar.visibility = View.GONE
-                        mViewBinding.btnGroupLayout.btnPost.isEnabled = true
-                        mViewBinding.btnGroupLayout.btnLeft.visibility = View.VISIBLE
-                        mViewBinding.btnGroupLayout.btnPost.visibility = View.VISIBLE
-                    }
-                }
-            }
+            postViewModel.addPost(fileUri, binding.edt1.text.toString(), false)
         }
-        mViewBinding.btnGroupLayout.btnPost.setOnLongClickListener {
+        binding.btnPost.setOnLongClickListener {
             val vibrator = requireContext().getSystemService(Vibrator::class.java)
             vibrator?.vibrate(50)
 
-            val content = mViewBinding.edt1.text.toString()
+            val content = binding.edt1.text.toString()
 
             val fileUri = FileProvider.getUriForFile(
-                requireContext(),
-                "${requireContext().packageName}.fileprovider",
-                File(fileName)
+                requireContext(), "${requireContext().packageName}.fileprovider", File(fileName)
             )
-//            val bottomSheet = FriendListprivateBottomSheet(null,fileUri , content)
-//            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+            val bottomSheet = FriendListprivateBottomSheet(null, fileUri, content)
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
             true
         }
     }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/key"
+    android:layout_margin="40dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:background="@drawable/bg_dialog">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvtUserPost"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:padding="3dp"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:strokeColor="@color/key"
+            app:strokeWidth="3dp" />
+
+        <TextView
+            android:id="@+id/name_frRequets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User1"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_send_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="@color/color_active"
+                android:gravity="center"
+                android:text="Thêm bạn bè"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="invisible"
+                android:indeterminateTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_send"
+                app:layout_constraintEnd_toEndOf="@+id/btn_send"
+                app:layout_constraintStart_toStartOf="@+id/btn_send"
+                app:layout_constraintTop_toTopOf="@+id/btn_send" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_gray"
+        android:gravity="center"
+        android:text="Hủy"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+</layout>

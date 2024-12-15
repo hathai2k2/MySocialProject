@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="chat"
+            type="com.example.mysocialproject.ui.feature.model.Message" />
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp">
+
+        <TextView
+            android:id="@+id/tvCreatedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Created At"
+            android:textSize="12sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/voice_cmt"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="10dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="4dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/edittextbd10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreatedAt">
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="14dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/avtuser"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:strokeColor="@color/key"
+                    app:strokeWidth="3dp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/play"
+                    android:layout_width="85dp"
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/black"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="phát"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+
+            <rm.com.audiowave.AudioWaveView
+                android:id="@+id/wave"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="14dp"
+                app:animateExpansion="false"
+                app:chunkHeight="24dp"
+                app:chunkRadius="2dp"
+                app:chunkSpacing="1dp"
+                app:chunkWidth="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear"
+                app:minChunkHeight="2dp"
+                app:progress="0"
+                app:touchable="true"
+                app:waveColor="@color/dark" />
+
+            <TextView
+                android:id="@+id/txtcontent"
+                android:layout_width="0dp"
+                android:backgroundTint="#4B101010"
+                android:background="@drawable/corner_radius_16dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="6dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginHorizontal="20dp"
+                android:maxLength="100"
+                android:layout_marginBottom="10dp"
+                android:maxLines="3"
+                android:text="@{chat.content}"
+                android:textColor="@color/white"
+                android:textSize="14.56sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/wave"/>
+
+            <TextView
+                android:id="@+id/txttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtcontent"
+                android:textSize="14sp"
+                android:textColor="@color/dark"
+                android:text="@{chat.timestamp}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/comment"
+            android:visibility="gone"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/voice_cmt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageViewPost"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/rounded_corner" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avtpost"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:padding="3dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="@+id/imageViewPost"
+                app:layout_constraintTop_toTopOf="@+id/imageViewPost"
+                app:shapeAppearanceOverlay="@style/circle"
+                app:strokeColor="@color/key"
+                app:strokeWidth="3dp" />
+
+            <TextView
+                android:id="@+id/time_Img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="6dp"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewPost"
+                app:layout_constraintTop_toTopOf="@+id/imageViewPost"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="@{chat.timestamp}" />
+
+            <TextView
+                android:id="@+id/tv_Desc_Post"
+                android:layout_width="0dp"
+                android:backgroundTint="#4B101010"
+                android:background="@drawable/corner_radius_16dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginHorizontal="20dp"
+                android:maxLength="100"
+                android:layout_marginBottom="10dp"
+                android:maxLines="3"
+                android:text="@{chat.content}"
+                android:textColor="@color/white"
+                android:textSize="14.56sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewPost" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/message_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/comment"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avt_request"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:padding="3dp"
+                android:layout_gravity="top"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/circle"
+                app:strokeColor="#E6737373"
+                app:strokeWidth="3dp" />
+
+
+
+            <TextView
+                android:id="@+id/messagetxt"
+                android:layout_marginStart="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/txt_gray"
+                android:background="@drawable/edittextbd10dp"
+                android:text="@{chat.message}"
+                android:textSize="16sp"
+                android:textFontWeight="300"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+
+
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_chat"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            app:shimmer_duration="600"
+            app:shimmer_repeat_mode="restart"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/comment"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <TextView
+                android:layout_marginStart="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:backgroundTint="@color/bg_input"
+                android:background="@drawable/edittextbd10dp"
+                android:text="..."
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textFontWeight="800"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/subCreateAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Created At"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="40dp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/message_layout"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/message_layout"/>
+
+        <TextView
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/message_layout"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/subCreateAt"/>
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="messageVmdol"
+            type="com.example.mysocialproject.ui.feature.viewmodel.MessageViewModel" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".chat.ItemChatActivity">
+
+    <LinearLayout
+        android:id="@+id/linearheader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="4dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:backgroundTint="@color/colorbtnctive"
+            android:background="@drawable/edittextbd10dp"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_back" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avt_request"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="10dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:strokeColor="#E6737373"
+            app:strokeWidth="3dp" />
+        <TextView
+            android:id="@+id/namefr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user 1"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2" />
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_fromchat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearheader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_rounded_input_field"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_marginStart="6dp"
+            android:inputType="textMultiLine"
+            android:imeOptions="actionDone"
+            android:layout_marginEnd="10dp"
+            android:text="@={messageVmdol.messagesend}"
+            android:textStyle="bold"
+            android:paddingHorizontal="20dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/white"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="53dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:enabled="false"
+            android:textColor="@color/white"
+            android:text="Gửi"
+            app:backgroundTint="@color/blue"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

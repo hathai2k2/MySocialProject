@@ -1,12 +1,10 @@
-package com.example.mysocialproject.service.notification
-
 import android.util.Base64
 import android.util.Log
-import com.example.mysocialproject.model.LikeData
-import com.example.mysocialproject.model.LikeStatus
-import com.example.mysocialproject.model.MessageData
-import com.example.mysocialproject.model.MessageStatus
-import com.example.mysocialproject.model.UserData
+import com.example.mysocialproject.ui.feature.model.Like
+import com.example.mysocialproject.ui.feature.model.LikeStatus
+import com.example.mysocialproject.ui.feature.model.Message
+import com.example.mysocialproject.ui.feature.model.MessageStatus
+import com.example.mysocialproject.ui.feature.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,7 +28,7 @@ class NotificationRepository {
     private val repositoryScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Main) // CoroutineScope riêng cho Repository
 
-    fun getMessagesFromFriends(): Flow<List<MessageData>> = callbackFlow {
+    fun getMessagesFromFriends(): Flow<List<Message>> = callbackFlow {
         val listenerRegistration = fireStore.collection("messages")
             .whereEqualTo("receiverId", userId)
             .whereEqualTo("status", MessageStatus.SENT.name)
@@ -40,13 +38,18 @@ class NotificationRepository {
                     close(exception)
                     return@addSnapshotListener
                 }
-                val messages = snapshot?.toObjects(MessageData::class.java) ?: emptyList()
+                val messages = snapshot?.toObjects(Message::class.java) ?: emptyList()
                 val decodedMessages = messages.map { message ->
                     try {
-                        val decodedMessage = String(Base64.decode(message.message, Base64.NO_WRAP), Charsets.UTF_8)
+                        val decodedMessage =
+                            String(Base64.decode(message.message, Base64.NO_WRAP), Charsets.UTF_8)
                         message.copy(message = decodedMessage)
                     } catch (e: IllegalArgumentException) {
-                        Log.e("MessageDecodeError", "Failed to decode message ID: ${message.messageId}, message: ${message.message}", e)
+                        Log.e(
+                            "MessageDecodeError",
+                            "Failed to decode message ID: ${message.messageId}, message: ${message.message}",
+                            e
+                        )
                         message
                     }
                 }
@@ -55,14 +58,17 @@ class NotificationRepository {
         awaitClose { listenerRegistration.remove() }
     }
 
-    fun listenForLatestMessage(callback: (MessageData?, UserData?) -> Unit) {
+    fun listenForLatestMessage(callback: (Message?, User?) -> Unit) {
         listenJob?.cancel()
         listenJob = repositoryScope.launch {
             getMessagesFromFriends()
                 .collect { messages ->
                     val latestMessage = messages.maxByOrNull { it.createdAt.toString() }
                     if (latestMessage?.status == MessageStatus.SENT) {
-                        Log.d("NotificationRepository", "listenForLatestMessage: latestMessage = $latestMessage")
+                        Log.d(
+                            "NotificationRepository",
+                            "listenForLatestMessage: latestMessage = $latestMessage"
+                        )
                         val sender = getSenderInfo(latestMessage.senderId ?: "")
                         callback(latestMessage, sender)
                         updateMessageStatus(latestMessage.senderId!!, MessageStatus.DELIVERED)
@@ -86,10 +92,10 @@ class NotificationRepository {
         }
     }
 
-    suspend fun getSenderInfo(senderId: String): UserData? {
+    suspend fun getSenderInfo(senderId: String): User? {
         return try {
             fireStore.collection("users").document(senderId).get().await()
-                .toObject(UserData::class.java)
+                .toObject(User::class.java)
         } catch (e: Exception) {
             Log.e("NotificationRepository", "Error fetching sender info", e)
             null
@@ -97,7 +103,7 @@ class NotificationRepository {
     }
 
 
-    fun listenForNewLikes(callback: (LikeData, UserData) -> Unit) {
+    fun listenForNewLikes(callback: (Like, User) -> Unit) {
         fireStore.collection("likes")
             .whereEqualTo("ownerId", userId)
             .whereEqualTo("status", LikeStatus.NEW.name)
@@ -112,13 +118,16 @@ class NotificationRepository {
                 if (snapshot != null) {
                     for (documentChange in snapshot.documentChanges) {
                         if (documentChange.type == DocumentChange.Type.ADDED) {
-                            val like = documentChange.document.toObject(LikeData::class.java)
+                            val like = documentChange.document.toObject(Like::class.java)
                             repositoryScope.launch {
                                 val user = getUserlike(like.userId)
                                 if (user != null) {
                                     Log.e("NotificationRepository", "Listen failed: ${user} $like")
                                     callback(like, user)
-                                    documentChange.document.reference.update("status", LikeStatus.NOTIFIED.name).await()
+                                    documentChange.document.reference.update(
+                                        "status",
+                                        LikeStatus.NOTIFIED.name
+                                    ).await()
                                 }
                             }
                         }
@@ -127,9 +136,9 @@ class NotificationRepository {
             }
     }
 
-    private suspend fun getUserlike(userId: String): UserData? {
+    private suspend fun getUserlike(userId: String): User? {
         return try {
-            fireStore.collection("users").document(userId).get().await().toObject(UserData::class.java)
+            fireStore.collection("users").document(userId).get().await().toObject(User::class.java)
         } catch (e: Exception) {
             Log.e("NotificationRepository", "Error fetching user: ${e.message}")
             null

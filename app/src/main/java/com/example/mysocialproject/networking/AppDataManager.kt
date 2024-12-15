@@ -9,9 +9,9 @@ import com.example.mysocialproject.model.PostResult
 import com.example.mysocialproject.model.UserData
 import com.example.mysocialproject.networking.pref.PrefHelper
 import com.example.mysocialproject.networking.repository.FriendRepository
-import com.example.mysocialproject.networking.repository.MessageRepository
 import com.example.mysocialproject.networking.repository.PostRepository
 import com.example.mysocialproject.networking.repository.UserRepository
+import com.example.mysocialproject.ui.feature.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +21,6 @@ class AppDataManager @Inject constructor(
     private val sharePreference: PrefHelper,
     private val userRepo: UserRepository,
     private val postRepo: PostRepository,
-    private val messageRepo: MessageRepository,
     private val friendRepository: FriendRepository,
 ) : AppDataHelper {
     override suspend fun setUserId(id: String?) {
@@ -41,12 +40,21 @@ class AppDataManager @Inject constructor(
         return userRepo.signUp(email, password)
     }
 
-    override suspend fun signIn(email: String, password: String): Result<Boolean> {
-        return userRepo.signIn(email, password)
+    override suspend fun createAvtandNameUser(imageUri: Uri, name: String): Result<Boolean> {
+        return userRepo.createAvtandNameUser(imageUri, name)
     }
+
+    override suspend fun login(email: String, password: String): Result<Boolean> {
+        return userRepo.login(email, password)
+    }
+
 
     override suspend fun forgotPassword(email: String): Result<Boolean> {
         return userRepo.forgotPassword(email)
+    }
+
+    override suspend fun updateUserAvatarInPosts(userId: String, newAvatarUrl: String) {
+        return updateUserNameInPosts(userId, newAvatarUrl)
     }
 
     override fun isUserLoggedIn(): Boolean {
@@ -57,6 +65,14 @@ class AppDataManager @Inject constructor(
         return userRepo.isAdmin()
     }
 
+    override suspend fun getInfoUser():Result<User> {
+        return userRepo.getInfoUser()
+    }
+
+    override fun getCurrentUid(): String {
+        return userRepo.getCurrentUid()
+    }
+
     override fun logout() {
         return userRepo.logout()
     }
@@ -65,13 +81,10 @@ class AppDataManager @Inject constructor(
         return userRepo.updateAvatar(imageUri)
     }
 
-    override suspend fun createProfile(imageUri: Uri, name: String): Result<Boolean> {
-        return userRepo.createProfile(imageUri, name)
+    override suspend fun updateUserNameInPosts(userId: String, newName: String) {
+        return userRepo.updateUserAvatarInPosts(userId, newName)
     }
 
-    override suspend fun getInfoUser(): Result<UserData> {
-        return userRepo.getInfoUser()
-    }
 
     override suspend fun updateName(newName: String): Result<Boolean> {
         return userRepo.updateName(newName)
@@ -81,17 +94,6 @@ class AppDataManager @Inject constructor(
         return userRepo.updatePassword(newPassword)
     }
 
-    override suspend fun checkIfUserFieldsEmpty(userId: String): Boolean {
-        return userRepo.checkIfUserFieldsEmpty(userId)
-    }
-
-    override suspend fun LogData(userId: String): String {
-        return userRepo.LogData(userId)
-    }
-
-    override fun getCurrentId(): String {
-        return userRepo.getCurrentId()
-    }
 
     override suspend fun deleteAccount(): Result<Boolean> {
         return userRepo.deleteAccount()
@@ -119,7 +121,7 @@ class AppDataManager @Inject constructor(
         userName: String,
         userAvt: Uri
     ): Task<ShortDynamicLink> {
-       return friendRepository.createFriendRequestLink(userId, userName, userAvt)
+        return friendRepository.createFriendRequestLink(userId, userName, userAvt)
     }
 
     override suspend fun createDynamicLink(): String {
@@ -127,7 +129,7 @@ class AppDataManager @Inject constructor(
     }
 
     override fun handleDynamicLink(intent: Intent, callback: (String?) -> Unit) {
-        return friendRepository.handleDynamicLink(intent,callback)
+        return friendRepository.handleDynamicLink(intent, callback)
     }
 
     override suspend fun getAvatarUserSendLink(userId: String?): Pair<String?, String?> {
@@ -139,25 +141,25 @@ class AppDataManager @Inject constructor(
     }
 
     override fun getFriendships(callback: (Result<MutableList<FriendshipData>?>) -> Unit) {
-        return friendRepository.getFriendships { callback-> }
+        return friendRepository.getFriendships { callback -> }
     }
 
     override suspend fun updateStateFriendship(
         state: String,
         friendshipId: String
     ): Result<FriendshipData?> {
-        return friendRepository.updateStateFriendship(state,friendshipId)
+        return friendRepository.updateStateFriendship(state, friendshipId)
     }
 
     override fun getFriendAccepted(
         onSuccess: (MutableList<UserData>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        return friendRepository.getFriendAccepted(onSuccess,onFailure)
+        return friendRepository.getFriendAccepted(onSuccess, onFailure)
     }
 
     override suspend fun removeFriend(friendId: String, position: Int): Result<Unit> {
-        return friendRepository.removeFriend(friendId,position)
+        return friendRepository.removeFriend(friendId, position)
     }
 
     override suspend fun getFriendId(position: Int): Triple<String?, String?, String?>? {

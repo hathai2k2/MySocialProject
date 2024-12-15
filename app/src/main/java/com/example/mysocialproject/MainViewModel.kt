@@ -37,8 +37,8 @@ class MainViewModel @Inject constructor(
     fun logUserData() {
         viewModelScope.launch {
             appDataHelper.getUserId()?.let { userId ->
-                val user = appDataHelper.LogData(userId)
-                Log.d("TAG", "show: $user")
+//                val user = appDataHelper.LogData(userId)
+//                Log.d("TAG", "show: $user")
             }
         }
     }

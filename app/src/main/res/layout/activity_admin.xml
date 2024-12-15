@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Admin.AdminActivity">
+
+        <HorizontalScrollView
+            android:id="@+id/layout_btn"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/subkey"
+                    android:text="Đăng xuất"
+                    android:textColor="@color/white" />
+
+
+
+                <Button
+                    android:id="@+id/btn_goAppAnalytics"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/subkey"
+                    android:text="Tải ứng dụng Analytics"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btn_goweb"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/subkey"
+                    android:text="Mở Analytics"
+                    android:textColor="@color/white" />
+
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_btn" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/bg_shape"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabBackground="@drawable/tabs_selector"
+            app:tabGravity="center"
+            app:tabIconTintMode="@color/white"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@android:color/transparent">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh sách người dùng" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh sách Bài đăng" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

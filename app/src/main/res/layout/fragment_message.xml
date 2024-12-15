@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.mysocialproject.ui.feature.chat.MessageViewModel" />
+            type="com.example.mysocialproject.ui.feature.viewmodel.MessageViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

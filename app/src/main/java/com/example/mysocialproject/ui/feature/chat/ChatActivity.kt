@@ -1,52 +1,105 @@
 package com.example.mysocialproject.ui.feature.chat
 
+import android.app.ActivityOptions
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mysocialproject.BR
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ActivityChatBinding
-import com.example.mysocialproject.extension.onSingleClick
-import com.example.mysocialproject.ui.base.BaseActivityWithViewModel
-
-class ChatActivity : BaseActivityWithViewModel<ActivityChatBinding, ChatViewModel>() {
-    override fun getLayoutId() = R.layout.activity_chat
-    override fun getViewModelClass(): Class<ChatViewModel> {
-        return ChatViewModel::class.java
-    }
-
-    override fun getBindingVariable(): Int {
-        return BR.viewModel
-    }
+import com.example.mysocialproject.ui.feature.adapter.friendlist_chatAdapter
+import com.example.mysocialproject.ui.feature.home.CreatePostActivity
+import com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel
+import com.example.mysocialproject.ui.feature.viewmodel.MessageViewModel
 
 
-    private var chatAdapter: ChatAdapter? = null
+class ChatActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityChatBinding
+    private lateinit var friendsAdapter: friendlist_chatAdapter
+    private val messageViewModel: MessageViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_chat)
+        binding.lifecycleOwner = this
 
-        mViewBinding.appHeader.onClickLeftIcon {
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        }
-        mViewBinding.rcvUser.apply {
-            layoutManager = LinearLayoutManager(this@ChatActivity)
-            adapter = ChatAdapter(emptyList(), onCLick = {})
-            adapter = chatAdapter
+        friendsAdapter = friendlist_chatAdapter(
+            this,
+            listOf(),
+            mapOf(),
+            onGetIdfriend = { userId, nameUser, avatarUser ->
+                openChatWithFriend(userId, nameUser, avatarUser)
+            },
+            updatestate = { userId -> messageViewModel.updateMessagesToSeen(userId) },
+            messageViewModel
+        )
+        binding.recyclerView.adapter = friendsAdapter
+
+
+        messageViewModel.friendsWithMessages.observe(this, Observer { friendsAndMessages ->
+            val (friends, lastMessages) = friendsAndMessages
+            friendsAdapter.updateFriends(friends, lastMessages)
+            friendsAdapter.notifyDataSetChanged()
+        })
+        messageViewModel.fetchFriendsWithLastMessages()
+
+
+        binding.chatbot.setOnClickListener {
+            val intent = Intent(this, ItemChatActivity::class.java).apply {
+                putExtra("FRIEND_ID", "Gemini")
+                putExtra("FRIEND_NAME", "")
+                putExtra("FRIEND_AVATAR", "")
+            }
+            startActivity(intent)
         }
 
-        mViewModel.listUser.observe(this) { user ->
-            chatAdapter = ChatAdapter(user, onCLick = {
-//                val directions = ChatActivityDirections.actionGlobalMessageFragment(WallPagerChat.EK)
-//                findNavController().navigate(directions)
-            })
-            mViewBinding.rcvUser.adapter = chatAdapter
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, CreatePostActivity::class.java)
+            val options = ActivityOptions.makeCustomAnimation(
+                this,
+                R.anim.slide_in_down, R.anim.slide_out_down
+            )
+            startActivity(intent, options.toBundle())
+            finish()
         }
-        mViewBinding.ctBot.onSingleClick {
-//            val directions = ChatFragmentDirections.actionGlobalMessageFragment(WallPagerChat.NOTHING)
-//            findNavController().navigate(directions)
 
-        }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(
+                    this@ChatActivity, CreatePostActivity::class.java
+                )
+                val options = ActivityOptions.makeCustomAnimation(
+                    this@ChatActivity,
+                    R.anim.slide_in_down, R.anim.slide_out_down
+                )
+                startActivity(intent, options.toBundle())
+                finish()
+            }
+        })
+
     }
+
+    private fun openChatWithFriend(friendId: String, friendName: String, friendAvatar: String) {
+
+        val intent = Intent(this, ItemChatActivity::class.java).apply {
+            putExtra("FRIEND_ID", friendId)
+            putExtra("FRIEND_NAME", friendName)
+            putExtra("FRIEND_AVATAR", friendAvatar)
+        }
+        startActivity(intent)
+    }
+
+
 }

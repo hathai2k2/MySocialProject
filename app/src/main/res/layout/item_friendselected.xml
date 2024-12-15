@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="friend"
+            type="com.example.mysocialproject.ui.feature.model.User" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="10dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avt_request"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:strokeColor="#E6737373"
+            app:strokeWidth="3dp" />
+
+        <ProgressBar
+            android:visibility="invisible"
+           android:id="@+id/progress_bar"
+            android:layout_width="50dp"
+            android:indeterminateTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="50dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@{friend.nameUser}"
+            android:layout_marginTop="6dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/avt_request"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
