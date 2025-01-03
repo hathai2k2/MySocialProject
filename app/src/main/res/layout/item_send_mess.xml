@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -31,6 +32,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/voice_cmt"
             android:visibility="gone"
+            tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="30dp"
@@ -114,6 +116,7 @@
                 android:maxLength="100"
                 android:layout_marginBottom="10dp"
                 android:maxLines="3"
+                tools:text="content voice"
                 android:text="@{chat.content}"
                 android:textColor="@color/white"
                 android:textSize="14.56sp"
@@ -131,6 +134,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtcontent"
                 android:textSize="14sp"
+                tools:text="10:10"
                 android:textColor="@color/dark"
                 android:text="@{chat.timestamp}" />
 
@@ -144,6 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            tools:visibility="visible"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="4dp"
             app:layout_constraintDimensionRatio="H,1:1"
@@ -231,6 +236,7 @@
             android:paddingVertical="8dp"
             android:text="@{chat.message}"
             android:textColor="@color/white"
+            tools:text="abcdedd"
             android:textSize="16sp"/>
         </LinearLayout>
 
@@ -251,7 +257,7 @@
             android:id="@+id/state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="da xem"
+            android:text="đã xem"
             android:textSize="12sp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="10dp"

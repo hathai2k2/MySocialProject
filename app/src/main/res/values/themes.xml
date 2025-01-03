@@ -13,10 +13,10 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:windowDisablePreview">true</item>
-<!--        <item name="android:windowIsTranslucent">true</item>-->
         <item name="android:textSize">@dimen/txt_size_16sp</item>
         <item name="android:fontFamily">@font/mplusrounded1c_medium</item>
         <item name="android:windowBackground">@color/white</item>
+<!--        <item name="android:windowIsTranslucent">true</item>-->
 <!--        <item name="android:windowTranslucentStatus">true</item>-->
 
 
@@ -33,5 +33,10 @@
     <style name="Theme.MySocialProject.AppWidgetContainer" parent="Theme.MySocialProject.AppWidgetContainerParent">
 
         <item name="appWidgetPadding">16dp</item>
+    </style>
+
+    <style name="PostActivityTheme" parent="Base.Theme.MySocialProject">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

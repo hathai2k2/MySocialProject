@@ -5,6 +5,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,6 +26,7 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.camera.core.CameraControl
@@ -46,6 +48,7 @@ import com.example.mysocialproject.databinding.FragmentCameraBinding
 import com.example.mysocialproject.ui.feature.bottomdialogai.PromptDialog
 import com.example.mysocialproject.ui.feature.chat.FriendListprivateBottomSheet
 import com.example.mysocialproject.ui.feature.repository.PostRepository
+import com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel.Companion.REQUEST_IMAGE_GET
 import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
 import java.io.File
 import java.util.UUID
@@ -118,6 +121,11 @@ class CameraFragment : Fragment() {
             requestPermissions()
         }
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        viewBinding.btnChoose.setOnClickListener {
+            choosePhotoFromGallery()
+        }
+
         viewBinding.buttonCapture.setOnClickListener {
             val vibrator = requireContext().getSystemService(Vibrator::class.java)
             if (vibrator?.hasAmplitudeControl() == true) {
@@ -131,7 +139,7 @@ class CameraFragment : Fragment() {
                 vibrator?.vibrate(40)
             }
             val scaleDownAnimator =
-                ValueAnimator.ofFloat(0.92f, 1f).apply { // Giả sử icon ban đầu là 80dp
+                ValueAnimator.ofFloat(0.92f, 1f).apply {
                     duration = 200
                     interpolator = DecelerateInterpolator()
                     addUpdateListener { valueAnimator ->
@@ -152,8 +160,6 @@ class CameraFragment : Fragment() {
             takePhoto()
         }
 
-
-
         viewBinding.buttonSwitchCamera.setOnClickListener {
             swipcam()
         }
@@ -161,23 +167,17 @@ class CameraFragment : Fragment() {
             flash()
         }
 
-
-
-
         viewBinding.Btnnratio1x.setOnClickListener {
 
             zoom()
         }
         tabtofocus()
 
-
-        /////////////
         postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is PostRepository.PostResult.Success -> {
                     deleImg()
                 }
-
                 else -> {
                     Toast.makeText(requireContext(), "Vui lòng thử lại sau", Toast.LENGTH_SHORT)
                         .show()
@@ -218,10 +218,12 @@ class CameraFragment : Fragment() {
         viewBinding.edt1.visibility = View.GONE
         viewBinding.fncLauout.visibility = View.VISIBLE
         viewBinding.buttonCapture.visibility = View.VISIBLE
-        viewBinding.btnLeft.visibility = View.INVISIBLE
-        viewBinding.btnGenativeAI.visibility = View.INVISIBLE
+        viewBinding.btnLeft.visibility = View.GONE
+        viewBinding.btnGenativeAI.visibility = View.GONE
         viewBinding.progressBar.visibility = View.GONE
         viewBinding.brightnessSb.visibility = View.VISIBLE
+        viewBinding.btnChoose.visibility = View.VISIBLE
+        viewBinding.buttonSwitchCamera.visibility = View.VISIBLE
         postViewModel.clearContentgena()
     }
 
@@ -281,7 +283,7 @@ class CameraFragment : Fragment() {
         imageCapture?.setFlashMode(currentFlashMode)
     }
 
-    private fun capquyencam() {
+    private fun requestCameraPermission() {
         val dialog =
             androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
         dialog.setTitle("Bật quyền truy cập Máy ảnh")
@@ -302,97 +304,129 @@ class CameraFragment : Fragment() {
     }
 
     private fun takePhoto() {
-
         if (!allPermissionsGranted()) {
-            capquyencam()
+            requestCameraPermission()
         }
-
-        //imgcaptur : xem th nay dc khoi tao chua
         val imageCapture = imageCapture ?: return
-
-        val metadata = ImageCapture.Metadata().apply {
-            isReversedHorizontal = isFrontCamera()
-        }
-
-        val name = UUID.randomUUID().toString() + ".jpg"
-        val file = File(requireActivity().externalCacheDir, name)
-
-        val outputOptions =
-            ImageCapture.OutputFileOptions.Builder(file).setMetadata(metadata).build()
-
-        Log.d("TAGY", "$outputOptions")
-
+        val metadata = createImageMetadata()
+        val outputOptions = createOutputOptions(metadata)
+        Log.d("TAG", "$outputOptions")
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(requireContext().applicationContext),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-                    Log.e("TAGY", "chup fail: ${exc.message}", exc)
+                    handleImageCaptureError(exc)
                 }
-
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = output.savedUri ?: return
-                    viewBinding.imageViewCaptured.apply {
-                        visibility = View.VISIBLE
-                        viewBinding.viewFinder.visibility = View.INVISIBLE
-                        setImageURI(savedUri)
-                    }
-
-                    cameraProvider.unbindAll()
-
-                    viewBinding.apply {
-                        btnLeft.visibility = View.VISIBLE
-                        edt1.visibility = View.VISIBLE
-                        fncLauout.visibility = View.INVISIBLE
-                        btnPost.visibility = View.VISIBLE
-                        buttonCapture.visibility = View.GONE
-                        btnGenativeAI.visibility = View.VISIBLE
-                        brightnessSb.visibility = View.GONE
-                    }
-
-
-                    viewBinding.btnPost.setOnClickListener {
-                        viewBinding.btnPost.isEnabled = false
-                        viewBinding.btnLeft.visibility = View.INVISIBLE
-                        viewBinding.btnGenativeAI.visibility = View.INVISIBLE
-                        viewBinding.btnPost.visibility = View.GONE
-                        viewBinding.progressBar.visibility = View.VISIBLE
-                        val content = viewBinding.edt1.text.toString()
-
-
-
-                        postViewModel.addPost(savedUri, content, true)
-                    }
-
-
-                    viewBinding.btnPost.setOnLongClickListener {
-
-                        val vibrator = requireContext().getSystemService(Vibrator::class.java)
-                        vibrator?.vibrate(50)
-
-                        val content = viewBinding.edt1.text.toString()
-
-
-                        val bottomSheet = FriendListprivateBottomSheet(savedUri, null, content)
-                        bottomSheet.show(childFragmentManager, bottomSheet.tag)
-                        true
-                    }
-
-                    val imageBitmap = MediaStore.Images.Media.getBitmap(
-                        requireContext().contentResolver,
-                        savedUri
-                    )
-                    viewBinding.btnGenativeAI.setOnClickListener {
-                        val dialog = PromptDialog(imageBitmap)
-                        dialog.show(childFragmentManager, "prompt_dialog")
-
-                        postViewModel.contentgena.observe(viewLifecycleOwner) { content ->
-                            viewBinding.edt1.setText(content ?: "")
-                        }
-                    }
+                    handleImageSaved(output)
                 }
             }
         )
+    }
+
+    private fun createImageMetadata(): ImageCapture.Metadata {
+        return ImageCapture.Metadata().apply {
+            isReversedHorizontal = isFrontCamera()
+        }
+    }
+
+    private fun createOutputOptions(metadata: ImageCapture.Metadata): ImageCapture.OutputFileOptions {
+        val name = UUID.randomUUID().toString() + ".jpg"
+        val file = File(requireActivity().externalCacheDir, name)
+        return ImageCapture.OutputFileOptions.Builder(file).setMetadata(metadata).build()
+    }
+
+    private fun handleImageCaptureError(exc: ImageCaptureException) {
+        Log.e("TAGY", "chup fail: ${exc.message}", exc)
+    }
+
+    private fun handleImageSaved(output: ImageCapture.OutputFileResults) {
+        val savedUri = output.savedUri ?: return
+        showCapturedImage(savedUri)
+        setupPostControls(savedUri)
+    }
+
+    private fun showCapturedImage(savedUri: Uri) {
+        viewBinding.imageViewCaptured.apply {
+            visibility = View.VISIBLE
+            viewBinding.viewFinder.visibility = View.INVISIBLE
+            setImageURI(savedUri)
+        }
+        cameraProvider.unbindAll()
+    }
+
+    private fun setupPostControls(savedUri: Uri) {
+        viewBinding.apply {
+            btnLeft.visibility = View.VISIBLE
+            edt1.visibility = View.VISIBLE
+            fncLauout.visibility = View.INVISIBLE
+            btnPost.visibility = View.VISIBLE
+            buttonCapture.visibility = View.GONE
+            btnGenativeAI.visibility = View.VISIBLE
+            brightnessSb.visibility = View.GONE
+            btnChoose.visibility = View.GONE
+            buttonSwitchCamera.visibility = View.GONE
+        }
+
+        viewBinding.btnPost.setOnClickListener {
+            handlePostButtonClick(savedUri)
+        }
+
+        viewBinding.btnPost.setOnLongClickListener {
+            handlePostButtonLongClick(savedUri)
+        }
+
+        setupGenerativeAI(savedUri)
+    }
+
+    private fun handlePostButtonClick(savedUri: Uri) {
+        viewBinding.btnPost.isEnabled = false
+        viewBinding.btnLeft.visibility = View.INVISIBLE
+        viewBinding.btnGenativeAI.visibility = View.INVISIBLE
+        viewBinding.btnPost.visibility = View.GONE
+        viewBinding.progressBar.visibility = View.VISIBLE
+        val content = viewBinding.edt1.text.toString()
+        postViewModel.addPost(savedUri, content, true)
+    }
+
+    private fun handlePostButtonLongClick(savedUri: Uri): Boolean {
+        val vibrator = requireContext().getSystemService(Vibrator::class.java)
+        vibrator?.vibrate(50)
+
+        val content = viewBinding.edt1.text.toString()
+        val bottomSheet = FriendListprivateBottomSheet(savedUri, null, content)
+        bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        return true
+    }
+
+    private fun setupGenerativeAI(savedUri: Uri) {
+        val imageBitmap = MediaStore.Images.Media.getBitmap(
+            requireContext().contentResolver,
+            savedUri
+        )
+        viewBinding.btnGenativeAI.setOnClickListener {
+            val dialog = PromptDialog(imageBitmap)
+            dialog.show(childFragmentManager, "prompt_dialog")
+
+            postViewModel.contentgena.observe(viewLifecycleOwner) { content ->
+                viewBinding.edt1.setText(content ?: "")
+            }
+        }
+    }
+
+
+    private val pickMediaLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            showCapturedImage(uri)
+            setupPostControls(uri)
+        } else {
+            Log.e("GalleryError", "Không nhận được hình ảnh từ trình chọn")
+        }
+    }
+
+    private fun choosePhotoFromGallery() {
+        pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
 
@@ -643,7 +677,7 @@ class CameraFragment : Fragment() {
 
     companion object {
 
-
+        const val GALLERY_REQUEST_CODE = 1234
         private const val TAG = "CameraXApp"
 
         private val REQUIRED_PERMISSIONS =

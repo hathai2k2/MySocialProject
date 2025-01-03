@@ -1,6 +1,7 @@
 package com.example.mysocialproject.ui.feature.manageraccount
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ActivityForgotPwactivityBinding
@@ -14,15 +15,13 @@ class ForgotPWActivity :
     override fun getLayoutId(): Int {
         return R.layout.activity_forgot_pwactivity
     }
-
-
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        mViewBinding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_pwactivity)
         mViewBinding.lifecycleOwner = this
         mViewBinding.viewModel = authViewModel
-        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+//        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
 
         mViewBinding.forgotpassword.setOnClickListener {
@@ -31,7 +30,15 @@ class ForgotPWActivity :
         authViewModel.btntext.observe(this) {
             mViewBinding.forgotpassword.text = it
         }
-
+        authViewModel.isResetPass.observe(this){
+            if (it){
+                mViewBinding.forgotpassword.isEnabled = false
+                showActivity(SignInActivity::class.java)
+            }
+        }
+        mViewBinding.btnBack.setOnClickListener {
+            showActivity(SignInActivity::class.java)
+        }
         authViewModel.emailforgot.observe(this) {
             if (it != null && it.matches(Regex("^[A-Za-z0-9+_.-]{2,}@[A-Za-z0-9.-]{2,}\\.[A-Za-z0-9-]{2,}\$"))) {
                 mViewBinding.forgotpassword.isEnabled = true

@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class StartAppActivity : BaseActivity<ActivityStartAppBinding>() {
 
-    private lateinit var authViewModel: AuthViewModel
+    private  val authViewModel: AuthViewModel by viewModels()
     private val frVModel: FriendViewmodel by viewModels()
     private var isDynamicLinkHandled = false
     override fun getLayoutId(): Int {
@@ -32,7 +32,6 @@ class StartAppActivity : BaseActivity<ActivityStartAppBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         handleIntent(intent)
 
         frVModel.friendshipResult.observe(this@StartAppActivity) { uid ->

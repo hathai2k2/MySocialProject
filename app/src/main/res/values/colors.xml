@@ -59,4 +59,5 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="SameWhite">#707070</color>
+    <color name="color_transparent">#00FFFFFF</color>
 </resources>

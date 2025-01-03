@@ -146,7 +146,7 @@ class AuthViewModel( ) :
         var isValid = true
         if (emailValue.isEmpty()) {
             isValid = false
-            _emailError.value = "^"
+            _emailError.value = "Không được để trống email"
         } else if (!isBasicValidEmail(emailValue)) {
             isValid = false
             _emailError.value = "Email không hợp lệ"
@@ -159,7 +159,7 @@ class AuthViewModel( ) :
 
         if (passwordValue.isEmpty()) {
             isValid = false
-            _passwordError.value = "^"
+            _passwordError.value = "Không được để trống password"
         } else if (passwordValue.length < 6) {
             isValid = false
             _passwordError.value = "Mật khẩu phải lớn hơn 6 ký tự"
@@ -178,7 +178,7 @@ class AuthViewModel( ) :
     fun updateEmailHelperText(email: String) {
         when {
             email.isEmpty() -> {
-                _emailHelperText.value = "^"
+                _emailHelperText.value = "Không được để trống email"
             }
 
             email.length in 1..3 -> {
@@ -199,7 +199,7 @@ class AuthViewModel( ) :
     fun updatePasswordHelperText(password: String) {
         when {
             password.isEmpty() -> {
-                _passwordHelperText.value = "^"
+                _passwordHelperText.value = "Không được để trống password"
             }
 
             password.length in 1..4 -> {
@@ -346,7 +346,7 @@ class AuthViewModel( ) :
     fun updatenamehelper(name: String) {
         when {
             name.isEmpty() -> {
-                _namehelper.value = "^"
+                _namehelper.value = "Không được để trống tên"
             }
 
             name.length <= 3 -> {
@@ -423,7 +423,7 @@ class AuthViewModel( ) :
     fun validateLogin(emailValue: String) {
 
         if (emailValue.isEmpty()) {
-            _emailHelperTextLg.value = "^"
+            _emailHelperTextLg.value = "Không dược để trống email"
 
         } else {
             _emailHelperTextLg.value = ""
@@ -434,7 +434,7 @@ class AuthViewModel( ) :
     fun validateLoginpw(passwordValue: String) {
 
         if (passwordValue.isEmpty()) {
-            _passwordHelperTextLg.value = "^"
+            _passwordHelperTextLg.value = "Không được để trống password"
         } else {
             _passwordHelperTextLg.value = ""
         }
@@ -531,6 +531,8 @@ class AuthViewModel( ) :
     private val _btntext = MutableLiveData<String?>()
     val btntext: LiveData<String?> get() = _btntext
 
+    private val _isResetPass = MutableLiveData<Boolean>()
+    val isResetPass: LiveData<Boolean> get() = _isResetPass
 
     fun forgotPassword() {
         viewModelScope.launch {
@@ -538,8 +540,10 @@ class AuthViewModel( ) :
             val resetEmail = userRepository.forgotPassword(emailfg)
             if (resetEmail.isSuccess) {
                 _btntext.value = "Đã gửi, Vui lòng kiểm tra email"
+                _isResetPass.value = true
             } else {
                 _btntext.value = "Vui lòng thử lại"
+                _isResetPass.value = false
             }
         }
     }
@@ -548,7 +552,7 @@ class AuthViewModel( ) :
         var isValid = true
         if (newpw.isEmpty()) {
             isValid = false
-            _passwordError.value = "^"
+            _passwordError.value = "Vui lòng nhập mật khẩu"
         } else if (newpw.length < 6) {
             isValid = false
             _passwordError.value = "Mật khẩu phải lớn hơn 6 ký tự"

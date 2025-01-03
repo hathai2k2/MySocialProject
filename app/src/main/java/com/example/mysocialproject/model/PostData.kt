@@ -8,11 +8,11 @@ data class PostData(
     val userName: String?="",
     val userAvatar: String?="",
     val content: String?="",
-    val imageURL: String?="",
+    val photoURL: String?="",
     val voiceURL: String?="",
     val createdAt: Timestamp?=null,
     val hiddenForUsers: List<String> = emptyList(),
-    val viewedBy: List<String> = emptyList()
+    val viewByUser: List<String> = emptyList()
 )
 
 sealed class PostResult {

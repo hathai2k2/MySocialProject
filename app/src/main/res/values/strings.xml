@@ -30,4 +30,5 @@
     <string name="label_no_post">CHƯA CÓ BÀI VIẾT NÀO!!</string>
     <string name="label_cancel">Từ chối</string>
     <string name="label_start">Chia sẻ khoảnh khắc, kết nối cảm xúc, khám phá thế giới ngay!</string>
+    <string name="label_send">Gửi</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.mysocialproject.ui.feature.home
 
 import NotificationService
 import android.Manifest
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -30,8 +31,9 @@ import com.example.mysocialproject.databinding.ActivityMainBinding
 import com.example.mysocialproject.databinding.FriendRequestDialogBinding
 import com.example.mysocialproject.ui.base.BaseActivity
 import com.example.mysocialproject.ui.feature.chat.ChatActivity
-import com.example.mysocialproject.ui.feature.friend.FriendListFragment
-import com.example.mysocialproject.ui.feature.post.PostList
+import com.example.mysocialproject.ui.feature.friend.FriendListBottomSheet
+import com.example.mysocialproject.ui.feature.home.CameraFragment.Companion.GALLERY_REQUEST_CODE
+import com.example.mysocialproject.ui.feature.post.PostActivity
 import com.example.mysocialproject.ui.feature.profile.ProfileActivity
 import com.example.mysocialproject.ui.feature.repository.PostRepository
 import com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel
@@ -162,7 +164,7 @@ class CreatePostActivity : BaseActivity<ActivityMainBinding>() {
 
         // btnckc
 
-        val bottomSheetDialogFragment = FriendListFragment()
+        val bottomSheetDialogFragment = FriendListBottomSheet()
         mViewBinding.btnBottomSheetFriends.setOnClickListener {
             frVModel.resetDynamicLink()
             if (!bottomSheetDialogFragment.isAdded) { // Kiểm tra xem Fragment đã được thêm chưa
@@ -210,7 +212,7 @@ class CreatePostActivity : BaseActivity<ActivityMainBinding>() {
         postVmodel.postResultLiveData.observe(this) { result ->
             when (result) {
                 is PostRepository.PostResult.Success -> {
-                    val intent = Intent(this@CreatePostActivity, PostList::class.java)
+                    val intent = Intent(this@CreatePostActivity, PostActivity::class.java)
                     val options = ActivityOptions.makeCustomAnimation(
                         this@CreatePostActivity,
                         R.anim.slide_in_up, R.anim.slide_out_up
@@ -228,7 +230,7 @@ class CreatePostActivity : BaseActivity<ActivityMainBinding>() {
         //go pot
         mViewBinding.xembai.setOnClickListener {
             postVmodel.stopListeningForNewPosts()
-            gotoposts()
+            openPost()
         }
 
 
@@ -249,16 +251,6 @@ class CreatePostActivity : BaseActivity<ActivityMainBinding>() {
                 mViewBinding.newposttxt.visibility = View.GONE
             }
         }
-
-
-
-
-
-
-
-
-
-
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -285,14 +277,12 @@ class CreatePostActivity : BaseActivity<ActivityMainBinding>() {
 
     }
 
-    private fun gotoposts() {
-
-        val intent = Intent(this@CreatePostActivity, PostList::class.java)
+    private fun openPost() {
         val options = ActivityOptions.makeCustomAnimation(
             this@CreatePostActivity,
             R.anim.slide_in_up, R.anim.slide_out_up
         )
-        startActivity(intent, options.toBundle())
+        showActivity(PostActivity::class.java, options.toBundle())
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -315,7 +305,7 @@ class CreatePostActivity : BaseActivity<ActivityMainBinding>() {
                 if (e1.y - e2.y > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
 
                     postVmodel.stopListeningForNewPosts()
-                    gotoposts()
+                    openPost()
                     return true
                 }
             }
@@ -326,7 +316,6 @@ class CreatePostActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun showFriendRequestDialog(senderuid: String, userName: String?, userAvt: String?) {
         val dialogBinding = FriendRequestDialogBinding.inflate(layoutInflater)
-
 
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
             .setView(dialogBinding.root)

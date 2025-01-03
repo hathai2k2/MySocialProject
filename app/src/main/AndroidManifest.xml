@@ -109,8 +109,9 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.feature.post.PostList"
+            android:name=".ui.feature.post.PostActivity"
             android:exported="false"
+            android:theme="@style/PostActivityTheme"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity

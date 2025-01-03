@@ -18,11 +18,9 @@
             android:id="@+id/card"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="12dp"
-            android:layout_margin="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_group_layout"
-            app:layout_constraintDimensionRatio="H,1:1.4"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -68,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="60dp"
                     android:enabled="false"
                     android:background="@drawable/bg_shape"
                     android:text="Ghi âm"
@@ -80,100 +78,99 @@
                     android:id="@+id/edt1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginVertical="10dp"
                     android:background="@null"
-                    android:paddingHorizontal="24dp"
-                    android:paddingTop="10dp"
                     android:gravity="start"
                     android:hint="Nhập gì đó..."
                     android:maxLength="1000"
-                    android:layout_marginVertical="10dp"
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="10dp"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_group_layout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_timer" />
+                <LinearLayout
+                    android:id="@+id/btn_group_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5" />
+
+                    <ImageButton
+                        android:id="@+id/btn_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/avt_circle"
+                        android:elevation="1dp"
+                        app:tint="@color/black"
+                        android:src="@drawable/ic_cancle"
+                        android:visibility="invisible"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:id="@+id/btnrecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="1dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/img_start_voice"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/btn_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/avt_circle"
+                        android:elevation="1dp"
+                        android:src="@drawable/ic_upload"
+                        android:visibility="gone"/>
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:visibility="gone"
+                        android:indeterminateTint="@color/blue"/>
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                    <ImageButton
+                        android:id="@+id/btn_genativeAI"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/avt_circle"
+                        android:elevation="1dp"
+                        android:backgroundTint="@color/colorbtnctive"
+                        android:src="@drawable/ic_gemini"
+                        android:visibility="invisible" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5" />
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:id="@+id/btn_group_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card"
-            app:layout_constraintStart_toStartOf="parent">
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5" />
-
-            <ImageButton
-                android:id="@+id/btn_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/avt_circle"
-                android:elevation="1dp"
-                app:tint="@color/black"
-                android:src="@drawable/ic_cancle"
-                android:visibility="invisible"/>
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/btnrecord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/cornerradius"
-                android:elevation="1dp"
-                android:src="@drawable/ic_circle"
-                app:backgroundTint="@null" />
-
-            <ImageButton
-                android:id="@+id/btn_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/avt_circle"
-                android:elevation="1dp"
-                android:src="@drawable/ic_upload"
-                android:visibility="gone"/>
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:visibility="gone"
-                android:indeterminateTint="@color/blue"/>
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-            <ImageButton
-                android:id="@+id/btn_genativeAI"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/avt_circle"
-                android:elevation="1dp"
-                android:backgroundTint="@color/colorbtnctive"
-                android:src="@drawable/ic_gemini"
-                android:visibility="invisible" />
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5" />
-
-        </LinearLayout>
 
 
         <androidx.constraintlayout.widget.Guideline

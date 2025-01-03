@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
@@ -221,12 +222,7 @@ class RecordFragment : Fragment() {
             }
         }
 
-
-
         setupWaveformView()
-
-
-
 
         postViewModel.postResultLiveData.observe(viewLifecycleOwner) { result ->
             when (result) {
@@ -248,7 +244,7 @@ class RecordFragment : Fragment() {
         binding.btnGenativeAI.setOnClickListener {
             val dialog = PromptDialogVoice(prompt)
             dialog.show(childFragmentManager, "prompt_dialog")
-            Log.d("TAGYyyyyyyyyyyyyyyyyyyyy", "onViewCreated: $prompt")
+            Log.d("TAG_voice", "onViewCreated: $prompt")
             postViewModel.contentvoice.observe(viewLifecycleOwner) { content ->
                 binding.edt1.setText(content ?: "")
             }
@@ -322,8 +318,8 @@ class RecordFragment : Fragment() {
 
                 scaleDownAnimator.addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        binding.btnrecord.setImageResource(R.drawable.ic_squre)
-                        binding.btnrecord.setBackgroundResource(R.drawable.whitering)
+                        binding.btnrecord.setImageResource(R.drawable.img_stop_voice)
+                        binding.btnrecord.setBackgroundColor(Color.TRANSPARENT)
                     }
                 })
 
@@ -336,8 +332,8 @@ class RecordFragment : Fragment() {
                 stopRecording()
                 binding.btnrecord.scaleX = 1f
                 binding.btnrecord.scaleY = 1f
-                binding.btnrecord.setImageResource(R.drawable.ic_circle)
-                binding.btnrecord.setBackgroundResource(R.drawable.cornerradius)
+                binding.btnrecord.setImageResource(R.drawable.img_start_voice)
+                binding.btnrecord.setBackgroundColor(Color.TRANSPARENT)
                 binding.play.text = "Phát"
             }
         }

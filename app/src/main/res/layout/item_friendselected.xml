@@ -30,7 +30,7 @@
             android:visibility="invisible"
            android:id="@+id/progress_bar"
             android:layout_width="50dp"
-            android:indeterminateTint="@color/white"
+            android:indeterminateTint="@color/blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

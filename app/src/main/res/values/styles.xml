@@ -22,6 +22,13 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="fab_circle">
+        <!---rest of your style-->
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+
+    </style>
     <style name="textfield" >
 <!--        <item name="android:textColorHint">#C5C5C5</item>-->
         <item name="boxStrokeErrorColor">@color/red</item>

@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Mini FAB 1 -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_1"
+        android:layout_width="@dimen/size_fab_mini"
+        android:layout_height="@dimen/size_fab_mini"
+        app:shapeAppearanceOverlay="@style/fab_circle"
+        android:foreground="@drawable/fab_share"
+        android:layout_marginBottom="@dimen/size_10dp"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        android:layout_gravity="bottom|end"
+        app:layout_constraintBottom_toTopOf="@+id/mainFab"
+        app:layout_constraintEnd_toEndOf="@+id/mainFab" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_2"
+        android:layout_width="@dimen/size_fab_mini"
+        android:layout_height="@dimen/size_fab_mini"
+        app:shapeAppearanceOverlay="@style/fab_circle"
+        android:foreground="@drawable/fab_create"
+        android:layout_marginBottom="@dimen/size_10dp"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_gravity="bottom|end"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/mainFab"
+        app:layout_constraintEnd_toStartOf="@+id/mainFab" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_3"
+        android:layout_width="@dimen/size_fab_mini"
+        android:layout_height="@dimen/size_fab_mini"
+        app:shapeAppearanceOverlay="@style/fab_circle"
+        android:foreground="@drawable/fab_delete"
+        android:layout_marginBottom="@dimen/size_10dp"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:visibility="invisible"
+        android:layout_gravity="bottom|end"
+        app:layout_constraintBottom_toTopOf="@+id/fab_yt"
+        app:layout_constraintEnd_toStartOf="@+id/fab_camera" />
+
+</FrameLayout>

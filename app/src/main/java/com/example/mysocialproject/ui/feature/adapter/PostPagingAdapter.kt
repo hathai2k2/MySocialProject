@@ -24,8 +24,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.signature.ObjectKey
 import com.example.mysocialproject.R
-import com.example.mysocialproject.databinding.PostRowBinding
-import com.example.mysocialproject.databinding.PostRowVoiceBinding
+import com.example.mysocialproject.databinding.ItemPostImageBinding
+import com.example.mysocialproject.databinding.ItemPostPhotoBinding
+import com.example.mysocialproject.databinding.ItemPostVoiceBinding
 import com.example.mysocialproject.ui.feature.model.Post
 import com.example.mysocialproject.ui.feature.post.LikesBottomSheetDialog
 import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
@@ -89,7 +90,7 @@ class PostPagingAdapter(
         }
     }
 
-    class ImageViewHolder(val binding: PostRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ImageViewHolder(val binding: ItemPostPhotoBinding) : RecyclerView.ViewHolder(binding.root) {
         private var currentLikesLiveData: LiveData<List<Pair<String, List<String>>>>? = null
 
 
@@ -114,11 +115,11 @@ class PostPagingAdapter(
             if (post.imageURL != null) {
                 Glide.with(binding.root.context)
                     .load(post.imageURL)
-                    .thumbnail(0.5f)
+                    .thumbnail(0.95f)
+                    .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.error)
                     .signature(ObjectKey(post.postId))
-                    .override(720, 720)
                     .transition(DrawableTransitionOptions.withCrossFade(100))
                     .into(binding.imageViewPost)
             } else {
@@ -143,17 +144,17 @@ class PostPagingAdapter(
                 currentLikesLiveData?.observe(lifecycleOwner) { likesData ->
                     if (likesData.isNotEmpty()) {
                         binding.nameUserLike.text =
-                            "Có ${likesData.size} hoạt động \uD83D\uDC96 \n" +
+                            "Có ${likesData.size} hoạt động \n" +
                                     "Ấn vào để xem"
                     } else {
-                        binding.nameUserLike.text = "Không có hoạt động nào ✨"
+                        binding.nameUserLike.text = "Không có hoạt động nào "
                     }
 
                 }
 
             } else {
                 binding.tvNameUserPost.text = post.userName
-                binding.btnGroupReact.visibility = View.GONE
+                binding.btnGroupReact.visibility = View.INVISIBLE
             }
             val prettyTime = PrettyTime(Locale("vi"))
             val formattedTime = prettyTime.format(post.createdAt!!.toDate())
@@ -169,7 +170,7 @@ class PostPagingAdapter(
 
     }
 
-    class VoiceViewHolder(val binding: PostRowVoiceBinding) :
+    class VoiceViewHolder(val binding: ItemPostVoiceBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var mediaPlayer = MediaPlayer()
         private val handler = Handler(Looper.getMainLooper())
@@ -225,15 +226,15 @@ class PostPagingAdapter(
                 currentLikesLiveData?.observe(lifecycleOwner) { likesData ->
                     if (likesData.isNotEmpty()) {
                         binding.nameUserLike.text =
-                            "Có ${likesData.size} hoạt động \uD83D\uDC96 \nẤn vào để xem "
+                            "Có ${likesData.size} hoạt động \nẤn vào để xem "
                     } else {
-                        binding.nameUserLike.text = "Không có hoạt động nào ✨"
+                        binding.nameUserLike.text = "Không có hoạt động nào "
                     }
                 }
 
             } else {
                 binding.tvNameUserPost.text = post.userName
-                binding.btnGroupReact.visibility = View.GONE
+                binding.btnGroupReact.visibility = View.INVISIBLE
             }
             val prettyTime = PrettyTime(Locale("vi"))
             val formattedTime = prettyTime.format(post.createdAt!!.toDate())
@@ -356,12 +357,12 @@ class PostPagingAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_IMAGE) {
-            val binding = PostRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemPostPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             ImageViewHolder(binding)
 
         } else {
             val binding =
-                PostRowVoiceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ItemPostVoiceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             VoiceViewHolder(binding)
         }
     }

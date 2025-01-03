@@ -73,8 +73,8 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
     fun showActivity(
         t: Class<*>,
         bundle: Bundle? = null,
-        enter: Int = R.anim.slide_in_down,
-        exit: Int = R.anim.slide_out_down
+        enter: Int = R.anim.slide_in_up,
+        exit: Int = R.anim.slide_out_up
     ) {
         val intent = Intent(this, t).apply {
             if (bundle != null) {
@@ -94,7 +94,7 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
 
         // Bắt đầu Activity với animation
         startActivity(intent, animationBundle)
-        finish()
+
     }
 
 

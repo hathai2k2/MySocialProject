@@ -321,7 +321,7 @@ class MessageAdapter(
             }
 
             if (message.senderId == "Gemini") {
-                binding.avtRequest.setImageResource(R.drawable.ic_chatbot)
+                binding.avtRequest.setImageResource(R.drawable.ic_gemini)
             } else {
                 Glide.with(binding.root).load(image).into(binding.avtRequest)
             }

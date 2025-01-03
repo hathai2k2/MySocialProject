@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
-    private var currentEditProfileFragment: EditProfileFragment? = null
+    private var currentEditProfileBottomSheet: EditProfileBottomSheet? = null
 
     override fun getLayoutId(): Int = R.layout.activity_profile
 
@@ -42,7 +42,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         }
 
         authViewModel.UpdateError.observe(this) { error ->
-            currentEditProfileFragment?.dismissDialogWithMessage(error)
+            currentEditProfileBottomSheet?.dismissDialogWithMessage(error)
         }
 
         authViewModel.updateResult.observe(this) { isSuccess ->
@@ -66,11 +66,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         }
 
         mViewBinding.btnEditName.setOnClickListener {
-            showEditProfileDialog(EditProfileFragment.DIALOG_TYPE_NAME)
+            showEditProfileDialog(EditProfileBottomSheet.DIALOG_TYPE_NAME)
         }
 
         mViewBinding.btnEditPassword.setOnClickListener {
-            showEditProfileDialog(EditProfileFragment.DIALOG_TYPE_PASSWORD)
+            showEditProfileDialog(EditProfileBottomSheet.DIALOG_TYPE_PASSWORD)
         }
 
         mViewBinding.tvDeleteAccount.setOnClickListener {
@@ -112,10 +112,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
     }
 
     private fun showEditProfileDialog(dialogType: Int) {
-        val dialog = EditProfileFragment().apply {
+        val dialog = EditProfileBottomSheet().apply {
             arguments = Bundle().apply { putInt("dialogType", dialogType) }
         }
-        currentEditProfileFragment = dialog
+        currentEditProfileBottomSheet = dialog
         dialog.show(supportFragmentManager, "update_profile_dialog")
     }
 

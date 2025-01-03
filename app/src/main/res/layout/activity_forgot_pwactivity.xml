@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -7,28 +9,42 @@
             type="com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".manageraccount.ForgotPWActivity">
 
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/avt_circle"
+        android:padding="5dp"
+        android:elevation="1dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_back"
+        app:backgroundTint="@color/colorbtnctive"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/titleLogin"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Nhập Email của bạn"
         android:gravity="start"
         android:paddingStart="24dp"
+        android:text="Nhập Email của bạn"
         android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/Ed_email_signin"
@@ -50,6 +66,7 @@
             android:layout_height="80dp"
             android:inputType="textEmailAddress"
             android:maxLines="1"
+            android:text="@={viewModel.emailforgot}"
             android:textColor="@color/black"
             android:textColorHighlight="@color/subkey"
             android:textColorLink="@color/black"

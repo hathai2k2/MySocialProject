@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.AppWidgetTarget
 import com.example.mysocialproject.R
-import com.example.mysocialproject.ui.feature.post.PostList
+import com.example.mysocialproject.ui.feature.post.PostActivity
 import com.example.mysocialproject.ui.feature.viewmodel.widgetViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -94,7 +94,7 @@ class PostWidget() : AppWidgetProvider(), LifecycleOwner {
                     .circleCrop()
                     .into(avatarImageTarget)
 
-                val clickIntent = Intent(context, PostList::class.java)
+                val clickIntent = Intent(context, PostActivity::class.java)
                 val pendingIntent = PendingIntent.getActivity(
                     context,
                     0,
