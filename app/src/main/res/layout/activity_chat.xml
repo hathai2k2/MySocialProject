@@ -12,11 +12,11 @@
 
         <variable
             name="user"
-            type="com.example.mysocialproject.ui.feature.model.User" />
+            type="com.example.mysocialproject.model.User" />
 
         <variable
             name="message"
-            type="com.example.mysocialproject.ui.feature.model.Message" />
+            type="com.example.mysocialproject.model.Message" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

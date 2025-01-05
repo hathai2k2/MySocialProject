@@ -5,7 +5,7 @@
     <data>
         <variable
             name="chat"
-            type="com.example.mysocialproject.ui.feature.model.Message" />
+            type="com.example.mysocialproject.model.Message" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

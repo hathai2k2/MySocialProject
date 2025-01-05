@@ -22,8 +22,8 @@ import com.example.mysocialproject.StartAppActivity
 import com.example.mysocialproject.ui.feature.Admin.AdminActivity
 import com.example.mysocialproject.ui.feature.home.CreatePostActivity
 import com.example.mysocialproject.ui.feature.manageraccount.InitProfileActivity
-import com.example.mysocialproject.ui.feature.model.User
-import com.example.mysocialproject.ui.feature.repository.UserRepository
+import com.example.mysocialproject.model.User
+import com.example.mysocialproject.repository.UserRepository
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -51,8 +51,6 @@ class AuthViewModel( ) :
 
     @Bindable
     var nameUser = MutableLiveData<String?>()
-
-    private var imgvAvtUser: ShapeableImageView? = null
 
     private val _emailError = MutableLiveData<String?>()
     val emailError: LiveData<String?> get() = _emailError

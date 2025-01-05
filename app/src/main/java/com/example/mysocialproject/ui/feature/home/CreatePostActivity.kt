@@ -35,7 +35,7 @@ import com.example.mysocialproject.ui.feature.friend.FriendListBottomSheet
 import com.example.mysocialproject.ui.feature.home.CameraFragment.Companion.GALLERY_REQUEST_CODE
 import com.example.mysocialproject.ui.feature.post.PostActivity
 import com.example.mysocialproject.ui.feature.profile.ProfileActivity
-import com.example.mysocialproject.ui.feature.repository.PostRepository
+import com.example.mysocialproject.repository.PostRepository
 import com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel
 import com.example.mysocialproject.ui.feature.viewmodel.FriendViewmodel
 import com.example.mysocialproject.ui.feature.viewmodel.MessageViewModel

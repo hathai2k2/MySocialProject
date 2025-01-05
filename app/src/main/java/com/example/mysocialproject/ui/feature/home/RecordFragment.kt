@@ -38,8 +38,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentRecordBinding
 import com.example.mysocialproject.ui.feature.bottomdialogai.PromptDialogVoice
-import com.example.mysocialproject.ui.feature.chat.FriendListprivateBottomSheet
-import com.example.mysocialproject.ui.feature.repository.PostRepository
+import com.example.mysocialproject.ui.feature.chat.FriendListPrivateBottomSheet
+import com.example.mysocialproject.repository.PostRepository
 import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
 import rm.com.audiowave.OnProgressListener
 import java.io.File
@@ -563,7 +563,7 @@ class RecordFragment : Fragment() {
             val fileUri = FileProvider.getUriForFile(
                 requireContext(), "${requireContext().packageName}.fileprovider", File(fileName)
             )
-            val bottomSheet = FriendListprivateBottomSheet(null, fileUri, content)
+            val bottomSheet = FriendListPrivateBottomSheet(null, fileUri, content)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
             true
         }

@@ -1,10 +1,10 @@
 import android.util.Base64
 import android.util.Log
-import com.example.mysocialproject.ui.feature.model.Like
-import com.example.mysocialproject.ui.feature.model.LikeStatus
-import com.example.mysocialproject.ui.feature.model.Message
-import com.example.mysocialproject.ui.feature.model.MessageStatus
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.Reaction
+import com.example.mysocialproject.model.ReactionStatus
+import com.example.mysocialproject.model.Message
+import com.example.mysocialproject.model.MessageStatus
+import com.example.mysocialproject.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -103,10 +103,10 @@ class NotificationRepository {
     }
 
 
-    fun listenForNewLikes(callback: (Like, User) -> Unit) {
-        fireStore.collection("likes")
-            .whereEqualTo("ownerId", userId)
-            .whereEqualTo("status", LikeStatus.NEW.name)
+    fun listenForNewLikes(callback: (Reaction, User) -> Unit) {
+        fireStore.collection("reactions")
+            .whereEqualTo("targetId", userId)
+            .whereEqualTo("status", ReactionStatus.NEW.name)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(1)
             .addSnapshotListener { snapshot, error ->
@@ -118,15 +118,15 @@ class NotificationRepository {
                 if (snapshot != null) {
                     for (documentChange in snapshot.documentChanges) {
                         if (documentChange.type == DocumentChange.Type.ADDED) {
-                            val like = documentChange.document.toObject(Like::class.java)
+                            val reaction = documentChange.document.toObject(Reaction::class.java)
                             repositoryScope.launch {
-                                val user = getUserlike(like.userId)
+                                val user = getUserlike(reaction.userId)
                                 if (user != null) {
-                                    Log.e("NotificationRepository", "Listen failed: ${user} $like")
-                                    callback(like, user)
+                                    Log.e("NotificationRepository", "Listen failed: ${user} $reaction")
+                                    callback(reaction, user)
                                     documentChange.document.reference.update(
                                         "status",
-                                        LikeStatus.NOTIFIED.name
+                                        ReactionStatus.NOTIFIED.name
                                     ).await()
                                 }
                             }

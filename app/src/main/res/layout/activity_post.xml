@@ -16,16 +16,66 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+        <LinearLayout
+            android:id="@+id/btntest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="30dp"
+            android:elevation="1dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <ImageButton
+                android:id="@+id/btn_bottom_sheet_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_post_boder"
+                android:padding="8dp"
+                android:src="@drawable/ic_account"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_newpost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_active"
+                android:textColor="@color/black"
+                android:textSize="14.56sp"
+                android:visibility="invisible" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_post_boder"
+                android:padding="10dp"
+                android:src="@drawable/ic_chat"
+                app:tint="@color/white" />
+
+        </LinearLayout>
         <TextView
             android:id="@+id/emptyListPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:gravity="center"
-            android:text="Hiện tại chưa có bài đăng nào!"
+            android:text="Bạn chưa có bài đăng nào!\n Hãy click button + để tạo"
             android:textColor="@color/black"
-            android:textSize="36sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,6 +83,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_create_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:foreground="@drawable/fab_add"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emptyListPost"
+            app:layout_constraintVertical_bias="0.8"
+            app:shapeAppearanceOverlay="@style/fab_circle" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/postsContainer"
             android:layout_width="match_parent"
@@ -50,10 +113,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/layout_bottom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btntest"
+                app:layout_constraintTop_toTopOf="parent"
                 app:shimmer_duration="600"
                 app:shimmer_repeat_mode="restart">
-
                 <include layout="@layout/post_row_voice_shimmer" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
@@ -140,56 +202,7 @@
 
             </FrameLayout>
 
-            <LinearLayout
-                android:id="@+id/btntest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
-                android:layout_marginTop="30dp"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
 
-                <ImageButton
-                    android:id="@+id/btn_bottom_sheet_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_post_boder"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_account"
-                    />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_newpost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/color_active"
-                    android:textColor="@color/black"
-                    android:textSize="14.56sp"
-                    android:visibility="invisible" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/btn_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_post_boder"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_chat"
-                    app:tint="@color/white" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_bottom"

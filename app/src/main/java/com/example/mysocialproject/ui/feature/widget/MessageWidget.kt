@@ -83,7 +83,7 @@ class MessageWidget() : AppWidgetProvider(), LifecycleOwner {
                             .into(avatarImageTarget)
 
                         val clickIntent = Intent(context, ItemChatActivity::class.java).apply {
-                            putExtra("FRIEND_ID", sender.UserId)
+                            putExtra("FRIEND_ID", sender.userId)
                             putExtra("FRIEND_NAME", sender.nameUser)
                             putExtra("FRIEND_AVATAR", sender.avatarUser)
                         }

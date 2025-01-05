@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.mysocialproject.ui.feature.model.Post
-import com.example.mysocialproject.ui.feature.repository.PostRepository
-import com.example.mysocialproject.ui.feature.repository.UserRepository
+import com.example.mysocialproject.model.Post
+import com.example.mysocialproject.repository.PostRepository
+import com.example.mysocialproject.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -152,9 +152,9 @@ class PostViewModel() : ViewModel(), Observable {
 
     fun onPostViewed(postId: String) {
         viewModelScope.launch {
-            val success = postRepository.updateViewedBy(postId)
+            val success = postRepository.updateViewByUser(postId)
             if (success) {
-                Log.e("PostViewModel", "Updated viewed by for post: $postId")
+                Log.d("PostViewModel", "Updated viewed by for post: $postId")
 
             } else {
                 Log.e("PostViewModel", "Failed to update viewed by for post: $postId")

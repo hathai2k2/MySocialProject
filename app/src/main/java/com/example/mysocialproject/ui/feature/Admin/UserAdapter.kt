@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mysocialproject.databinding.UserItemAdminBinding
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.User
 
 class UserAdapter(
     private var userList: List<User>,
@@ -42,7 +42,7 @@ class UserAdapter(
             override fun getNewListSize(): Int = newUsers.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return userList[oldItemPosition].UserId == newUsers[newItemPosition].UserId
+                return userList[oldItemPosition].userId == newUsers[newItemPosition].userId
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

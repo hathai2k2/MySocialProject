@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ItemFriendBinding
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.User
 
 class FriendsAdapter(
     private val context: Context,
@@ -27,7 +27,7 @@ class FriendsAdapter(
                 .error(R.drawable.avt_base)
                 .into(friendsBinding.avtRequest)
             friendsBinding.friends = user
-            friendsBinding.btnRemove.setOnClickListener { onRemoveFriend(user.UserId, position) }
+            friendsBinding.btnRemove.setOnClickListener { onRemoveFriend(user.userId, position) }
         }
     }
 
@@ -79,7 +79,7 @@ class FriendsAdapter(
         }
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].UserId == newList[newItemPosition].UserId
+            return oldList[oldItemPosition].userId == newList[newItemPosition].userId
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

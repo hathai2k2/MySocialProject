@@ -9,9 +9,9 @@ import androidx.core.app.NotificationCompat
 import com.example.mysocialproject.R
 import com.example.mysocialproject.ui.feature.chat.ChatActivity
 import com.example.mysocialproject.ui.feature.home.CreatePostActivity
-import com.example.mysocialproject.ui.feature.model.Like
-import com.example.mysocialproject.ui.feature.model.Message
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.Reaction
+import com.example.mysocialproject.model.Message
+import com.example.mysocialproject.model.User
 
 class NotificationService : Service() {
 
@@ -45,7 +45,7 @@ class NotificationService : Service() {
 
         val notification = NotificationCompat.Builder(this, "foreground_service_channel")
             .setContentTitle("SnapMoment")
-            .setContentText("Xin chào bạn ✌️")
+            .setContentText("Xin chào bạn!")
             .setSmallIcon(R.drawable.ic_heart)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
@@ -106,7 +106,7 @@ class NotificationService : Service() {
     }
 
 
-    private fun showLikeNotification(like: Like, user: User) {
+    private fun showLikeNotification(reaction: Reaction, user: User) {
 
         val notificationManager =
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager

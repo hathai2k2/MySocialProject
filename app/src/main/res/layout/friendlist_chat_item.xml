@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="friend"
-            type="com.example.mysocialproject.ui.feature.model.User" />
+            type="com.example.mysocialproject.model.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,6 +58,7 @@
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
+                        tools:text="user 1"
                         android:text="@{friend.nameUser}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -86,6 +88,7 @@
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
+                        tools:text="Ban:"
                         android:textColor="@color/black"
                         android:textFontWeight="400"
                         android:textSize="16sp" />
@@ -97,9 +100,10 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:ellipsize="end"
-                        android:maxLength="10"
+                        android:maxLength="20"
                         android:maxLines="1"
                         android:text=""
+                        tools:text="hello"
                         android:textColor="@color/black"
                         android:textFontWeight="400"
                         android:textSize="16sp" />

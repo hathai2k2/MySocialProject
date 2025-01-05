@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FriendlistChatItemBinding
-import com.example.mysocialproject.ui.feature.model.Message
-import com.example.mysocialproject.ui.feature.model.MessageStatus
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.Message
+import com.example.mysocialproject.model.MessageStatus
+import com.example.mysocialproject.model.User
 import com.example.mysocialproject.ui.feature.viewmodel.MessageViewModel
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Date
 import java.util.Locale
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class friendlist_chatAdapter(
     private val context: Context,
     private var friends: List<User>,
@@ -33,7 +33,6 @@ class friendlist_chatAdapter(
     RecyclerView.Adapter<friendlist_chatAdapter.MyViewHolder>() {
     class MyViewHolder(private val binding: FriendlistChatItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(
             user: User,
             lastMessage: Message?,
@@ -47,23 +46,21 @@ class friendlist_chatAdapter(
             binding.friend = user
 
             binding.viewFriend.setOnClickListener {
-                Log.d("friendlist_chatAdapter", "User clicked on ${user.UserId}")
-                onGetIdfriend(user.UserId, user.nameUser, user.avatarUser)
-                updatestate(user.UserId)
+                Log.d("friendlist_chatAdapter", "User clicked on ${user.userId}")
+                onGetIdfriend(user.userId, user.nameUser, user.avatarUser)
+                updatestate(user.userId)
             }
 
 
             // Xử lý tên người gửi tin nhắn
             val senderName = when {
-                lastMessage != null && lastMessage.senderId == user.UserId -> {
+                lastMessage != null && lastMessage.senderId == user.userId -> {
                     val nameAfterSpace = user.nameUser.substringAfter(" ", user.nameUser)
                     "${nameAfterSpace}: "
                 }
-
                 lastMessage != null -> {
                     "Bạn: "
                 }
-
                 else -> "Hãy bắt gửi tới ${user.nameUser}"
             }
             val createdAtTimestamp = lastMessage?.createdAt?.toLongOrNull() ?: 0L
@@ -81,13 +78,13 @@ class friendlist_chatAdapter(
 
 
 
-            if (lastMessage != null && lastMessage.status != MessageStatus.READ && lastMessage.senderId == user.UserId) {
+            if (lastMessage != null && lastMessage.status != MessageStatus.READ && lastMessage.senderId == user.userId) {
                 viewModel.incrementUnreadMessageCount()
             }
 
 
             if (lastMessage != null) {
-                if (lastMessage.status == MessageStatus.SENT || lastMessage.status == MessageStatus.SENDING && lastMessage.senderId == user.UserId) {
+                if (lastMessage.status == MessageStatus.SENT || lastMessage.status == MessageStatus.SENDING && lastMessage.senderId == user.userId) {
                     binding.lastMessage.setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
@@ -151,7 +148,7 @@ class friendlist_chatAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = friends[position]
-        val lastMessage = lastMessages[user.UserId]
+        val lastMessage = lastMessages[user.userId]
         holder.bind(user, lastMessage, onGetIdfriend, updatestate, viewModel)
     }
 
@@ -167,14 +164,14 @@ class friendlist_chatAdapter(
             override fun getNewListSize() = newFriends.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return friends[oldItemPosition].UserId == newFriends[newItemPosition].UserId
+                return friends[oldItemPosition].userId == newFriends[newItemPosition].userId
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 val oldUser = friends[oldItemPosition]
                 val newUser = newFriends[newItemPosition]
-                val oldMessage = lastMessages[oldUser.UserId]
-                val newMessage = newLastMessages[newUser.UserId]
+                val oldMessage = lastMessages[oldUser.userId]
+                val newMessage = newLastMessages[newUser.userId]
 
                 return oldUser == newUser && oldMessage?.message == newMessage?.message
             }
@@ -185,7 +182,7 @@ class friendlist_chatAdapter(
         lastMessages = newLastMessages
 
         friends = newFriends.sortedByDescending { user ->
-            newLastMessages[user.UserId]?.createdAt?.toLongOrNull() ?: 0L
+            newLastMessages[user.userId]?.createdAt?.toLongOrNull() ?: 0L
         }
 
         diffResult.dispatchUpdatesTo(this)

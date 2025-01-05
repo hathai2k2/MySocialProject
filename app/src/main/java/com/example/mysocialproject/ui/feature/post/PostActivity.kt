@@ -22,7 +22,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -305,7 +304,7 @@ class PostActivity : BaseActivity<ActivityPostBinding>() {
         mViewBinding.btnSend.setOnClickListener {
             val content = postApdapter.getPost(currentPostPosition)!!.content ?: ""
             val userAvt = postApdapter.getPost(currentPostPosition)!!.userAvatar ?: ""
-            val imgUrl = postApdapter.getPost(currentPostPosition)!!.imageURL
+            val imgUrl = postApdapter.getPost(currentPostPosition)!!.photoURL
             val VoiceUrl = postApdapter.getPost(currentPostPosition)!!.voiceURL
             val receiverId = postApdapter.getPost(currentPostPosition)!!.userId
             val postId = postApdapter.getPost(currentPostPosition)!!.postId
@@ -599,9 +598,18 @@ class PostActivity : BaseActivity<ActivityPostBinding>() {
         if (postApdapter.itemCount > 0) {
             mViewBinding.postsContainer.visibility = View.VISIBLE
             mViewBinding.emptyListPost.visibility = View.GONE
+            mViewBinding.fabCreatePost.visibility = View.GONE
         } else {
             mViewBinding.postsContainer.visibility = View.GONE
             mViewBinding.emptyListPost.visibility = View.VISIBLE
+            mViewBinding.fabCreatePost.visibility = View.VISIBLE
+            mViewBinding.fabCreatePost.setOnClickListener {
+                showActivity(
+                    CreatePostActivity::class.java,
+                    enter = R.anim.slide_out_down,
+                    exit = R.anim.slide_in_down
+                )
+            }
         }
     }
 

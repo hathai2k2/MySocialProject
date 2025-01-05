@@ -7,7 +7,7 @@
 
         <variable
             name="chat"
-            type="com.example.mysocialproject.ui.feature.model.Message" />
+            type="com.example.mysocialproject.model.Message" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +38,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="4dp"
             android:paddingBottom="10dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/gray_light"
             android:background="@drawable/edittextbd10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCreatedAt">
@@ -74,7 +74,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/play"
-                    android:layout_width="85dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:backgroundTint="@color/black"
                     android:focusable="true"
@@ -107,18 +107,17 @@
             <TextView
                 android:id="@+id/txtcontent"
                 android:layout_width="0dp"
-                android:backgroundTint="#4B101010"
                 android:background="@drawable/corner_radius_16dp"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="6dp"
                 android:layout_marginTop="14dp"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="40dp"
                 android:maxLength="100"
                 android:layout_marginBottom="10dp"
                 android:maxLines="3"
                 tools:text="content voice"
                 android:text="@{chat.content}"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14.56sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -162,6 +161,7 @@
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="H,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -184,15 +184,18 @@
 
             <TextView
                 android:id="@+id/time_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="28dp"
+                android:layout_height="14dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="6dp"
+                android:background="@drawable/corner_radius_16dp"
+                android:backgroundTint="#4B101010"
                 android:text="@{chat.timestamp}"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewPost"
-                app:layout_constraintTop_toTopOf="@+id/imageViewPost" />
+                app:layout_constraintTop_toTopOf="@+id/imageViewPost"
+                tools:text="1 day" />
 
             <TextView
                 android:id="@+id/tv_Desc_Post"

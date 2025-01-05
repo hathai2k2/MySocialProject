@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mysocialproject.databinding.ItemFriendselectedBinding
-import com.example.mysocialproject.ui.feature.model.Message
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.Message
+import com.example.mysocialproject.model.User
 
 class FriendSelectedAdapter(
     private val context: Context,
@@ -57,8 +57,8 @@ class FriendSelectedAdapter(
 
 
             binding.root.setOnClickListener {
-                onGetIdfriend(user.UserId, user.nameUser, user.avatarUser, position)
-                updatestate(user.UserId)
+                onGetIdfriend(user.userId, user.nameUser, user.avatarUser, position)
+                updatestate(user.userId)
             }
         }
     }
@@ -84,14 +84,14 @@ class FriendSelectedAdapter(
             override fun getNewListSize() = newFriends.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return friends[oldItemPosition].UserId == newFriends[newItemPosition].UserId
+                return friends[oldItemPosition].userId == newFriends[newItemPosition].userId
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 val oldUser = friends[oldItemPosition]
                 val newUser = newFriends[newItemPosition]
-                val oldMessage = lastMessages[oldUser.UserId]
-                val newMessage = newLastMessages[newUser.UserId]
+                val oldMessage = lastMessages[oldUser.userId]
+                val newMessage = newLastMessages[newUser.userId]
 
                 return oldUser == newUser && oldMessage?.message == newMessage?.message
             }
@@ -102,7 +102,7 @@ class FriendSelectedAdapter(
         lastMessages = newLastMessages
 
         friends = newFriends.sortedByDescending { user ->
-            newLastMessages[user.UserId]?.createdAt?.toLongOrNull() ?: 0L
+            newLastMessages[user.userId]?.createdAt?.toLongOrNull() ?: 0L
         }
 
         diffResult.dispatchUpdatesTo(this)

@@ -9,10 +9,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mysocialproject.ui.feature.model.Friendship
-import com.example.mysocialproject.ui.feature.model.User
-import com.example.mysocialproject.ui.feature.repository.FriendRepository
-import com.example.mysocialproject.ui.feature.repository.MessageRepository
+import com.example.mysocialproject.model.Friend
+import com.example.mysocialproject.model.User
+import com.example.mysocialproject.repository.FriendRepository
+import com.example.mysocialproject.repository.MessageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,8 +42,8 @@ class FriendViewmodel : ViewModel(), Observable {
     val loading: LiveData<Boolean> = _loading
 
 
-    private val _listFriendrequest = MutableLiveData<MutableList<Friendship>?>()
-    val listFriendrequest: LiveData<MutableList<Friendship>?> = _listFriendrequest
+    private val _listFriendrequest = MutableLiveData<MutableList<Friend>?>()
+    val listFriendrequest: LiveData<MutableList<Friend>?> = _listFriendrequest
 
 
     private val _listFriend = MutableLiveData<MutableList<User>?>()
@@ -126,18 +126,18 @@ class FriendViewmodel : ViewModel(), Observable {
         }
     }
 
-    fun onAcceptClick(friendship: Friendship) {
+    fun onAcceptClick(friend: Friend) {
 
         viewModelScope.launch {
             try {
                 val result =
-                    friendship.id?.let { friendRepository.updatestateFriendship("Accepted", it) }
+                    friend.id?.let { friendRepository.updateStatusFriends("Accepted", it) }
                 if (result != null) {
                     if (result.isSuccess) {
                         getFriendAccepted()
                         withContext(Dispatchers.Main) {
 
-                            _listFriendrequest.value?.remove(friendship)
+                            _listFriendrequest.value?.remove(friend)
                             _listFriendrequest.value = _listFriendrequest.value
                         }
                     } else {
@@ -151,15 +151,15 @@ class FriendViewmodel : ViewModel(), Observable {
         }
     }
 
-    fun onDeclineClick(friendship: Friendship) {
+    fun onDeclineClick(friend: Friend) {
         viewModelScope.launch {
             try {
                 val result =
-                    friendship.id?.let { friendRepository.updatestateFriendship("Declined", it) }
+                    friend.id?.let { friendRepository.updateStatusFriends("Declined", it) }
                 if (result != null) {
                     if (result.isSuccess) {
                         withContext(Dispatchers.Main) {
-                            _listFriendrequest.value?.remove(friendship)
+                            _listFriendrequest.value?.remove(friend)
                             _listFriendrequest.value = _listFriendrequest.value
                             _listFriend.value = _listFriend.value
                         }

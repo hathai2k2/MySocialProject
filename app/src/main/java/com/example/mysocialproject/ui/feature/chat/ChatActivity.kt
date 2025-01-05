@@ -13,26 +13,25 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ActivityChatBinding
+import com.example.mysocialproject.ui.base.BaseActivity
 import com.example.mysocialproject.ui.feature.adapter.friendlist_chatAdapter
 import com.example.mysocialproject.ui.feature.home.CreatePostActivity
 import com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel
 import com.example.mysocialproject.ui.feature.viewmodel.MessageViewModel
 
-
-class ChatActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityChatBinding
+@RequiresApi(Build.VERSION_CODES.O)
+class ChatActivity : BaseActivity<ActivityChatBinding>() {
     private lateinit var friendsAdapter: friendlist_chatAdapter
     private val messageViewModel: MessageViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
+    override fun getLayoutId(): Int {
+        return R.layout.activity_chat
+    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_chat)
-        binding.lifecycleOwner = this
-
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        mViewBinding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         friendsAdapter = friendlist_chatAdapter(
             this,
@@ -44,7 +43,7 @@ class ChatActivity : AppCompatActivity() {
             updatestate = { userId -> messageViewModel.updateMessagesToSeen(userId) },
             messageViewModel
         )
-        binding.recyclerView.adapter = friendsAdapter
+        mViewBinding.recyclerView.adapter = friendsAdapter
 
 
         messageViewModel.friendsWithMessages.observe(this, Observer { friendsAndMessages ->
@@ -55,7 +54,7 @@ class ChatActivity : AppCompatActivity() {
         messageViewModel.fetchFriendsWithLastMessages()
 
 
-        binding.chatbot.setOnClickListener {
+        mViewBinding.chatbot.setOnClickListener {
             val intent = Intent(this, ItemChatActivity::class.java).apply {
                 putExtra("FRIEND_ID", "Gemini")
                 putExtra("FRIEND_NAME", "")
@@ -64,7 +63,7 @@ class ChatActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.btnBack.setOnClickListener {
+        mViewBinding.btnBack.setOnClickListener {
             val intent = Intent(this, CreatePostActivity::class.java)
             val options = ActivityOptions.makeCustomAnimation(
                 this,

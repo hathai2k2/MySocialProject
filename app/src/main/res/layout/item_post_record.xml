@@ -6,7 +6,7 @@
     <data>
         <variable
             name="postvoicexml"
-            type="com.example.mysocialproject.model.PostData" />
+            type="com.example.mysocialproject.model.Post" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

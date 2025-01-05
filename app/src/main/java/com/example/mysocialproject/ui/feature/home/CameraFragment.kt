@@ -5,7 +5,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -46,9 +45,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.FragmentCameraBinding
 import com.example.mysocialproject.ui.feature.bottomdialogai.PromptDialog
-import com.example.mysocialproject.ui.feature.chat.FriendListprivateBottomSheet
-import com.example.mysocialproject.ui.feature.repository.PostRepository
-import com.example.mysocialproject.ui.feature.viewmodel.AuthViewModel.Companion.REQUEST_IMAGE_GET
+import com.example.mysocialproject.ui.feature.chat.FriendListPrivateBottomSheet
+import com.example.mysocialproject.repository.PostRepository
 import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
 import java.io.File
 import java.util.UUID
@@ -395,7 +393,7 @@ class CameraFragment : Fragment() {
         vibrator?.vibrate(50)
 
         val content = viewBinding.edt1.text.toString()
-        val bottomSheet = FriendListprivateBottomSheet(savedUri, null, content)
+        val bottomSheet = FriendListPrivateBottomSheet(savedUri, null, content)
         bottomSheet.show(childFragmentManager, bottomSheet.tag)
         return true
     }

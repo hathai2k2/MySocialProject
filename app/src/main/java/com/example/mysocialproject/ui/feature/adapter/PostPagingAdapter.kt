@@ -24,11 +24,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.signature.ObjectKey
 import com.example.mysocialproject.R
-import com.example.mysocialproject.databinding.ItemPostImageBinding
 import com.example.mysocialproject.databinding.ItemPostPhotoBinding
 import com.example.mysocialproject.databinding.ItemPostVoiceBinding
-import com.example.mysocialproject.ui.feature.model.Post
-import com.example.mysocialproject.ui.feature.post.LikesBottomSheetDialog
+import com.example.mysocialproject.model.Post
+import com.example.mysocialproject.ui.feature.post.ReactionsBottomSheetDialog
 import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
@@ -73,7 +72,7 @@ class PostPagingAdapter(
         addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached) {
                 snapshot().items.forEach { post ->
-                    prefetchImage(post.imageURL)
+                    prefetchImage(post.photoURL)
                     prefetchImage(post.userAvatar)
                 }
             }
@@ -112,9 +111,9 @@ class PostPagingAdapter(
             }
 
             // Tải ảnh bài đăng
-            if (post.imageURL != null) {
+            if (post.photoURL != null) {
                 Glide.with(binding.root.context)
-                    .load(post.imageURL)
+                    .load(post.photoURL)
                     .thumbnail(0.95f)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -136,7 +135,7 @@ class PostPagingAdapter(
                 currentLikesLiveData = viewModel.getLikes(post.postId)
                 binding.btnGroupReact.setOnTouchListener { v, event ->
                     if (event.action == MotionEvent.ACTION_UP) {
-                        val dialog = LikesBottomSheetDialog(post.postId, viewModel)
+                        val dialog = ReactionsBottomSheetDialog(post.postId, viewModel)
                         dialog.show(activity.supportFragmentManager, "LikesBottomSheetDialog")
                     }
                     true
@@ -218,7 +217,7 @@ class PostPagingAdapter(
                 binding.btnGroupReact.setOnTouchListener { v, event ->
                     if (event.action == MotionEvent.ACTION_UP) {
                         Log.d("PostPagingAdapter", "Button clicked for post: ${post.postId}")
-                        val dialog = LikesBottomSheetDialog(post.postId, viewModel)
+                        val dialog = ReactionsBottomSheetDialog(post.postId, viewModel)
                         dialog.show(activity.supportFragmentManager, "LikesBottomSheetDialog")
                     }
                     true
@@ -399,7 +398,7 @@ class PostPagingAdapter(
 //    }
     override fun getItemViewType(position: Int): Int {
         val post = getItem(position)
-        return if (post?.imageURL?.isNotEmpty() == true && post.voiceURL.isNullOrEmpty()) {
+        return if (post?.photoURL?.isNotEmpty() == true && post.voiceURL.isNullOrEmpty()) {
             VIEW_TYPE_IMAGE
         } else {
             VIEW_TYPE_VOICE
@@ -416,7 +415,7 @@ class PostPagingAdapter(
 
     fun getContentFile(position: Int): String? {
         if (getItemViewType(position) == VIEW_TYPE_IMAGE) {
-            return getItem(position)?.imageURL
+            return getItem(position)?.photoURL
         } else {
             return getItem(position)?.voiceURL
         }

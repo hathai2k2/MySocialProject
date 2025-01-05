@@ -5,7 +5,7 @@
     <data>
         <variable
             name="frRequest"
-            type="com.example.mysocialproject.ui.feature.model.Friendship" />
+            type="com.example.mysocialproject.model.Friend" />
     </data>
 
     <LinearLayout

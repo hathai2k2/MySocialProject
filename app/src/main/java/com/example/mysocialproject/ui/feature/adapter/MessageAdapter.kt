@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide
 import com.example.mysocialproject.R
 import com.example.mysocialproject.databinding.ItemReceiMessBinding
 import com.example.mysocialproject.databinding.ItemSendMessBinding
-import com.example.mysocialproject.ui.feature.model.Message
-import com.example.mysocialproject.ui.feature.model.MessageStatus
+import com.example.mysocialproject.model.Message
+import com.example.mysocialproject.model.MessageStatus
 import com.example.mysocialproject.ui.feature.viewmodel.MessageViewModel
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import okhttp3.internal.format
 import org.ocpsoft.prettytime.PrettyTime
 import java.io.File
 import java.io.IOException
@@ -102,11 +103,11 @@ class MessageAdapter(
         private var isplay: Boolean = false
         fun bind(message: Message, image: String, showTime: Boolean) {
 
-            if (message.imageUrl == "") {
+            if (message.photoUrl == "") {
                 binding.comment.visibility = View.GONE
             } else {
                 binding.comment.visibility = View.VISIBLE
-                Glide.with(binding.root).load(message.imageUrl).into(binding.imageViewPost)
+                Glide.with(binding.root).load(message.photoUrl).into(binding.imageViewPost)
                 Glide.with(binding.root).load(message.avtpost).into(binding.avtpost)
                 if (message.content == "") {
                     binding.tvDescPost.visibility = View.GONE
@@ -256,7 +257,7 @@ class MessageAdapter(
                 mediaPlayer?.let { player ->
                     if (isplay) {
                         val progress = (player.currentPosition.toFloat() / player.duration) * 100
-                        Log.d("TAGY", "$progress , ${player.duration}")
+                        Log.d("TAG", "$progress , ${player.duration}")
                         binding.wave.progress = progress
                         handler.postDelayed(this, 1)
                     }
@@ -278,12 +279,12 @@ class MessageAdapter(
             messageViewModel: MessageViewModel,
             lifecycle: LifecycleOwner
         ) {
-            if (message.imageUrl == "") {
+            if (message.photoUrl == "") {
                 binding.comment.visibility = View.GONE
             } else {
                 binding.comment.visibility = View.VISIBLE
                 Glide.with(binding.root).load(message.avtpost).into(binding.avtpost)
-                Glide.with(binding.root).load(message.imageUrl).into(binding.imageViewPost)
+                Glide.with(binding.root).load(message.photoUrl).into(binding.imageViewPost)
                 if (message.content == "") {
                     binding.tvDescPost.visibility = View.GONE
                 }

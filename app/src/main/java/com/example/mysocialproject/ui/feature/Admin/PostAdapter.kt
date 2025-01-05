@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mysocialproject.databinding.PostItemAdminBinding
-import com.example.mysocialproject.ui.feature.model.Post
+import com.example.mysocialproject.model.Post
 
 class PostAdapter(
     private var postList: List<Post>,
@@ -20,8 +20,8 @@ class PostAdapter(
             binding.deleteButton.setOnClickListener {
                 onDeleteClick(post)
             }
-            if (post.imageURL != "" && post.voiceURL == "") {
-                binding.linkmedia.text = post.imageURL
+            if (post.photoURL != "" && post.voiceURL == "") {
+                binding.linkmedia.text = post.photoURL
             } else {
                 binding.linkmedia.text = post.voiceURL
             }

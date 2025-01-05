@@ -11,8 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.AppWidgetTarget
 import com.example.mysocialproject.R
-import com.example.mysocialproject.ui.feature.model.Message
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.Message
+import com.example.mysocialproject.model.User
 import com.example.mysocialproject.ui.feature.widget.MessageWidget
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

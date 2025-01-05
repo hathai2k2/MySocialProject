@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.AppWidgetTarget
 import com.example.mysocialproject.R
-import com.example.mysocialproject.ui.feature.model.Post
+import com.example.mysocialproject.model.Post
 import com.example.mysocialproject.ui.feature.widget.PostWidget
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
@@ -36,12 +36,12 @@ class widgetViewModel : ViewModel() {
     private suspend fun getFriendIds(): List<String> {
         val userId = auth.currentUser?.uid ?: return emptyList()
         return try {
-            val query1 = fireStore.collection("friendships")
-                .whereEqualTo("uid1", userId)
+            val query1 = fireStore.collection("friends")
+                .whereEqualTo("userId1", userId)
                 .whereEqualTo("state", "Accepted")
 
-            val query2 = fireStore.collection("friendships")
-                .whereEqualTo("uid2", userId)
+            val query2 = fireStore.collection("friends")
+                .whereEqualTo("userId2", userId)
                 .whereEqualTo("state", "Accepted")
 
             val combinedTask = Tasks.whenAllSuccess<QuerySnapshot>(query1.get(), query2.get())
@@ -50,13 +50,13 @@ class widgetViewModel : ViewModel() {
             val friendIds = mutableSetOf<String>()
             for (result in combinedTask) {
                 result.documents.forEach { doc ->
-                    val uid1 = doc.getString("uid1")
-                    val uid2 = doc.getString("uid2")
-                    if (uid1 != userId && uid1 != null) {
-                        friendIds.add(uid1)
+                    val userId1 = doc.getString("userId1")
+                    val userId2 = doc.getString("userId2")
+                    if (userId1 != userId && userId1 != null) {
+                        friendIds.add(userId1)
                     }
-                    if (uid2 != userId && uid2 != null) {
-                        friendIds.add(uid2)
+                    if (userId2 != userId && userId2 != null) {
+                        friendIds.add(userId2)
                     }
                 }
             }
@@ -100,7 +100,7 @@ class widgetViewModel : ViewModel() {
 
                     if (snapshot != null && !snapshot.isEmpty) {
                         val firstPost = snapshot.documents.first().toObject(Post::class.java)
-                        if (firstPost?.imageURL != "") {
+                        if (firstPost?.photoURL != "") {
                             updateWidgetWithPost(context, firstPost)
                         }
                     } else {
@@ -136,7 +136,7 @@ class widgetViewModel : ViewModel() {
                     AppWidgetTarget(context, R.id.imageView_post, views, appWidgetId)
                 Glide.with(context)
                     .asBitmap()
-                    .load(post.imageURL)
+                    .load(post.photoURL)
                     .apply(
                         RequestOptions.bitmapTransform(
                             RoundedCorners(16)

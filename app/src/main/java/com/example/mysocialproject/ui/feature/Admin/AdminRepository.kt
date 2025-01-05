@@ -1,8 +1,8 @@
 package com.example.mysocialproject.ui.feature.Admin
 
 import android.util.Log
-import com.example.mysocialproject.ui.feature.model.Post
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.Post
+import com.example.mysocialproject.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -70,16 +70,16 @@ class AdminRepository {
                 if (postSnapshot.exists()) {
                     val post = postSnapshot.toObject(Post::class.java)
                     if (post != null) {
-                        val decodedImageUrl = URLDecoder.decode(post.imageURL, "UTF-8")
+                        val decodedImageUrl = URLDecoder.decode(post.photoURL, "UTF-8")
                         val decodedVoiceUrl = URLDecoder.decode(post.voiceURL, "UTF-8")
                         when {
-                            post.imageURL == "" && post.voiceURL != "" -> {
+                            post.photoURL == "" && post.voiceURL != "" -> {
                                 val voiceRef = storage.getReferenceFromUrl(decodedVoiceUrl)
                                 Log.d("XOAVOICE", "delete URL obtained: $voiceRef")
                                 voiceRef.delete().await()
                             }
 
-                            post.imageURL != "" && post.voiceURL == "" -> {
+                            post.photoURL != "" && post.voiceURL == "" -> {
                                 val imageRef = storage.getReferenceFromUrl(decodedImageUrl)
                                 imageRef.delete().await()
                             }
@@ -103,7 +103,7 @@ class AdminRepository {
                                 it.reference.update(
                                     mapOf(
                                         "postId" to "",
-                                        "imageUrl" to "",
+                                        "photoUrl" to "",
                                         "voiceUrl" to "",
                                         "timestamp" to "",
                                         "content" to "",

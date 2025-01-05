@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mysocialproject.ui.feature.model.Post
-import com.example.mysocialproject.ui.feature.model.User
+import com.example.mysocialproject.model.Post
+import com.example.mysocialproject.model.User
 import kotlinx.coroutines.launch
 
 class AdminViewModel : ViewModel() {

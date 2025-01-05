@@ -76,7 +76,7 @@ class PostWidget() : AppWidgetProvider(), LifecycleOwner {
                 )
                 Glide.with(context)
                     .asBitmap()
-                    .load(post.imageURL)
+                    .load(post.photoURL)
                     .apply(
                         RequestOptions.bitmapTransform(
                             RoundedCorners(16)

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="postxml"
-            type="com.example.mysocialproject.ui.feature.model.Post" />
+            type="com.example.mysocialproject.model.Post" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

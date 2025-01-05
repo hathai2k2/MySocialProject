@@ -4,7 +4,7 @@
     <data>
         <variable
             name="user"
-            type="com.example.mysocialproject.ui.feature.model.User" />
+            type="com.example.mysocialproject.model.User" />
     </data>
     <LinearLayout
 

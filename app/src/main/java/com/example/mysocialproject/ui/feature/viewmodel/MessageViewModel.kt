@@ -11,9 +11,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mysocialproject.ui.feature.model.Message
-import com.example.mysocialproject.ui.feature.model.User
-import com.example.mysocialproject.ui.feature.repository.MessageRepository
+import com.example.mysocialproject.model.Message
+import com.example.mysocialproject.model.User
+import com.example.mysocialproject.repository.MessageRepository
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +39,7 @@ class MessageViewModel() : ViewModel(), Observable {
         postId: String,
         receiverId: String,
         imgUrl: String,
-        VoiceUrl: String,
+        voiceUrl: String,
         content: String,
         createAt: String,
         avtUserPost: String
@@ -52,7 +52,7 @@ class MessageViewModel() : ViewModel(), Observable {
                 postId,
                 receiverId,
                 imgUrl,
-                VoiceUrl,
+                voiceUrl,
                 content,
                 createAt,
                 avtUserPost

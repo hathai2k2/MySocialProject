@@ -5,7 +5,7 @@
     <data>
         <variable
             name="post"
-            type="com.example.mysocialproject.ui.feature.model.Post" />
+            type="com.example.mysocialproject.model.Post" />
     </data>
     <LinearLayout
 
