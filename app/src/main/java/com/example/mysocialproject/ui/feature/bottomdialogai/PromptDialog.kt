@@ -1,12 +1,14 @@
 package com.example.mysocialproject.ui.feature.bottomdialogai
 
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialproject.databinding.LayoutPromtImgBinding
 import com.example.mysocialproject.ui.feature.viewmodel.PostViewModel
@@ -29,6 +31,7 @@ class PromptDialog(private val imageBitmap: Bitmap) : BottomSheetDialogFragment(
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.genaAgain.apply {

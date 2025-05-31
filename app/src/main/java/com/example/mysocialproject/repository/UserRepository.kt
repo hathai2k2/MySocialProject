@@ -110,13 +110,13 @@ class UserRepository {
     ///kiem tra dang nhap
     fun isUserLoggedIn(): Boolean {
         val current = auth.currentUser
-        return current != null && current.uid != "KyH8KCgh0pgxFiPXvr76xh5Vux03"
+        return current != null && current.uid != "iiQL7LarEjcKcpw4bezuIIFAaWy2"
     }
 
     //isadmin
     fun isAdmin(): Boolean {
         val current = auth.currentUser
-        return current != null && current.uid == "KyH8KCgh0pgxFiPXvr76xh5Vux03"
+        return current != null && current.uid == "iiQL7LarEjcKcpw4bezuIIFAaWy2"
     }
 
     private var isDataLoaded = false

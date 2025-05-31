@@ -26,7 +26,7 @@ class NotificationRepository {
     private val userId = auth.currentUser?.uid
     private var listenJob: Job? = null
     private val repositoryScope =
-        CoroutineScope(SupervisorJob() + Dispatchers.Main) // CoroutineScope riêng cho Repository
+        CoroutineScope(SupervisorJob() + Dispatchers.Main) //   riêng cho Repository
 
     fun getMessagesFromFriends(): Flow<List<Message>> = callbackFlow {
         val listenerRegistration = fireStore.collection("messages")

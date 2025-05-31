@@ -166,7 +166,6 @@ class CameraFragment : Fragment() {
         }
 
         viewBinding.Btnnratio1x.setOnClickListener {
-
             zoom()
         }
         tabtofocus()

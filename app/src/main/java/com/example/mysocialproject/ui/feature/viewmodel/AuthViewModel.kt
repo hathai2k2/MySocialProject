@@ -44,8 +44,6 @@ import java.util.regex.Pattern
 class AuthViewModel( ) :
     ViewModel(), Observable {
     private val userRepository = UserRepository()
-
-
     @Bindable
     var email = MutableLiveData<String?>()
 

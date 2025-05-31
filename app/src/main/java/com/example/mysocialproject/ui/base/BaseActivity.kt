@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.example.mysocialproject.R
 
+// tạo lớp cơ sở cho tất cả các Activity trong ứng dụng
 abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
     lateinit var mViewBinding: V
 

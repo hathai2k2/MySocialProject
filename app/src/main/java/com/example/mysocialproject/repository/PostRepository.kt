@@ -103,9 +103,9 @@ class PostRepository {
             config = PagingConfig(
                 pageSize = 1,
                 enablePlaceholders = false,
-                prefetchDistance = 20,
+                prefetchDistance = 20,// Tải trước khi người dùng gần hết danh sách
                 initialLoadSize = 20,
-                maxSize = 100,
+                maxSize = 100, // Giới hạn tối đa bài đăng trong bộ nhớ
                 jumpThreshold = 10
             ),
             pagingSourceFactory = { PostPagingSource(fireStore, auth) }

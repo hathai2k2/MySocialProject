@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialproject.databinding.ActivityStartAppBinding
 import com.example.mysocialproject.ui.base.BaseActivity
+import com.example.mysocialproject.ui.feature.Admin.AdminActivity
 import com.example.mysocialproject.ui.feature.home.CreatePostActivity
 import com.example.mysocialproject.ui.feature.manageraccount.SignInActivity
 import com.example.mysocialproject.ui.feature.manageraccount.SignUp
@@ -89,7 +90,7 @@ class StartAppActivity : BaseActivity<ActivityStartAppBinding>() {
             if (authViewModel.isadmin()) {
                 val bundle = Bundle()
                 showActivity(
-                    com.example.mysocialproject.ui.feature.Admin.AdminActivity::class.java,
+                   AdminActivity::class.java,
                     bundle
                 )
                 finish()

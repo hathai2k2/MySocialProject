@@ -103,7 +103,7 @@ class PostPagingSource(
             val combinedTask = Tasks.whenAllSuccess<QuerySnapshot>(query1.get(), query2.get())
                 .await()
 
-            val friendIds = mutableSetOf<String>()
+            val friendIds = mutableSetOf<String>() // dùng set thay list để tránh trùng lặp
             for (result in combinedTask) {
                 result.documents.forEach { doc ->
                     val uid1 = doc.getString("userId1")

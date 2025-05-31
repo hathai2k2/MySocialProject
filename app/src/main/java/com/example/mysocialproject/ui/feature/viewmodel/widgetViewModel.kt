@@ -123,10 +123,6 @@ class widgetViewModel : ViewModel() {
                 val prettyTime = PrettyTime(Locale("vi"))
                 val formattedTime = prettyTime.format(post.createdAt!!.toDate())
 
-
-
-
-
                 views.setTextViewText(
                     R.id.createAtpost, formattedTime.replace(" trước", "").replace("cách đây ", "")
                         .replace("giây", "vừa xong")

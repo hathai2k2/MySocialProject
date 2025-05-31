@@ -127,7 +127,6 @@ class FriendViewmodel : ViewModel(), Observable {
     }
 
     fun onAcceptClick(friend: Friend) {
-
         viewModelScope.launch {
             try {
                 val result =

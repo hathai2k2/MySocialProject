@@ -33,7 +33,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ekko_2"
+                tools:src="@drawable/viktor_mobie"
                />
 
             <com.google.android.material.imageview.ShapeableImageView

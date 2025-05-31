@@ -50,6 +50,7 @@ class MessageRepository() {
         return try {
             val currentUID =
                 auth.currentUser?.uid ?: return Result.failure(Exception("User not authenticated"))
+            //Tin nhắn ban đầu được mã hóa bằng Base64
             val encodedMessage =
                 Base64.encodeToString(message.toByteArray(Charsets.UTF_8), Base64.NO_WRAP)
             val newMessageRef = fireStore.collection("messages").document()
